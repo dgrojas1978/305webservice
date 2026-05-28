@@ -4,6 +4,7 @@ import { createSignal, onMount, onCleanup, Show } from "solid-js";
 const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/productos", label: "Productos" },
+  { href: "/precios", label: "Precios" },
   { href: "/servicios", label: "Servicios" },
   { href: "/contacto", label: "Contacto" },
 ];
