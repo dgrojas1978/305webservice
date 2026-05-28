@@ -26,6 +26,7 @@ export const products: Product[] = [
     accentColor: "#10B981",
     isHighlighted: true,
     status: "active",
+    demoUrl: "https://fortalezacuba.com",
     features: [
       {
         icon: "Terminal",

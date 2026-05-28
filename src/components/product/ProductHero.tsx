@@ -1,4 +1,5 @@
 import { A } from "@solidjs/router";
+import { Show } from "solid-js";
 import type { Product } from "~/types";
 import Badge from "~/components/ui/Badge";
 import { getWhatsAppUrl } from "~/data/products";
@@ -53,21 +54,38 @@ export default function ProductHero(props: ProductHeroProps) {
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3">
+              <Show
+                when={p.demoUrl}
+                fallback={
+                  <a
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 font-bold text-white rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+                    style={`background: linear-gradient(135deg, ${p.colorFrom}, ${p.colorTo})`}
+                  >
+                    Solicitar demo gratis
+                  </a>
+                }
+              >
+                <a
+                  href={p.demoUrl!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 font-bold text-white rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+                  style={`background: linear-gradient(135deg, ${p.colorFrom}, ${p.colorTo})`}
+                >
+                  Jugar ahora →
+                </a>
+              </Show>
               <a
                 href={whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 font-bold text-white rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
-                style={`background: linear-gradient(135deg, ${p.colorFrom}, ${p.colorTo})`}
-              >
-                Solicitar demo gratis
-              </a>
-              <A
-                href="/contacto"
                 class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-semibold rounded-xl transition-all duration-200"
               >
-                Solicitar cotización
-              </A>
+                Solicitar info
+              </a>
             </div>
           </div>
 
@@ -84,31 +102,42 @@ export default function ProductHero(props: ProductHeroProps) {
                   <div class="w-3 h-3 rounded-full bg-green-500/50" />
                 </div>
                 <div class="flex-1 ml-2 bg-white/5 rounded-md px-3 py-1 text-xs text-slate-500">
-                  {p.slug}.305webservice.com
+                  {p.demoUrl ? p.demoUrl.replace(/^https?:\/\//, "") : `${p.slug}.305webservice.com`}
                 </div>
               </div>
-              <div class="p-8 min-h-[280px] flex flex-col items-center justify-center">
-                <div class="text-center mb-6 opacity-50">
-                  <div
-                    class="w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-                    style={`background: linear-gradient(135deg, ${p.colorFrom}40, ${p.colorTo}40)`}
-                  >
-                    <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width={1.5}>
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3.75 3h16.5M4.5 3v18M19.5 3v18" />
-                    </svg>
+              <Show
+                when={p.screenshots && p.screenshots.length > 0 && !p.screenshots[0].url.startsWith("/screenshots/placeholder")}
+                fallback={
+                  <div class="p-8 min-h-[280px] flex flex-col items-center justify-center">
+                    <div class="text-center mb-6 opacity-50">
+                      <div
+                        class="w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+                        style={`background: linear-gradient(135deg, ${p.colorFrom}40, ${p.colorTo}40)`}
+                      >
+                        <svg class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width={1.5}>
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M3.75 3h16.5M4.5 3v18M19.5 3v18" />
+                        </svg>
+                      </div>
+                      <p class="text-slate-500 text-sm">Screenshot del producto</p>
+                      <p class="text-slate-600 text-xs mt-1">Reemplaza con imágenes reales</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center">
+                      {p.features.slice(0, 4).map((f) => (
+                        <span class="px-3 py-1.5 text-xs rounded-lg bg-white/5 border border-white/10 text-slate-400">
+                          {f.title}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <p class="text-slate-500 text-sm">Screenshot del producto</p>
-                  <p class="text-slate-600 text-xs mt-1">Reemplaza con imágenes reales</p>
-                </div>
-                {/* Feature highlight chips */}
-                <div class="flex flex-wrap gap-2 justify-center">
-                  {p.features.slice(0, 4).map((f) => (
-                    <span class="px-3 py-1.5 text-xs rounded-lg bg-white/5 border border-white/10 text-slate-400">
-                      {f.title}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                }
+              >
+                <img
+                  src={p.screenshots![0].url}
+                  alt={p.screenshots![0].alt}
+                  class="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </Show>
             </div>
           </div>
         </div>
