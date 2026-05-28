@@ -1,8 +1,10 @@
 import type { Product } from "~/types";
+import { axisErpProduct } from "~/data/axisErp";
 
 export const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || "13051234567";
 
 export const products: Product[] = [
+  axisErpProduct,
   {
     id: "venta",
     slug: "venta-pos",
