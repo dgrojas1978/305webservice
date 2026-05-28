@@ -495,6 +495,25 @@ export const products: Product[] = [
       plans: [],
       note: "Early access disponible. Escríbenos para unirte a la lista.",
     },
+    downloadVersion: "1.0.0-beta",
+    downloads: [
+      {
+        label: "Instalar en Windows",
+        filename: "FortalezaTerminal-Setup.exe",
+        url: import.meta.env.VITE_FORTALEZA_DOWNLOAD_EXE || "#",
+        type: "exe",
+        platform: "Windows 10 / 11",
+        size: "~45 MB",
+      },
+      {
+        label: "Versión portátil (sin instalar)",
+        filename: "FortalezaTerminal-Portable.zip",
+        url: import.meta.env.VITE_FORTALEZA_DOWNLOAD_ZIP || "#",
+        type: "zip",
+        platform: "Windows 10 / 11",
+        size: "~40 MB",
+      },
+    ],
   },
 ];
 

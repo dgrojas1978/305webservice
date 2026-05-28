@@ -51,6 +51,15 @@ export interface Pricing {
   note?: string;
 }
 
+export interface Download {
+  label: string;
+  filename: string;
+  url: string;
+  type: "exe" | "zip" | "dmg" | "deb";
+  platform: string;
+  size?: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -77,6 +86,8 @@ export interface Product {
   status: "active" | "coming-soon";
   demoUrl?: string;
   whatsapp?: string;
+  downloads?: Download[];
+  downloadVersion?: string;
 }
 
 export interface Service {

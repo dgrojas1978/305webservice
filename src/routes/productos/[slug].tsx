@@ -10,6 +10,7 @@ import BenefitsList from "~/components/product/BenefitsList";
 import ProductFAQ from "~/components/product/ProductFAQ";
 import PricingSection from "~/components/product/PricingSection";
 import CTABanner from "~/components/sections/CTABanner";
+import DownloadsSection from "~/components/product/DownloadsSection";
 import { getProductBySlug, getWhatsAppUrl } from "~/data/products";
 
 export default function ProductDetailPage() {
@@ -45,6 +46,7 @@ export default function ProductDetailPage() {
           <Header />
           <main>
             <ProductHero product={p()} />
+            <DownloadsSection product={p()} />
 
             {/* Use cases */}
             <section class="py-12 bg-white">
