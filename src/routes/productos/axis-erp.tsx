@@ -36,7 +36,7 @@ const schemaOrg = JSON.stringify({
 export default function AxisErpPage() {
   return (
     <>
-      <Title>Axis ERP — ERP y POS para MIPYMES de Cuba y LATAM · 305 Web Service</Title>
+      <Title>Axis ERP — Control total de tu negocio, con o sin internet · 305 Web Service</Title>
       <Meta name="description" content="Sistema ERP/POS completo para tiendas, restaurantes, bares, ferreterías y farmacias. Funciona offline, multi-sucursal, desde $19/mes. Prueba gratis 14 días." />
       <Meta name="keywords" content="ERP Cuba, POS Cuba, software facturación LATAM, sistema POS restaurante, ERP inventario, software MIPYMES" />
       <Meta property="og:title" content="Axis ERP — ERP y POS para MIPYMES · 305 Web Service" />

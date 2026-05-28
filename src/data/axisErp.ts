@@ -6,7 +6,7 @@ export const axisErpProduct: Product = {
   id: "axis-erp",
   slug: "axis-erp",
   name: "Axis ERP",
-  tagline: "El ERP y POS diseñado para las MIPYMES de Cuba y Latinoamérica",
+  tagline: "Control total de tu negocio, con o sin internet",
   shortDescription:
     "Sistema integral de punto de venta, inventario, restaurantes, facturación y gestión empresarial. Funciona offline, sincroniza en la nube y corre en tu red LAN.",
   fullDescription:

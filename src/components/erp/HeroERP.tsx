@@ -23,9 +23,9 @@ export default function HeroERP() {
             </div>
 
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.08] mb-6">
-              El ERP y POS diseñado para las{" "}
+              Control total de tu negocio,{" "}
               <span style="background: linear-gradient(90deg,#818CF8,#38BDF8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
-                MIPYMES de Cuba y LATAM
+                con o sin internet
               </span>
             </h1>
 
