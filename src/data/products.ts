@@ -27,6 +27,7 @@ export const products: Product[] = [
     isHighlighted: true,
     status: "active",
     demoUrl: "https://fortalezacuba.com",
+    ctaLabel: "Jugar ahora →",
     features: [
       {
         icon: "Terminal",
@@ -180,6 +181,7 @@ export const products: Product[] = [
     isHighlighted: true,
     status: "active",
     demoUrl: "https://cambalache.com",
+    ctaLabel: "Ver marketplace →",
     features: [
       {
         icon: "Globe",

@@ -85,6 +85,7 @@ export interface Product {
   isHighlighted: boolean;
   status: "active" | "coming-soon";
   demoUrl?: string;
+  ctaLabel?: string;
   whatsapp?: string;
   downloads?: Download[];
   downloadVersion?: string;

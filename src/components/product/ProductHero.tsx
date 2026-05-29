@@ -75,7 +75,7 @@ export default function ProductHero(props: ProductHeroProps) {
                   class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3.5 font-bold text-white rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
                   style={`background: linear-gradient(135deg, ${p.colorFrom}, ${p.colorTo})`}
                 >
-                  Jugar ahora →
+                  {p.ctaLabel ?? "Ver en vivo →"}
                 </a>
               </Show>
               <a
