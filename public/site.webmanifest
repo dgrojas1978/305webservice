@@ -1,0 +1,28 @@
+{
+  "name": "305 Web Service",
+  "short_name": "305 Web",
+  "description": "Software moderno para empresas que quieren crecer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030B1A",
+  "theme_color": "#2563EB",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
