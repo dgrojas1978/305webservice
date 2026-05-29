@@ -6,7 +6,7 @@ interface ImportMetaEnv {
   // FORTALEZA
   readonly VITE_FORTALEZA_DOWNLOAD_EXE: string;
   readonly VITE_FORTALEZA_DOWNLOAD_ZIP: string;
-  // Axis ERP
+  // Ventaro
   readonly VITE_ERP_VERSION: string;
   readonly VITE_ERP_DEMO_URL: string;
   readonly VITE_ERP_DEMO_USER: string;

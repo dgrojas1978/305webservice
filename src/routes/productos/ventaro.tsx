@@ -16,7 +16,7 @@ import { A } from "@solidjs/router";
 const schemaOrg = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Axis ERP",
+  "name": "Ventaro",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Windows, Android, Web",
   "description": axisErpProduct.shortDescription,
@@ -33,13 +33,13 @@ const schemaOrg = JSON.stringify({
   },
 });
 
-export default function AxisErpPage() {
+export default function VentaroPage() {
   return (
     <>
-      <Title>Axis ERP — Control total de tu negocio, con o sin internet · 305 Web Service</Title>
+      <Title>Ventaro — Control total de tu negocio, con o sin internet · 305 Web Service</Title>
       <Meta name="description" content="Sistema ERP/POS completo para tiendas, restaurantes, bares, ferreterías y farmacias. Funciona offline, multi-sucursal, desde $19/mes. Prueba gratis 14 días." />
       <Meta name="keywords" content="ERP Cuba, POS Cuba, software facturación LATAM, sistema POS restaurante, ERP inventario, software MIPYMES" />
-      <Meta property="og:title" content="Axis ERP — ERP y POS para MIPYMES · 305 Web Service" />
+      <Meta property="og:title" content="Ventaro — ERP y POS para MIPYMES · 305 Web Service" />
       <Meta property="og:description" content="ERP/POS para tiendas, restaurantes y bares en Cuba y LATAM. Offline, multi-sucursal, desde $19/mes." />
       <Meta name="twitter:card" content="summary_large_image" />
       <script type="application/ld+json" innerHTML={schemaOrg} />
@@ -90,7 +90,7 @@ export default function AxisErpPage() {
                   Funciona aunque no haya internet
                 </h2>
                 <p class="text-slate-400 text-lg leading-relaxed mb-6">
-                  El corte de internet no para tu negocio. Axis ERP corre en tu red local y cuando vuelve la conexión, sincroniza todo automáticamente.
+                  El corte de internet no para tu negocio. Ventaro corre en tu red local y cuando vuelve la conexión, sincroniza todo automáticamente.
                 </p>
                 <div class="space-y-3">
                   {[
@@ -135,7 +135,7 @@ export default function AxisErpPage() {
         {/* Demo CTA */}
         <section class="py-14 bg-white">
           <div class="max-w-3xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-black text-slate-900 mb-4">Prueba Axis ERP ahora mismo</h2>
+            <h2 class="text-3xl font-black text-slate-900 mb-4">Prueba Ventaro ahora mismo</h2>
             <p class="text-slate-500 text-lg mb-8">
               Demo en vivo con datos reales. Selecciona tu tipo de negocio y explora el sistema completo.
             </p>

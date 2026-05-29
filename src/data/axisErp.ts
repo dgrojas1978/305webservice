@@ -3,18 +3,18 @@ import type { Product } from "~/types";
 // ─── Product object (imported into products.ts) ───────────────────────────────
 
 export const axisErpProduct: Product = {
-  id: "axis-erp",
-  slug: "axis-erp",
-  name: "Axis ERP",
+  id: "ventaro",
+  slug: "ventaro",
+  name: "Ventaro",
   tagline: "Control total de tu negocio, con o sin internet",
   shortDescription:
     "Sistema integral de punto de venta, inventario, restaurantes, facturación y gestión empresarial. Funciona offline, sincroniza en la nube y corre en tu red LAN.",
   fullDescription:
-    "Axis ERP es una plataforma ERP/POS completa diseñada específicamente para las MIPYMES de Cuba y Latinoamérica. Combina punto de venta táctil, gestión de inventario en tiempo real, módulo de restaurantes y bares, control multi-sucursal, facturación y analítica con IA — todo en un sistema que funciona aunque no haya internet.",
+    "Ventaro es una plataforma ERP/POS completa diseñada específicamente para las MIPYMES de Cuba y Latinoamérica. Combina punto de venta táctil, gestión de inventario en tiempo real, módulo de restaurantes y bares, control multi-sucursal, facturación y analítica con IA — todo en un sistema que funciona aunque no haya internet.",
   problem:
     "Los ERP globales son demasiado caros, complejos y no están diseñados para la realidad de LATAM: cortes de internet frecuentes, múltiples monedas, restaurantes que venden por mesa y tiendas que venden a crédito. Los sistemas baratos no tienen lo que necesitas; los caros no están pensados para ti.",
   solution:
-    "Axis ERP nació en LATAM para LATAM. Funciona sin internet en tu red local, sincroniza en la nube cuando hay conexión, acepta múltiples monedas y métodos de pago, y tiene módulos específicos para restaurantes, bares, ferreterías, farmacias y tiendas de todo tipo.",
+    "Ventaro nació en LATAM para LATAM. Funciona sin internet en tu red local, sincroniza en la nube cuando hay conexión, acepta múltiples monedas y métodos de pago, y tiene módulos específicos para restaurantes, bares, ferreterías, farmacias y tiendas de todo tipo.",
   category: "ERP / POS",
   tags: ["ERP", "POS", "Inventario", "Restaurante", "Bar", "Multi-sucursal", "Offline", "LATAM", "Cuba"],
   icon: "Cpu",
@@ -84,12 +84,12 @@ export const axisErpProduct: Product = {
     { title: "MIPYME General",     description: "Cualquier negocio que venda productos o servicios en LATAM.",                   industry: "General"     },
   ],
   screenshots: [
-    { url: "/screenshots/axis-erp-dashboard.png", alt: "Dashboard Axis ERP",  caption: "Panel ejecutivo en tiempo real" },
-    { url: "/screenshots/axis-erp-pos.png",       alt: "POS Axis ERP",        caption: "Interfaz de punto de venta táctil" },
-    { url: "/screenshots/axis-erp-inventory.png", alt: "Inventario Axis ERP", caption: "Control de inventario por sucursal" },
+    { url: "/screenshots/ventaro-dashboard.png", alt: "Dashboard Ventaro",  caption: "Panel ejecutivo en tiempo real" },
+    { url: "/screenshots/ventaro-pos.png",       alt: "POS Ventaro",        caption: "Interfaz de punto de venta táctil" },
+    { url: "/screenshots/ventaro-inventory.png", alt: "Inventario Ventaro", caption: "Control de inventario por sucursal" },
   ],
   faq: [
-    { question: "¿Funciona sin internet?",            answer: "Sí. Axis ERP funciona en tu red local (LAN) aunque no haya internet. Cuando vuelve la conexión, sincroniza todo automáticamente." },
+    { question: "¿Funciona sin internet?",            answer: "Sí. Ventaro funciona en tu red local (LAN) aunque no haya internet. Cuando vuelve la conexión, sincroniza todo automáticamente." },
     { question: "¿Cuánto tiempo toma la instalación?", answer: "La mayoría de negocios están operando en 1-2 días. Incluimos migración de datos, configuración e instalación remota." },
     { question: "¿Incluye módulo de restaurante?",    answer: "Sí. El plan Restaurante & Bar incluye gestión de mesas, comandas, cocina en pantalla, menú digital y control de tabs." },
     { question: "¿Puedo usarlo en múltiples tiendas?", answer: "Desde el plan Profesional hacia arriba puedes administrar múltiples sucursales desde un solo panel central." },
@@ -394,8 +394,8 @@ export const erpComparisonData: ComparisonGroup[] = [
 
 export const erpFAQ = [
   {
-    question: "¿Axis ERP funciona sin internet?",
-    answer: "Sí. Axis ERP corre en tu red local (LAN) sin necesidad de internet. Cuando la conexión vuelve, sincroniza todo en la nube automáticamente. Tu negocio no para nunca.",
+    question: "¿Ventaro funciona sin internet?",
+    answer: "Sí. Ventaro corre en tu red local (LAN) sin necesidad de internet. Cuando la conexión vuelve, sincroniza todo en la nube automáticamente. Tu negocio no para nunca.",
   },
   {
     question: "¿Cuánto tiempo toma instalar el sistema?",

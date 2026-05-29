@@ -21,7 +21,7 @@ export default function ProductsPage() {
       <Title>Productos — 305 Web Service</Title>
       <Meta
         name="description"
-        content="Catálogo de productos de 305 Web Service: Axis ERP, FORTALEZA ZONA-0 y más. Software listo para implementar en tu negocio."
+        content="Catálogo de productos de 305 Web Service: Ventaro, FORTALEZA ZONA-0 y más. Software listo para implementar en tu negocio."
       />
 
       <Header />

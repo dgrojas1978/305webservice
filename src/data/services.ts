@@ -161,9 +161,9 @@ export const testimonials: Testimonial[] = [
     name: "Dr. Roberto Méndez",
     role: "Director Médico",
     company: "Clínica MedPlus",
-    content: "Axis ERP nos centralizó las tres sucursales en una sola pantalla. El modo offline fue clave — nunca perdemos una venta aunque falle la conexión.",
+    content: "Ventaro nos centralizó las tres sucursales en una sola pantalla. El modo offline fue clave — nunca perdemos una venta aunque falle la conexión.",
     rating: 5,
-    product: "Axis ERP",
+    product: "Ventaro",
   },
   {
     name: "Carolina Vásquez",

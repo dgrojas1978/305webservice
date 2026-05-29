@@ -15,7 +15,7 @@ const submitDemoRequest = action(async (formData: FormData) => {
     email: String(formData.get("email") ?? ""),
     phone: String(formData.get("phone") ?? ""),
     company: String(formData.get("company") ?? ""),
-    product: "Axis ERP",
+    product: "Ventaro",
     reason: `Demo — ${formData.get("businessType")} — ${formData.get("preferredTime")}`,
     message: String(formData.get("message") ?? ""),
     createdAt: new Date(),
@@ -43,8 +43,8 @@ export default function SolicitarDemoPage() {
 
   return (
     <>
-      <Title>Solicitar Demo de Axis ERP · 305 Web Service</Title>
-      <Meta name="description" content="Agenda una demostración personalizada de Axis ERP. 30 minutos con tu inventario y datos reales. Sin costo." />
+      <Title>Solicitar Demo de Ventaro · 305 Web Service</Title>
+      <Meta name="description" content="Agenda una demostración personalizada de Ventaro. 30 minutos con tu inventario y datos reales. Sin costo." />
 
       <Header />
       <main class="min-h-screen bg-[#020914]">

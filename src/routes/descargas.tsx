@@ -20,9 +20,9 @@ interface DownloadItem {
 const downloads: DownloadItem[] = [
   {
     icon: "💻",
-    label: "Axis ERP — Windows",
+    label: "Ventaro — Windows",
     description: "Instalador completo para Windows 10 y 11. Incluye POS, inventario, módulo de restaurantes y sincronización cloud.",
-    filename: "AxisERP-Setup.exe",
+    filename: "Ventaro-Setup.exe",
     url: erpConfig.downloads.windows,
     badge: "Principal",
     size: "~95 MB",
@@ -32,16 +32,16 @@ const downloads: DownloadItem[] = [
     icon: "📦",
     label: "Versión portátil (ZIP)",
     description: "Sin instalación. Copia en un USB y ejecuta desde cualquier PC. Ideal para técnicos e instalaciones rápidas.",
-    filename: "AxisERP-Portable.zip",
+    filename: "Ventaro-Portable.zip",
     url: erpConfig.downloads.windows,
     size: "~88 MB",
     note: "No requiere instalación · Ejecuta desde USB",
   },
   {
     icon: "📱",
-    label: "Axis ERP — Android",
+    label: "Ventaro — Android",
     description: "App para tablets y teléfonos Android. Úsala como terminal POS adicional o para gestión de mesas en restaurantes.",
-    filename: "AxisERP.apk",
+    filename: "Ventaro.apk",
     url: erpConfig.downloads.android,
     badge: "Próximamente",
     size: "~45 MB",
@@ -51,7 +51,7 @@ const downloads: DownloadItem[] = [
     icon: "🖥️",
     label: "Servidor LAN",
     description: "Componente servidor para instalaciones en red local. Instala en un PC o servidor Windows y conecta múltiples terminales.",
-    filename: "AxisERP-Server.exe",
+    filename: "Ventaro-Server.exe",
     url: erpConfig.downloads.server,
     size: "~110 MB",
     note: "Windows Server 2019+ o Windows 10/11 Pro",
@@ -60,7 +60,7 @@ const downloads: DownloadItem[] = [
     icon: "📄",
     label: "Manual de usuario (PDF)",
     description: "Guía completa paso a paso para operadores. Desde la primera venta hasta el cierre mensual.",
-    filename: "AxisERP-Manual-v2.1.pdf",
+    filename: "Ventaro-Manual-v2.1.pdf",
     url: erpConfig.downloads.manual,
     note: "PDF · Actualizado a v2.1.0",
   },
@@ -85,8 +85,8 @@ const downloads: DownloadItem[] = [
 export default function DescargasPage() {
   return (
     <>
-      <Title>Descargas Axis ERP — Versión oficial v{erpConfig.version} · 305 Web Service</Title>
-      <Meta name="description" content={`Descarga Axis ERP v${erpConfig.version}. Windows, Android, servidor LAN, manual PDF y documentación técnica. Versión oficial.`} />
+      <Title>Descargas Ventaro — Versión oficial v{erpConfig.version} · 305 Web Service</Title>
+      <Meta name="description" content={`Descarga Ventaro v${erpConfig.version}. Windows, Android, servidor LAN, manual PDF y documentación técnica. Versión oficial.`} />
 
       <Header />
       <main class="min-h-screen bg-[#020914]">
@@ -95,7 +95,7 @@ export default function DescargasPage() {
           <div class="absolute inset-0 bg-grid opacity-40" />
           <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 0%, rgba(55,48,163,0.25) 0%, transparent 60%)" />
           <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl sm:text-5xl font-black text-white mb-4">Descarga Axis ERP</h1>
+            <h1 class="text-4xl sm:text-5xl font-black text-white mb-4">Descarga Ventaro</h1>
             <div class="flex items-center justify-center gap-3 mb-4">
               <span class="px-3 py-1 rounded-full text-sm font-bold border border-indigo-500/30 text-indigo-300 bg-indigo-500/10">
                 v{erpConfig.version}
@@ -222,7 +222,7 @@ export default function DescargasPage() {
                 Solicitar instalación asistida
               </A>
               <a
-                href={erpWhatsApp("instalación de Axis ERP")}
+                href={erpWhatsApp("instalación de Ventaro")}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => erpEvents.clickWhatsApp("descargas")}

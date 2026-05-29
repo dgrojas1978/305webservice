@@ -92,7 +92,7 @@ export default function PlanComparison() {
                   {(plan) => (
                     <td class="px-4 py-4 text-center">
                       <A
-                        href={`/contacto?producto=axis-erp&plan=${plan.id}&motivo=demo`}
+                        href={`/contacto?producto=ventaro&plan=${plan.id}&motivo=demo`}
                         class="inline-block px-3 py-2 rounded-lg text-xs font-semibold text-white transition-all hover:-translate-y-0.5"
                         style={`background: linear-gradient(135deg, ${plan.colorFrom}, ${plan.colorTo})`}
                       >

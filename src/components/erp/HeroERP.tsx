@@ -105,7 +105,7 @@ export default function HeroERP() {
                   <div class="w-3 h-3 rounded-full bg-emerald-500/50" />
                 </div>
                 <div class="flex-1 ml-3 bg-white/5 rounded px-3 py-1 text-xs text-slate-500">
-                  Axis ERP — Panel de Control
+                  Ventaro — Panel de Control
                 </div>
               </div>
 

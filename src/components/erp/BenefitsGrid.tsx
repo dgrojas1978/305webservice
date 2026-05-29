@@ -6,7 +6,7 @@ export default function BenefitsGrid() {
     <section class="py-16 bg-[#020914]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <p class="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">Por qué Axis ERP</p>
+          <p class="text-indigo-400 text-sm font-semibold uppercase tracking-widest mb-3">Por qué Ventaro</p>
           <h2 class="text-3xl sm:text-4xl font-black text-white mb-4">Todo lo que tu negocio necesita</h2>
           <p class="text-slate-400 text-lg max-w-2xl mx-auto">
             Una plataforma completa. Sin módulos de pago extra. Sin sorpresas.

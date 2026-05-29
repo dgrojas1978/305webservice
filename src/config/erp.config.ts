@@ -1,6 +1,6 @@
 export const erpConfig = {
-  productName: "Axis ERP",
-  slug: "axis-erp",
+  productName: "Ventaro",
+  slug: "ventaro",
   version: import.meta.env.VITE_ERP_VERSION || "2.1.0",
   releaseDate: "Junio 2025",
 
@@ -29,7 +29,7 @@ export const erpConfig = {
 
 export function erpWhatsApp(topic?: string): string {
   const msg = topic
-    ? `Hola, me interesa Axis ERP — ${topic}. ¿Me pueden ayudar?`
-    : "Hola, me interesa Axis ERP. ¿Me pueden dar más información?";
+    ? `Hola, me interesa Ventaro — ${topic}. ¿Me pueden ayudar?`
+    : "Hola, me interesa Ventaro. ¿Me pueden dar más información?";
   return `https://wa.me/${erpConfig.whatsappNumber}?text=${encodeURIComponent(msg)}`;
 }
