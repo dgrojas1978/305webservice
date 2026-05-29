@@ -264,7 +264,7 @@ export const pricingFAQ = [
   },
   {
     question: "¿Cómo funciona si no tengo internet estable?",
-    answer: "Venta POS está diseñado para funcionar en red local (LAN) sin internet. Cuando vuelve la conexión, todo se sincroniza solo. Según tu plan, puedes trabajar offline por 7, 15 o 30 días consecutivos.",
+    answer: "Axis ERP está diseñado para funcionar en red local (LAN) sin internet. Cuando vuelve la conexión, todo se sincroniza solo. Según tu plan, puedes trabajar offline por 7, 15 o 30 días consecutivos.",
   },
   {
     question: "¿Qué métodos de pago aceptan?",

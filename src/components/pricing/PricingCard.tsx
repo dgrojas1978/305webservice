@@ -19,7 +19,7 @@ export default function PricingCard(props: PricingCardProps) {
   const p = props.plan;
   const price = () => (props.annual ? p.annualPrice : p.monthlyPrice);
   const savings = () => p.annualSavings;
-  const whatsapp = getWhatsAppUrl("Venta POS");
+  const whatsapp = getWhatsAppUrl("Axis ERP");
 
   return (
     <div
