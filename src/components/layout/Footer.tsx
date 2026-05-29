@@ -54,14 +54,20 @@ export default function Footer() {
             <h3 class="text-white font-semibold text-sm mb-4">Productos</h3>
             <ul class="space-y-2">
               {[
-                { href: "/productos/axis-erp", label: "Axis ERP" },
-                { href: "/productos/fortaleza-zona-0", label: "FORTALEZA / ZONA-0" },
-                { href: "/productos", label: "Ver todos" },
+                { href: "/productos/axis-erp",       label: "Axis ERP",            soon: false },
+                { href: "/productos/ventaro",         label: "Ventaro",             soon: true  },
+                { href: "/productos/fortaleza-zona-0",label: "FORTALEZA / ZONA-0",  soon: false },
+                { href: "/productos",                 label: "Ver todos",           soon: false },
               ].map((link) => (
-                <li>
+                <li class="flex items-center gap-2">
                   <A href={link.href} class="text-slate-400 hover:text-white text-sm transition-colors">
                     {link.label}
                   </A>
+                  {link.soon && (
+                    <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-brand-accent/15 text-brand-accent border border-brand-accent/20">
+                      Próximo
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>

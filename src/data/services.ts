@@ -153,9 +153,9 @@ export const testimonials: Testimonial[] = [
     name: "María González",
     role: "Propietaria",
     company: "Boutique Élite",
-    content: "Axis ERP transformó completamente nuestra tienda. Antes perdíamos horas en el inventario, ahora todo está en tiempo real. Lo mejor fue que sigue funcionando aunque se vaya el internet.",
+    content: "Ventaro transformó completamente nuestra tienda. Antes perdíamos horas en el inventario, ahora todo está en tiempo real. Lo mejor fue lo rápido que nos implementaron.",
     rating: 5,
-    product: "Axis ERP",
+    product: "Ventaro",
   },
   {
     name: "Dr. Roberto Méndez",
