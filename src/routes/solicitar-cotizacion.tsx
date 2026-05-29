@@ -15,7 +15,7 @@ const submitQuoteRequest = action(async (formData: FormData) => {
     email: String(formData.get("email") ?? ""),
     phone: String(formData.get("phone") ?? ""),
     company: String(formData.get("company") ?? ""),
-    product: "Ventaro",
+    product: "Ventaro ERP",
     reason: `Cotización — ${formData.get("businessType")} — ${formData.get("locations")} sucursales — ${formData.get("users")} usuarios`,
     message: String(formData.get("message") ?? ""),
     createdAt: new Date(),
@@ -44,8 +44,8 @@ export default function SolicitarCotizacionPage() {
 
   return (
     <>
-      <Title>Solicitar Cotización Ventaro · 305 Web Service</Title>
-      <Meta name="description" content="Cotización personalizada para Ventaro. Respuesta en menos de 2 horas. Planes desde $19/mes." />
+      <Title>Solicitar Cotización Ventaro ERP · 305 Web Service</Title>
+      <Meta name="description" content="Cotización personalizada para Ventaro ERP. Respuesta en menos de 2 horas. Planes desde $19/mes." />
 
       <Header />
       <main class="min-h-screen bg-[#020914]">
@@ -60,7 +60,7 @@ export default function SolicitarCotizacionPage() {
                   Preparamos tu cotización personalizada y te la enviamos en menos de 2 horas.
                 </p>
                 <a
-                  href={erpWhatsApp("mi cotización de Ventaro")}
+                  href={erpWhatsApp("mi cotización de Ventaro ERP")}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-[#25D366]/15 border border-[#25D366]/25 hover:bg-[#25D366]/25 transition-colors"

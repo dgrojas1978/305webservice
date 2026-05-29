@@ -14,7 +14,7 @@ export default function BusinessTypeCards() {
             Diseñado para cada industria
           </h2>
           <p class="text-slate-500 text-lg max-w-2xl mx-auto">
-            No es un sistema genérico. Ventaro tiene módulos específicos para cada tipo de negocio — preconfigurados para que empieces el primer día.
+            No es un sistema genérico. Ventaro ERP tiene módulos específicos para cada tipo de negocio — preconfigurados para que empieces el primer día.
           </p>
         </div>
 

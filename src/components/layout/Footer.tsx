@@ -54,7 +54,7 @@ export default function Footer() {
             <h3 class="text-white font-semibold text-sm mb-4">Productos</h3>
             <ul class="space-y-2">
               {[
-                { href: "/productos/ventaro",          label: "Ventaro"            },
+                { href: "/productos/ventaro",          label: "Ventaro ERP"            },
                 { href: "/productos/fortaleza-zona-0", label: "FORTALEZA / ZONA-0" },
                 { href: "/productos",                  label: "Ver todos"          },
               ].map((link) => (

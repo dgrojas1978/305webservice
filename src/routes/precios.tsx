@@ -12,9 +12,9 @@ import { erpEvents } from "~/lib/analytics";
 export default function PreciosPage() {
   return (
     <>
-      <Title>Precios Ventaro — Desde $19/mes · 305 Web Service</Title>
-      <Meta name="description" content="Planes de Ventaro desde $19/mes. Starter, Profesional, Restaurante y Enterprise. 14 días gratis sin tarjeta. Funciona offline." />
-      <Meta property="og:title" content="Precios Ventaro — Planes desde $19/mes · 305 Web Service" />
+      <Title>Precios Ventaro ERP — Desde $19/mes · 305 Web Service</Title>
+      <Meta name="description" content="Planes de Ventaro ERP desde $19/mes. Starter, Profesional, Restaurante y Enterprise. 14 días gratis sin tarjeta. Funciona offline." />
+      <Meta property="og:title" content="Precios Ventaro ERP — Planes desde $19/mes · 305 Web Service" />
       <Meta property="og:description" content="ERP/POS para MIPYMES desde $19/mes. 14 días gratis, sin tarjeta, sin contrato." />
 
       <Header />
@@ -26,7 +26,7 @@ export default function PreciosPage() {
           <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-5">
               <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse-slow" />
-              <span class="text-indigo-300 text-xs font-semibold">Ventaro — ERP/POS para Cuba y LATAM</span>
+              <span class="text-indigo-300 text-xs font-semibold">Ventaro ERP — ERP/POS para Cuba y LATAM</span>
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
               Planes para cada{" "}

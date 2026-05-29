@@ -15,8 +15,8 @@ export default function DemoPage() {
 
   return (
     <>
-      <Title>Demo Ventaro — Prueba el sistema en vivo · 305 Web Service</Title>
-      <Meta name="description" content="Prueba Ventaro en vivo. Selecciona tu tipo de negocio y accede al demo completo con datos reales. Sin registro, sin tarjeta." />
+      <Title>Demo Ventaro ERP — Prueba el sistema en vivo · 305 Web Service</Title>
+      <Meta name="description" content="Prueba Ventaro ERP en vivo. Selecciona tu tipo de negocio y accede al demo completo con datos reales. Sin registro, sin tarjeta." />
 
       <Header />
       <main class="min-h-screen bg-[#020914]">
@@ -30,7 +30,7 @@ export default function DemoPage() {
               <span class="text-indigo-300 text-xs font-semibold">Demo en vivo · Sin registro · Sin tarjeta</span>
             </div>
             <h1 class="text-4xl sm:text-5xl font-black text-white mb-4">
-              Prueba Ventaro ahora mismo
+              Prueba Ventaro ERP ahora mismo
             </h1>
             <p class="text-slate-400 text-xl mb-8">
               Selecciona tu tipo de negocio y accede al demo completo con datos reales.
@@ -135,7 +135,7 @@ export default function DemoPage() {
                         <div class="w-3 h-3 rounded-full bg-yellow-500/50" />
                         <div class="w-3 h-3 rounded-full bg-green-500/50" />
                       </div>
-                      <div class="text-slate-500 text-xs ml-2">Ventaro — {bt().name}</div>
+                      <div class="text-slate-500 text-xs ml-2">Ventaro ERP — {bt().name}</div>
                     </div>
                     <div class="p-8 min-h-[280px] flex flex-col items-center justify-center text-center">
                       <div class="text-6xl mb-4 opacity-60">{bt().emoji}</div>

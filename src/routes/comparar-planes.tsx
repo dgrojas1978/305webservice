@@ -23,8 +23,8 @@ function Cell(props: { value: CellVal; color: string }) {
 export default function CompararPlanesPage() {
   return (
     <>
-      <Title>Comparar planes Ventaro — Tabla completa · 305 Web Service</Title>
-      <Meta name="description" content="Compara todos los planes de Ventaro: Starter, Profesional, Restaurante & Bar y Enterprise. Tabla completa de funcionalidades." />
+      <Title>Comparar planes Ventaro ERP — Tabla completa · 305 Web Service</Title>
+      <Meta name="description" content="Compara todos los planes de Ventaro ERP: Starter, Profesional, Restaurante & Bar y Enterprise. Tabla completa de funcionalidades." />
 
       <Header />
       <main class="min-h-screen bg-[#020914]">
