@@ -158,6 +158,141 @@ export const products: Product[] = [
       },
     ],
   },
+  {
+    id: "cambalache",
+    slug: "cambalache",
+    name: "Cambalache",
+    tagline: "El marketplace moderno para tu comunidad",
+    shortDescription:
+      "Plataforma de marketplace de nueva generación para comunidades locales, cámaras de comercio y mercados verticales. Clasificados modernos, IA, chat en tiempo real y monetización integrada.",
+    fullDescription:
+      "Cambalache es una plataforma de marketplace white-label lista para desplegar en cualquier comunidad, ciudad o nicho. Combina clasificados modernos, inteligencia artificial para optimización automática de anuncios, mensajería en tiempo real entre compradores y vendedores, y múltiples modelos de monetización — todo en una sola solución escalable construida con SolidStart, MongoDB, Redis, Stripe y OpenAI.",
+    problem:
+      "Las comunidades locales, cámaras de comercio y asociaciones no tienen una solución moderna de marketplace que puedan llamar suya. Las plataformas genéricas no ofrecen control, branding propio ni monetización real. Construir uno desde cero toma meses y cuesta decenas de miles de dólares.",
+    solution:
+      "Cambalache es un marketplace listo para lanzar. Tu comunidad, tu marca, tu monetización. Con IA integrada, chat en tiempo real y herramientas profesionales para vendedores recurrentes — sin tener que construirlo desde cero.",
+    category: "Marketplace",
+    tags: ["Marketplace", "Clasificados", "Comunidades", "IA", "Chat en tiempo real", "White-label", "Multi-ciudad", "LATAM"],
+    icon: "ShoppingCart",
+    colorFrom: "#7C3AED",
+    colorTo: "#EC4899",
+    accentColor: "#C084FC",
+    isHighlighted: true,
+    status: "active",
+    demoUrl: "https://cambalache.com",
+    features: [
+      {
+        icon: "Globe",
+        title: "Marketplace Completo",
+        description: "Publicación de anuncios con imágenes, categorías ilimitadas, búsqueda avanzada, geolocalización, favoritos y perfiles de vendedores con calificaciones y reputación.",
+      },
+      {
+        icon: "Zap",
+        title: "Inteligencia Artificial",
+        description: "Generación automática de títulos y descripciones, clasificación de categorías, moderación inteligente de contenido, sugerencias de precio y búsqueda semántica avanzada.",
+      },
+      {
+        icon: "MessageCircle",
+        title: "Chat en Tiempo Real",
+        description: "Mensajería integrada entre compradores y vendedores con indicadores de escritura, estado en línea, notificaciones instantáneas y respuestas sugeridas por IA.",
+      },
+      {
+        icon: "DollarSign",
+        title: "Monetización Integrada",
+        description: "Anuncios destacados, posicionamiento prioritario en búsquedas y suscripciones Pro, Dealer y Realtor para vendedores frecuentes y profesionales.",
+      },
+      {
+        icon: "BellRing",
+        title: "Crecimiento y Retención",
+        description: "Alertas de búsqueda, seguimiento de vendedores, notificaciones push, campañas automáticas de email y recomendaciones personalizadas.",
+      },
+      {
+        icon: "Users",
+        title: "Multi-ciudad y Multi-nicho",
+        description: "Escala a múltiples ciudades, mercados y categorías desde una sola plataforma. Ideal para franquicias, portales regionales y redes de clasificados.",
+      },
+    ],
+    modules: [
+      { name: "Marketplace Core",     description: "Anuncios, categorías, búsqueda y geolocalización",    icon: "Globe"          },
+      { name: "Motor de IA",          description: "Títulos, descripciones, moderación y precios",         icon: "Zap"            },
+      { name: "Chat en Tiempo Real",  description: "Mensajería entre compradores y vendedores",            icon: "MessageCircle"  },
+      { name: "Monetización",         description: "Anuncios destacados y suscripciones premium",          icon: "DollarSign"     },
+      { name: "Notificaciones",       description: "Push, email y alertas de búsqueda",                    icon: "BellRing"       },
+      { name: "Perfiles y Reputación",description: "Calificaciones, reseñas y verificación de vendedores", icon: "Star"           },
+      { name: "Panel del Vendedor",   description: "Estadísticas, automatización y herramientas Pro",      icon: "BarChart3"      },
+      { name: "Admin & Moderación",   description: "Control de contenido, usuarios y configuración",       icon: "Settings"       },
+    ],
+    benefits: [
+      {
+        icon: "Globe",
+        title: "Tu marca, tu marketplace",
+        description: "White-label completo. Tu comunidad, tu dominio, tu branding. Los usuarios ven tu marca en todo momento.",
+        metric: "100% personalizable",
+      },
+      {
+        icon: "Zap",
+        title: "IA que trabaja sola",
+        description: "Los vendedores publican más rápido y con mejor calidad. La IA genera los textos, sugiere la categoría y el precio. Menos fricción, más anuncios.",
+        metric: "IA integrada con OpenAI",
+      },
+      {
+        icon: "DollarSign",
+        title: "Monetización desde el día 1",
+        description: "Anuncios destacados y suscripciones Pro funcionan desde el primer vendedor recurrente. No necesitas esperar miles de usuarios.",
+        metric: "Múltiples fuentes de ingreso",
+      },
+      {
+        icon: "TrendingUp",
+        title: "Escala sin límites",
+        description: "Empieza con una ciudad, expande a cien. Arquitectura multi-tenant que crece contigo sin costos adicionales de desarrollo.",
+        metric: "Multi-ciudad y multi-nicho",
+      },
+    ],
+    useCases: [
+      { title: "Comunidades Locales",    description: "Marketplaces de barrio, ciudad o región donde vecinos compran y venden entre sí con confianza.",              industry: "Comunidad"   },
+      { title: "Cámaras de Comercio",   description: "Directorio comercial + marketplace para negocios y profesionales afiliados a la cámara.",                    industry: "Asociaciones" },
+      { title: "Marketplace de Autos",  description: "Portal para concesionarios y vendedores privados con herramientas Dealer: inventario masivo y gestión de leads.", industry: "Automotriz" },
+      { title: "Portal Inmobiliario",   description: "Marketplace de propiedades con captura de leads y automatización para agentes y compañías Realtor.",          industry: "Inmobiliario" },
+      { title: "Comunidades Hispanas",  description: "Plataforma en español pensada para la diáspora latina: confianza, comunidad y comercio local.",               industry: "Cultura"      },
+      { title: "Redes de Clasificados", description: "Franquicias y portales regionales que operan múltiples mercados desde una sola plataforma.",                  industry: "Media"        },
+    ],
+    screenshots: [
+      { url: "/screenshots/cambalache-home.png",    alt: "Cambalache Home",   caption: "Marketplace principal"                       },
+      { url: "/screenshots/cambalache-listing.png", alt: "Anuncio detallado", caption: "Vista de anuncio con chat integrado"          },
+      { url: "/screenshots/cambalache-ai.png",      alt: "IA en acción",      caption: "Generación automática de anuncios con IA"     },
+    ],
+    faq: [
+      {
+        question: "¿Cambalache es white-label?",
+        answer: "Sí. La plataforma se despliega con tu dominio, tu logo y tus colores. Los usuarios ven tu marca, no la nuestra.",
+      },
+      {
+        question: "¿Cómo genera ingresos la plataforma?",
+        answer: "Mediante anuncios destacados (vendedores pagan para aparecer primero en búsquedas), suscripciones Pro para vendedores frecuentes, y planes especializados Dealer para autos y Realtor para inmobiliario.",
+      },
+      {
+        question: "¿Qué necesito para lanzar mi marketplace?",
+        answer: "Un dominio y decidir el nicho o comunidad. Nosotros manejamos todo el setup técnico. En 2–4 semanas tienes tu marketplace operando con tu branding completo.",
+      },
+      {
+        question: "¿Puede escalar a varias ciudades?",
+        answer: "Sí. La arquitectura multi-tenant permite agregar nuevas ciudades, regiones o categorías sin desarrollo adicional. Empieza local y expande cuando quieras.",
+      },
+      {
+        question: "¿Qué tecnologías usa Cambalache?",
+        answer: "SolidStart SSR, MongoDB, Redis, OpenAI, Stripe, Twilio, Resend y AWS S3/CloudFront. Stack moderno, escalable y probado en producción.",
+      },
+      {
+        question: "¿Cómo solicito una demo o cotización?",
+        answer: "Escríbenos por WhatsApp o usa el formulario de contacto. Te hacemos una demo en vivo con datos reales y preparamos una propuesta según el alcance de tu proyecto.",
+      },
+    ],
+    pricing: {
+      type: "contact",
+      contactText: "Cambalache es una plataforma personalizada. El precio depende del alcance, número de ciudades, integraciones y nivel de soporte que necesites.",
+      note: "Incluye setup, capacitación y soporte. Solicita tu propuesta sin compromiso.",
+    },
+  },
 ];
 
 export function getProductBySlug(slug: string): Product | undefined {
