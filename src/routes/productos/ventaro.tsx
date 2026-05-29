@@ -33,7 +33,7 @@ const schemaOrg = JSON.stringify({
   },
 });
 
-export default function Ventaro ERPPage() {
+export default function VentaroERPPage() {
   return (
     <>
       <Title>Ventaro ERP — Control total de tu negocio, con o sin internet · 305 Web Service</Title>
