@@ -1,11 +1,11 @@
 {
   "name": "305 Web Service",
   "short_name": "305 Web",
-  "description": "Software moderno para empresas que quieren crecer.",
+  "description": "Web design, custom software and IT solutions for businesses in Miami and across the United States.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030B1A",
-  "theme_color": "#2563EB",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0B1D3A",
   "icons": [
     {
       "src": "/icon-192.png",

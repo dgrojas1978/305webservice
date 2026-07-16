@@ -9,24 +9,25 @@ export default function App() {
     <Router
       root={(props) => (
         <MetaProvider>
-          <Title>305 Web Service — Software para empresas</Title>
+          <Title>
+            305 Web Service | Web Design, Custom Software & IT Solutions in Miami
+          </Title>
           <Meta charset="utf-8" />
           <Meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta
             name="description"
-            content="305 Web Service: soluciones de software, sistemas internos, automatización y desarrollo web para pequeñas y medianas empresas."
+            content="Professional websites starting at $499, custom software, automation, networking, servers and IT support for businesses in Miami."
           />
           <Meta property="og:site_name" content="305 Web Service" />
           <Meta property="og:type" content="website" />
-          <Meta property="og:image" content="/og-image.png" />
+          <Meta property="og:locale" content="en_US" />
           <Meta name="twitter:card" content="summary_large_image" />
-          <Link rel="preconnect" href="https://fonts.googleapis.com" />
-          <Link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-          <Link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap"
-          />
-          <Link rel="icon" href="/favicon.ico" />
+          {/* Favicons */}
+          <Link rel="icon" href="/favicon.ico" sizes="32x32" />
+          <Link rel="icon" href="/icon.svg" type="image/svg+xml" />
+          <Link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <Link rel="manifest" href="/site.webmanifest" />
+          <Meta name="theme-color" content="#0B1D3A" />
           <Suspense>{props.children}</Suspense>
         </MetaProvider>
       )}
