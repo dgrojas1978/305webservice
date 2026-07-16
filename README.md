@@ -24,7 +24,7 @@ See `.env.example`. In production set:
 | Variable | Purpose |
 | --- | --- |
 | `MONGODB_URI` | **Required.** Quote-form leads are stored in the `leads` collection of the `305-web-service` DB. If missing, the form shows an error state (it never fakes success). |
-| `VITE_WHATSAPP_NUMBER` | Number behind every "Chat on WhatsApp" CTA. **Verify before launch** — the current fallback (13051234567) looks like a placeholder. |
+| `VITE_WHATSAPP_NUMBER` | Number behind every "Chat on WhatsApp" CTA (defaults to 13058332984). |
 | `VITE_CONTACT_EMAIL` | Public contact email (footer, contact page). |
 
 ## Structure
