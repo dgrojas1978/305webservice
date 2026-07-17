@@ -28,7 +28,7 @@ export default function ServiceAccordion(props: { locale: Locale }) {
                   aria-controls={`svc-panel-${svc.id}`}
                   onClick={() => setOpen(isOpen() ? null : svc.id)}
                 >
-                  <span class="text-sm font-bold text-blue md:text-base">{svc.no}</span>
+                  <span class="h-[3px] w-6 shrink-0 translate-y-[-0.3em] bg-turquoise transition-all duration-200 ease-editorial group-hover:w-10 md:w-8" aria-hidden="true" />
                   <span class="flex-1 text-xl font-extrabold uppercase tracking-tight text-navy transition-transform duration-200 ease-editorial group-hover:translate-x-2 md:text-3xl">
                     {svc.name}
                   </span>
@@ -50,7 +50,7 @@ export default function ServiceAccordion(props: { locale: Locale }) {
                 aria-label={svc.name}
               >
                 <div>
-                  <div class="grid grid-cols-1 gap-6 pb-8 pl-10 pr-4 md:grid-cols-12 md:pl-16">
+                  <div class="grid grid-cols-1 gap-6 pb-8 pl-12 pr-4 md:grid-cols-12 md:pl-[4.5rem]">
                     <p class="max-w-prose text-base leading-relaxed text-body md:col-span-7">
                       {svc.short}
                     </p>

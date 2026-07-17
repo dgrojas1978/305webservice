@@ -9,7 +9,6 @@ export type Locale = "en" | "es";
 export type PageKey =
   | "home"
   | "services"
-  | "projects"
   | "process"
   | "about"
   | "contact"
@@ -18,7 +17,6 @@ export type PageKey =
 export const PATHS: Record<PageKey, Record<Locale, string>> = {
   home: { en: "/", es: "/es" },
   services: { en: "/services", es: "/es/servicios" },
-  projects: { en: "/projects", es: "/es/proyectos" },
   process: { en: "/process", es: "/es/proceso" },
   about: { en: "/about", es: "/es/nosotros" },
   contact: { en: "/contact", es: "/es/contacto" },

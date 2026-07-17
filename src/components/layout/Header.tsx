@@ -11,7 +11,7 @@ interface Props {
 /**
  * Header «Monumento 305»:
  * - transparente sobre el hero; al hacer scroll, barra navy compacta con hairline.
- * - móvil: menú full-screen navy con enlaces numerados, stagger breve,
+ * - móvil: menú full-screen navy con enlaces grandes, stagger breve,
  *   Escape para cerrar, scroll bloqueado y foco gestionado.
  */
 export default function Header(props: Props) {
@@ -73,7 +73,6 @@ export default function Header(props: Props) {
 
   const navItems = () => [
     { href: PATHS.services[props.locale], label: t().nav.services },
-    { href: PATHS.projects[props.locale], label: t().nav.projects },
     { href: PATHS.process[props.locale], label: t().nav.process },
     { href: PATHS.about[props.locale], label: t().nav.about },
   ];
@@ -176,10 +175,10 @@ export default function Header(props: Props) {
                     >
                       <A
                         href={item.href}
-                        class="flex items-baseline gap-5 py-5 text-paper"
+                        class="group flex items-center gap-5 py-5 text-paper"
                         onClick={() => closeMenu(false)}
                       >
-                        <span class="text-sm font-bold text-blue">{`0${i() + 1}`}</span>
+                        <span class="h-[3px] w-5 shrink-0 bg-turquoise transition-all duration-200 ease-editorial group-hover:w-8" aria-hidden="true" />
                         <span class="text-3xl font-black uppercase tracking-tight">
                           {item.label}
                         </span>

@@ -7,7 +7,6 @@ import type { Locale } from "~/lib/i18n";
 
 export interface ServiceItem {
   id: string;
-  no: string;
   name: string;
   short: string;
   /** Página de servicios */
@@ -25,7 +24,7 @@ export interface ProcessStep {
 
 interface Dict {
   meta: Record<string, { title: string; description: string }>;
-  nav: { services: string; projects: string; process: string; about: string; contact: string; cta: string; menuOpen: string; menuClose: string; skip: string };
+  nav: { services: string; process: string; about: string; contact: string; cta: string; menuOpen: string; menuClose: string; skip: string };
   hero: {
     eyebrow1: string; eyebrow2: string;
     lines: [string, string, string];
@@ -41,15 +40,26 @@ interface Dict {
     pageIntro: string;
     labels: { problem: string; includes: string; forWho: string; integrations: string; cta: string };
   };
-  projects: {
+  whatWeBuild: {
     eyebrow: string;
     titleLines: [string, string, string];
-    comingSoon: string;
     text: string;
-    slots: { name: string; tag: string }[];
+    panels: {
+      no: string;
+      category: string;
+      titleLines: [string, string];
+      text: string;
+      caps: string[];
+    }[];
+    demos: {
+      browser: { nav: string[]; head1: string; head2: string; cta: string };
+      shop: { title: string; product: string; qty: string; total: string; checkout: string };
+      dash: { nav: string[]; table: string; done: string; wip: string; item: string };
+    };
+    cta: { line1: string; line2: string; button: string };
   };
   process: { eyebrow: string; title1: string; title2: string; steps: ProcessStep[] };
-  principles: { title1: string; title2: string; title3: string; items: { no: string; name: string }[] };
+  principles: { title1: string; title2: string; title3: string; items: string[] };
   miami: { line1: string; line2: string; text: string; micro: string };
   finalCta: { title1: string; title2: string; text: string; button: string };
   footer: { tagline: string; navTitle: string; servicesTitle: string; contactTitle: string; privacy: string; backToTop: string; rights: string };
@@ -76,7 +86,7 @@ interface Dict {
 
 const servicesEn: ServiceItem[] = [
   {
-    id: "web", no: "01", name: "Website design & development",
+    id: "web", name: "Website design & development",
     short: "Fast, responsive websites built to represent your business professionally.",
     problem: "Your business is judged by its website before anyone calls. An outdated or slow site loses opportunities silently.",
     includes: ["Custom design", "Responsive development", "Basic on-page SEO", "Contact forms", "Domain & SSL setup"],
@@ -84,7 +94,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "WhatsApp, Google Maps, analytics, social media and the tools your business already uses.",
   },
   {
-    id: "ecommerce", no: "02", name: "E-commerce websites",
+    id: "ecommerce", name: "E-commerce websites",
     short: "Clear, secure shopping experiences that are easy to manage.",
     problem: "Selling online fails when the store is confusing, slow or hard to update.",
     includes: ["Product catalog", "Secure checkout", "Order management", "Shipping & tax configuration", "Admin training"],
@@ -92,7 +102,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "Payment processors, inventory tools, email marketing and shipping providers.",
   },
   {
-    id: "apps", no: "03", name: "Custom applications",
+    id: "apps", name: "Custom applications",
     short: "Digital tools adapted to your processes and goals.",
     problem: "Off-the-shelf software forces your team to work around it. Custom tools work the way your business works.",
     includes: ["Process analysis", "Web application development", "User roles & permissions", "Reports & dashboards", "Ongoing iteration"],
@@ -100,7 +110,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "Your existing systems, databases, forms and third-party services.",
   },
   {
-    id: "seo", no: "04", name: "SEO & optimization",
+    id: "seo", name: "SEO & optimization",
     short: "Technical and structural improvements that help customers find you.",
     problem: "A good website that nobody finds doesn't generate business.",
     includes: ["Technical SEO audit", "Performance optimization", "Metadata & structured data", "Local search presence", "Measurement setup"],
@@ -108,7 +118,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "Google Business Profile, Search Console and analytics tools.",
   },
   {
-    id: "automation", no: "05", name: "Business automation",
+    id: "automation", name: "Business automation",
     short: "Connections and workflows that reduce manual, repetitive work.",
     problem: "Hours lost copying data between tools, answering the same messages and chasing approvals.",
     includes: ["Workflow mapping", "Tool integrations", "Smart forms & notifications", "Document generation", "WhatsApp automation"],
@@ -116,7 +126,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "CRMs, email, WhatsApp, spreadsheets, invoicing and scheduling tools.",
   },
   {
-    id: "hosting", no: "06", name: "Hosting & business email",
+    id: "hosting", name: "Hosting & business email",
     short: "Reliable infrastructure to keep your business connected.",
     problem: "Downtime, lost emails and generic addresses undermine credibility and operations.",
     includes: ["Managed hosting", "Business email on your domain", "DNS management", "Backups", "Security monitoring"],
@@ -124,7 +134,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "Your domain, website and the email clients your team already uses.",
   },
   {
-    id: "support", no: "07", name: "Maintenance & support",
+    id: "support", name: "Maintenance & support",
     short: "Monitoring, updates and technical help when you need it.",
     problem: "Websites and systems degrade without attention — updates pile up and small issues become outages.",
     includes: ["Regular updates", "Uptime monitoring", "Content changes", "Security patches", "Direct technical support"],
@@ -132,7 +142,7 @@ const servicesEn: ServiceItem[] = [
     integrations: "Any website or system we build, and many we didn't.",
   },
   {
-    id: "payments", no: "08", name: "Payments, forms & bookings",
+    id: "payments", name: "Payments, forms & bookings",
     short: "Integrations that simplify how customers interact with your business.",
     problem: "Every extra step between a customer and a payment or appointment costs you business.",
     includes: ["Online payment integration", "Smart intake forms", "Appointment booking", "Automatic confirmations", "Calendar sync"],
@@ -143,7 +153,7 @@ const servicesEn: ServiceItem[] = [
 
 const servicesEs: ServiceItem[] = [
   {
-    id: "web", no: "01", name: "Diseño y desarrollo web",
+    id: "web", name: "Diseño y desarrollo web",
     short: "Sitios rápidos, adaptables y construidos para representar profesionalmente tu negocio.",
     problem: "Tu negocio es juzgado por su página antes de que alguien llame. Un sitio lento o desactualizado pierde oportunidades en silencio.",
     includes: ["Diseño a medida", "Desarrollo responsive", "SEO básico on-page", "Formularios de contacto", "Configuración de dominio y SSL"],
@@ -151,7 +161,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "WhatsApp, Google Maps, analítica, redes sociales y las herramientas que tu negocio ya usa.",
   },
   {
-    id: "ecommerce", no: "02", name: "Tiendas en línea",
+    id: "ecommerce", name: "Tiendas en línea",
     short: "Experiencias de compra claras, seguras y fáciles de administrar.",
     problem: "Vender online fracasa cuando la tienda es confusa, lenta o difícil de actualizar.",
     includes: ["Catálogo de productos", "Pago seguro", "Gestión de pedidos", "Configuración de envíos e impuestos", "Capacitación del administrador"],
@@ -159,7 +169,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "Procesadores de pago, inventario, email marketing y proveedores de envío.",
   },
   {
-    id: "apps", no: "03", name: "Aplicaciones personalizadas",
+    id: "apps", name: "Aplicaciones personalizadas",
     short: "Herramientas digitales adaptadas a tus procesos y objetivos.",
     problem: "El software genérico obliga a tu equipo a trabajar alrededor de él. Las herramientas a medida trabajan como trabaja tu negocio.",
     includes: ["Análisis de procesos", "Desarrollo de aplicación web", "Roles y permisos", "Reportes y paneles", "Iteración continua"],
@@ -167,7 +177,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "Tus sistemas existentes, bases de datos, formularios y servicios de terceros.",
   },
   {
-    id: "seo", no: "04", name: "SEO y optimización",
+    id: "seo", name: "SEO y optimización",
     short: "Mejoras técnicas y estructurales para facilitar que tus clientes te encuentren.",
     problem: "Una buena página que nadie encuentra no genera negocio.",
     includes: ["Auditoría técnica de SEO", "Optimización de rendimiento", "Metadatos y datos estructurados", "Presencia en búsqueda local", "Configuración de medición"],
@@ -175,7 +185,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "Google Business Profile, Search Console y herramientas de analítica.",
   },
   {
-    id: "automation", no: "05", name: "Automatización de procesos",
+    id: "automation", name: "Automatización de procesos",
     short: "Conexiones y flujos que reducen trabajo manual y tareas repetitivas.",
     problem: "Horas perdidas copiando datos entre herramientas, respondiendo los mismos mensajes y persiguiendo aprobaciones.",
     includes: ["Mapeo de flujos", "Integración de herramientas", "Formularios inteligentes y notificaciones", "Generación de documentos", "Automatización de WhatsApp"],
@@ -183,7 +193,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "CRMs, correo, WhatsApp, hojas de cálculo, facturación y agendas.",
   },
   {
-    id: "hosting", no: "06", name: "Hosting y correo empresarial",
+    id: "hosting", name: "Hosting y correo empresarial",
     short: "Infraestructura confiable para mantener tu negocio conectado.",
     problem: "Caídas, correos perdidos y direcciones genéricas restan credibilidad y complican la operación.",
     includes: ["Hosting administrado", "Correo empresarial en tu dominio", "Gestión de DNS", "Copias de seguridad", "Monitoreo de seguridad"],
@@ -191,7 +201,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "Tu dominio, tu sitio y los clientes de correo que tu equipo ya usa.",
   },
   {
-    id: "support", no: "07", name: "Mantenimiento y soporte",
+    id: "support", name: "Mantenimiento y soporte",
     short: "Supervisión, actualizaciones y ayuda técnica cuando la necesites.",
     problem: "Los sitios y sistemas se degradan sin atención: las actualizaciones se acumulan y los problemas pequeños se vuelven caídas.",
     includes: ["Actualizaciones regulares", "Monitoreo de disponibilidad", "Cambios de contenido", "Parches de seguridad", "Soporte técnico directo"],
@@ -199,7 +209,7 @@ const servicesEs: ServiceItem[] = [
     integrations: "Cualquier sitio o sistema que construyamos, y muchos que no.",
   },
   {
-    id: "payments", no: "08", name: "Pagos, formularios y reservas",
+    id: "payments", name: "Pagos, formularios y reservas",
     short: "Integraciones que simplifican la interacción entre tu negocio y tus clientes.",
     problem: "Cada paso extra entre un cliente y un pago o una cita te cuesta negocio.",
     includes: ["Integración de pagos online", "Formularios de captación inteligentes", "Reserva de citas", "Confirmaciones automáticas", "Sincronización de calendarios"],
@@ -217,10 +227,6 @@ const en: Dict = {
     services: {
       title: "Services | 305 Web Service",
       description: "Website design, e-commerce, custom applications, SEO, automation, hosting, maintenance and integrations for growing businesses.",
-    },
-    projects: {
-      title: "Projects | 305 Web Service",
-      description: "Work created to be useful, clear and memorable. Selected projects by 305 Web Service.",
     },
     process: {
       title: "Process | 305 Web Service",
@@ -244,7 +250,7 @@ const en: Dict = {
     },
   },
   nav: {
-    services: "Services", projects: "Projects", process: "Process", about: "About",
+    services: "Services", process: "Process", about: "About",
     contact: "Contact", cta: "Let's talk", menuOpen: "Open menu", menuClose: "Close menu",
     skip: "Skip to content",
   },
@@ -270,16 +276,43 @@ const en: Dict = {
       integrations: "Integrations", cta: "Discuss this service",
     },
   },
-  projects: {
-    eyebrow: "Projects",
-    titleLines: ["Work created", "to be useful,", "clear and memorable."],
-    comingSoon: "Coming soon",
-    text: "We are preparing a selection of real projects. No invented clients, no fake screenshots — only work we can stand behind.",
-    slots: [
-      { name: "Business websites", tag: "Web design" },
-      { name: "Online stores", tag: "E-commerce" },
-      { name: "Internal tools", tag: "Custom applications" },
+  whatWeBuild: {
+    eyebrow: "What we build",
+    titleLines: ["Digital products", "built around", "real business needs."],
+    text: "From customer-facing websites to internal systems, we design and build digital experiences that are clear, useful, and ready to grow.",
+    panels: [
+      {
+        no: "01",
+        category: "Web design & development",
+        titleLines: ["Your business,", "clearly presented."],
+        text: "Fast, responsive websites designed to communicate your value and turn attention into meaningful action.",
+        caps: ["Strategy", "UX/UI", "Development", "SEO"],
+      },
+      {
+        no: "02",
+        category: "E-commerce",
+        titleLines: ["From discovery", "to checkout."],
+        text: "Online stores that make products easy to explore, purchase, and manage.",
+        caps: ["Catalog", "Payments", "Inventory", "Automation"],
+      },
+      {
+        no: "03",
+        category: "Custom applications",
+        titleLines: ["Less manual work.", "Better operations."],
+        text: "Custom tools that organize information, connect processes, and help teams work more efficiently.",
+        caps: ["Dashboards", "Workflows", "Integrations", "Reporting"],
+      },
     ],
+    demos: {
+      browser: { nav: ["Home", "Services", "Contact"], head1: "Your", head2: "brand.", cta: "Get in touch" },
+      shop: { title: "Catalog", product: "Product", qty: "Qty", total: "Total", checkout: "Checkout" },
+      dash: { nav: ["Overview", "Requests", "Clients", "Reports"], table: "Recent activity", done: "Done", wip: "In progress", item: "Item" },
+    },
+    cta: {
+      line1: "Have something different in mind?",
+      line2: "Let's build it.",
+      button: "Start a project",
+    },
   },
   process: {
     eyebrow: "How we work",
@@ -296,10 +329,10 @@ const en: Dict = {
   principles: {
     title1: "Less noise.", title2: "More clarity.", title3: "Better experiences.",
     items: [
-      { no: "01", name: "Strategy before design" },
-      { no: "02", name: "Design made for people" },
-      { no: "03", name: "Technology chosen with purpose" },
-      { no: "04", name: "Support after launch" },
+      "Strategy before design",
+      "Design made for people",
+      "Technology chosen with purpose",
+      "Support after launch",
     ],
   },
   miami: {
@@ -381,10 +414,6 @@ const es: Dict = {
       title: "Servicios | 305 Web Service",
       description: "Diseño web, tiendas en línea, aplicaciones personalizadas, SEO, automatización, hosting, mantenimiento e integraciones para negocios en crecimiento.",
     },
-    projects: {
-      title: "Proyectos | 305 Web Service",
-      description: "Trabajo creado para ser útil, claro y memorable. Proyectos seleccionados de 305 Web Service.",
-    },
     process: {
       title: "Proceso | 305 Web Service",
       description: "De la idea al lanzamiento: cómo descubrimos, definimos, diseñamos, construimos, lanzamos y acompañamos cada proyecto.",
@@ -407,7 +436,7 @@ const es: Dict = {
     },
   },
   nav: {
-    services: "Servicios", projects: "Proyectos", process: "Proceso", about: "Nosotros",
+    services: "Servicios", process: "Proceso", about: "Nosotros",
     contact: "Contacto", cta: "Hablemos", menuOpen: "Abrir menú", menuClose: "Cerrar menú",
     skip: "Saltar al contenido",
   },
@@ -433,16 +462,43 @@ const es: Dict = {
       integrations: "Integraciones", cta: "Hablar de este servicio",
     },
   },
-  projects: {
-    eyebrow: "Proyectos",
-    titleLines: ["Trabajo creado", "para ser útil,", "claro y memorable."],
-    comingSoon: "Próximamente",
-    text: "Estamos preparando una selección de proyectos reales. Sin clientes inventados ni capturas falsas — solo trabajo que podamos respaldar.",
-    slots: [
-      { name: "Sitios de negocio", tag: "Diseño web" },
-      { name: "Tiendas en línea", tag: "E-commerce" },
-      { name: "Herramientas internas", tag: "Aplicaciones a medida" },
+  whatWeBuild: {
+    eyebrow: "Qué construimos",
+    titleLines: ["Productos digitales", "creados alrededor", "de necesidades reales."],
+    text: "Desde sitios orientados a clientes hasta sistemas internos, diseñamos y desarrollamos experiencias digitales claras, útiles y preparadas para crecer.",
+    panels: [
+      {
+        no: "01",
+        category: "Diseño y desarrollo web",
+        titleLines: ["Tu negocio,", "presentado con claridad."],
+        text: "Sitios rápidos y adaptables, diseñados para comunicar tu valor y convertir la atención en acciones significativas.",
+        caps: ["Estrategia", "UX/UI", "Desarrollo", "SEO"],
+      },
+      {
+        no: "02",
+        category: "E-commerce",
+        titleLines: ["Del descubrimiento", "al pago."],
+        text: "Tiendas en línea que hacen que los productos sean fáciles de explorar, comprar y administrar.",
+        caps: ["Catálogo", "Pagos", "Inventario", "Automatización"],
+      },
+      {
+        no: "03",
+        category: "Aplicaciones personalizadas",
+        titleLines: ["Menos trabajo manual.", "Mejores operaciones."],
+        text: "Herramientas personalizadas que organizan información, conectan procesos y ayudan a los equipos a trabajar con mayor eficiencia.",
+        caps: ["Paneles", "Flujos", "Integraciones", "Reportes"],
+      },
     ],
+    demos: {
+      browser: { nav: ["Inicio", "Servicios", "Contacto"], head1: "Tu", head2: "marca.", cta: "Contáctanos" },
+      shop: { title: "Catálogo", product: "Producto", qty: "Cant.", total: "Total", checkout: "Pagar" },
+      dash: { nav: ["Resumen", "Solicitudes", "Clientes", "Reportes"], table: "Actividad reciente", done: "Listo", wip: "En curso", item: "Elemento" },
+    },
+    cta: {
+      line1: "¿Tienes algo diferente en mente?",
+      line2: "Construyámoslo.",
+      button: "Comenzar un proyecto",
+    },
   },
   process: {
     eyebrow: "Cómo trabajamos",
@@ -459,10 +515,10 @@ const es: Dict = {
   principles: {
     title1: "Menos ruido.", title2: "Más claridad.", title3: "Mejores experiencias.",
     items: [
-      { no: "01", name: "Estrategia antes del diseño" },
-      { no: "02", name: "Diseño pensado para personas" },
-      { no: "03", name: "Tecnología elegida con propósito" },
-      { no: "04", name: "Soporte después del lanzamiento" },
+      "Estrategia antes del diseño",
+      "Diseño pensado para personas",
+      "Tecnología elegida con propósito",
+      "Soporte después del lanzamiento",
     ],
   },
   miami: {

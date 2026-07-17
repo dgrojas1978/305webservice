@@ -9,7 +9,7 @@ export default function RevealObserver() {
   onMount(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       document
-        .querySelectorAll(".reveal, .reveal-line, .reveal-rule")
+        .querySelectorAll(".reveal, .reveal-line, .reveal-rule, .reveal-mask")
         .forEach((el) => el.classList.add("in"));
       return;
     }
@@ -27,7 +27,7 @@ export default function RevealObserver() {
     );
 
     document
-      .querySelectorAll(".reveal, .reveal-line, .reveal-rule")
+      .querySelectorAll(".reveal, .reveal-line, .reveal-rule, .reveal-mask")
       .forEach((el) => io.observe(el));
 
     onCleanup(() => io.disconnect());

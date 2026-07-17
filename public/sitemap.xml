@@ -12,11 +12,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/services"/>
   </url>
   <url>
-    <loc>https://www.305webservice.com/projects</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proyectos"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/projects"/>
-  </url>
-  <url>
     <loc>https://www.305webservice.com/process</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proceso"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/process"/>
@@ -38,7 +33,6 @@
   </url>
   <url><loc>https://www.305webservice.com/es</loc></url>
   <url><loc>https://www.305webservice.com/es/servicios</loc></url>
-  <url><loc>https://www.305webservice.com/es/proyectos</loc></url>
   <url><loc>https://www.305webservice.com/es/proceso</loc></url>
   <url><loc>https://www.305webservice.com/es/nosotros</loc></url>
   <url><loc>https://www.305webservice.com/es/contacto</loc></url>

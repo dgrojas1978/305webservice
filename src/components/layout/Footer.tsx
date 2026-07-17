@@ -14,7 +14,6 @@ export default function Footer(props: Props) {
 
   const navLinks = () => [
     { href: PATHS.services[props.locale], label: t().nav.services },
-    { href: PATHS.projects[props.locale], label: t().nav.projects },
     { href: PATHS.process[props.locale], label: t().nav.process },
     { href: PATHS.about[props.locale], label: t().nav.about },
     { href: PATHS.contact[props.locale], label: t().nav.contact },

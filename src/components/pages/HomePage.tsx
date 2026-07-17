@@ -1,4 +1,3 @@
-import { A } from "@solidjs/router";
 import { createRenderEffect, createSignal, For, onCleanup, onMount } from "solid-js";
 import Seo from "~/components/Seo";
 import JsonLd from "~/components/JsonLd";
@@ -6,6 +5,7 @@ import Layout from "~/components/layout/Layout";
 import Container from "~/components/ui/Container";
 import { ButtonLink } from "~/components/ui/Button";
 import ServiceAccordion from "~/components/sections/ServiceAccordion";
+import WhatWeBuild from "~/components/sections/WhatWeBuild";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
 import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, SITE_URL, WEB_DISPLAY } from "~/lib/site";
@@ -145,7 +145,7 @@ export default function HomePage(props: { locale: Locale }) {
       </section>
 
       {/* ================= SERVICIOS ================= */}
-      <section class="bg-paper pb-section">
+      <section class="bg-paper">
         <Container>
           <p class="reveal micro-caps text-blue">{t().services.eyebrow}</p>
           <h2 class="reveal mt-6 text-h2 uppercase text-navy" data-delay="1">
@@ -159,43 +159,8 @@ export default function HomePage(props: { locale: Locale }) {
         </Container>
       </section>
 
-      {/* ================= PROYECTOS ================= */}
-      <section class="bg-paper pb-section">
-        <Container>
-          <p class="reveal micro-caps text-blue">{t().projects.eyebrow}</p>
-          <h2 class="reveal-line mt-6 text-h2 uppercase text-navy" data-delay="1">
-            <span class="ln"><span class="li">{t().projects.titleLines[0]}</span></span>
-            <span class="ln"><span class="li">{t().projects.titleLines[1]}</span></span>
-            <span class="ln"><span class="li">{t().projects.titleLines[2]}</span></span>
-          </h2>
-          <p class="reveal mt-8 max-w-prose text-body-lg text-body" data-delay="2">
-            {t().projects.text}
-          </p>
-
-          <div class="mt-14 grid grid-cols-1 gap-px bg-hairline md:grid-cols-3">
-            <For each={t().projects.slots}>
-              {(slot, i) => (
-                <div class="reveal bg-paper py-12 pr-8" data-delay={String(i() + 1)}>
-                  <span class="monument monument-ghost block text-7xl">{`0${i() + 1}`}</span>
-                  <p class="mt-8 text-xl font-extrabold uppercase tracking-tight text-navy">
-                    {slot.name}
-                  </p>
-                  <p class="micro-caps mt-2 text-body">{slot.tag}</p>
-                  <p class="micro-caps mt-6 inline-block border border-hairline px-3 py-1.5 text-blue">
-                    {t().projects.comingSoon}
-                  </p>
-                </div>
-              )}
-            </For>
-          </div>
-
-          <div class="reveal mt-12">
-            <A href={PATHS.projects[props.locale]} class="link-underline micro-caps text-blue">
-              {t().nav.projects} →
-            </A>
-          </div>
-        </Container>
-      </section>
+      {/* ================= QUÉ CONSTRUIMOS ================= */}
+      <WhatWeBuild locale={props.locale} />
 
       {/* ================= PROCESO ================= */}
       <section data-surface="navy" class="bg-navy py-section">
@@ -241,10 +206,10 @@ export default function HomePage(props: { locale: Locale }) {
           <div class="mt-16 grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
             <For each={t().principles.items}>
               {(item, i) => (
-                <div class="reveal flex items-baseline gap-6 border-t border-hairline pt-6" data-delay={String(i() % 2)}>
-                  <span class="text-sm font-bold text-blue">{item.no}</span>
-                  <p class="text-lg font-extrabold uppercase tracking-tight text-navy md:text-xl">
-                    {item.name}
+                <div class="reveal border-t border-hairline pt-6" data-delay={String(i() % 2)}>
+                  <span class="block h-[3px] w-8 bg-turquoise" aria-hidden="true" />
+                  <p class="mt-5 text-lg font-extrabold uppercase tracking-tight text-navy md:text-xl">
+                    {item}
                   </p>
                 </div>
               )}
@@ -261,11 +226,11 @@ export default function HomePage(props: { locale: Locale }) {
             <span class="ln"><span class="li">{t().miami.line2}</span></span>
           </h2>
           <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-12">
-            <p class="reveal max-w-prose text-body-lg font-medium text-navy md:col-span-6" data-delay="1">
+            <p class="reveal max-w-prose text-xl font-bold leading-relaxed text-navy md:col-span-6" data-delay="1">
               {t().miami.text}
             </p>
             <div class="flex md:col-span-6 md:items-end md:justify-end">
-              <p class="reveal micro-caps text-navy" data-delay="2">{t().miami.micro}</p>
+              <p class="reveal text-base font-bold uppercase tracking-[0.2em] text-navy" data-delay="2">{t().miami.micro}</p>
             </div>
           </div>
         </Container>

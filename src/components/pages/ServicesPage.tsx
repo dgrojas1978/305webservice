@@ -34,15 +34,9 @@ export default function ServicesPage(props: { locale: Locale }) {
                 id={svc.id}
                 class="grid scroll-mt-28 grid-cols-1 gap-10 border-b border-hairline py-16 md:grid-cols-12 md:py-24"
               >
-                {/* número + nombre */}
+                {/* nombre */}
                 <div class="md:col-span-5">
-                  <span class="monument monument-ghost block text-8xl md:text-9xl" aria-hidden="true">
-                    {svc.no}
-                  </span>
-                  <h2 class="mt-8 max-w-[14ch] text-h3 uppercase text-navy">
-                    <span class="sr-only">{svc.no} — </span>
-                    {svc.name}
-                  </h2>
+                  <h2 class="max-w-[14ch] text-h3 uppercase text-navy">{svc.name}</h2>
                   <div class="rule-t mt-6" />
                   <p class="mt-6 max-w-prose text-body-lg text-body">{svc.short}</p>
                 </div>

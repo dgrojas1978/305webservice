@@ -16,8 +16,8 @@ selector EN/ES accesible en header y menú móvil (orden directa de Dany
 
 ## Arquitectura
 
-- Rutas EN: `/`, `/services`, `/projects`, `/process`, `/about`, `/contact`, `/privacy`, 404.
-- Rutas ES: `/es`, `/es/servicios`, `/es/proyectos`, `/es/proceso`, `/es/nosotros`, `/es/contacto`, `/es/privacidad`.
+- Rutas EN: `/`, `/services`, `/process`, `/about`, `/contact`, `/privacy`, 404.
+- Rutas ES: `/es`, `/es/servicios`, `/es/proceso`, `/es/nosotros`, `/es/contacto`, `/es/privacidad`.
 - Páginas compartidas parametrizadas por locale en `src/components/pages/*`;
   todo el copy en `src/data/content.ts` (`C[locale]`, nunca se mezclan idiomas).
 - `src/lib/i18n.ts`: mapa de rutas por idioma, `altPath` para selector y hreflang.
@@ -31,26 +31,40 @@ selector EN/ES accesible en header y menú móvil (orden directa de Dany
 
 - `layout/Header.tsx` — transparente sobre el hero → barra navy compacta al
   hacer scroll (hairline inferior); menú móvil full-screen navy con enlaces
-  numerados 01–05, stagger, Escape cierra, scroll bloqueado, trap de foco y
-  retorno de foco al botón.
+  grandes y filete turquesa, stagger, Escape cierra, scroll bloqueado, trap de
+  foco y retorno de foco al botón.
 - `layout/Footer.tsx` — 4 columnas (marca/navegación/servicios/contacto),
   copyright dinámico, privacidad, BACK TO TOP, sin redes (no hay URLs confirmadas).
 - `pages/HomePage.tsx` — hero 100svh con 305 monumental (entrada por máscara
   ≤1.4 s, una vez por sesión vía `sessionStorage`, parallax sutil con rAF,
   `prefers-reduced-motion` respetado), posicionamiento asimétrico, lista
-  editorial de 8 servicios (acordeón accesible), proyectos "COMING SOON",
+  editorial de 8 servicios (acordeón accesible), «What we build» (3 paneles),
   proceso 01–06 con números en contorno, diferenciadores, bloque Miami en azul
   eléctrico, CTA final con 305 fantasma y contacto real. JSON-LD
   `ProfessionalService` (solo datos reales).
 - `pages/ServicesPage.tsx` — 8 servicios con problema / qué incluye / para
   quién / integraciones / CTA (sin precios ni promesas de tiempos).
-- `pages/ProjectsPage.tsx` — sección estructural sin proyectos inventados;
-  estados tipográficos abstractos etiquetados PRÓXIMAMENTE / COMING SOON.
+- `sections/WhatWeBuild.tsx` — «What we build / Qué construimos»: tres paneles
+  editoriales apilados (navy → blanco cálido → azul eléctrico), cada uno con
+  categoría, titular de dos líneas, descripción, capacidades y una
+  **demostración abstracta en HTML/CSS/SVG** (composición de navegador,
+  interfaz de tienda, panel interno). Sin capturas falsas, sin logos, sin
+  métricas inventadas; las demos son `aria-hidden` (decorativas) y no
+  contienen controles falsos focusables. Cierra con franja navy + CTA al
+  formulario real. Sustituye a la antigua página/sección de proyectos.
 - `pages/ProcessPage.tsx`, `pages/AboutPage.tsx`, `pages/PrivacyPage.tsx`,
   `pages/NotFoundPage.tsx` (404 con status real), `pages/ContactPage.tsx`.
 - `sections/ServiceAccordion.tsx`, `pages/PageHero.tsx`, `Reveal.tsx`
   (IntersectionObserver, reveals una sola vez; sin JS todo queda visible),
   `Seo.tsx` (canonical + hreflang + OG por idioma), `ui/Button.tsx`, `ui/Container.tsx`.
+
+## Numeración
+
+Los números solo se usan donde significan una secuencia real: los pasos del
+proceso (01–06) y las categorías de los tres paneles (01/02/03). Se retiraron
+del acordeón de servicios, de la página de servicios, del menú móvil y de los
+principios — ahí ahora hay filetes turquesa. Los datos también se limpiaron
+(`ServiceItem.no` eliminado).
 
 ## Formulario de contacto
 
@@ -75,6 +89,11 @@ selector EN/ES accesible en header y menú móvil (orden directa de Dany
 - **Lighthouse (móvil, home, build de producción):** Performance **99**,
   Accessibility **100**, Best Practices **100**, SEO **100** ·
   LCP 1.7 s · CLS 0.026 · TBT 0 ms.
+- Sección «What we build» verificada a 390, 768 y 1440 px en EN y ES:
+  0 px de overflow, 0 errores de consola, titulares sin cortes.
+- Contraste: sobre azul eléctrico el navy solo alcanza AA como *texto grande*,
+  por eso en esos bloques (paneles y sección Miami) el cuerpo va en tamaño
+  mayor y peso bold. Verificado por la auditoría `color-contrast` (100).
 - Redirects verificados (301 con destino correcto), 404 devuelve status 404,
   `lang` correcto por ruta (en/es).
 
@@ -89,8 +108,10 @@ selector EN/ES accesible en header y menú móvil (orden directa de Dany
 
 ## Datos pendientes / decisiones a revisar
 
-- **Proyectos reales:** la sección está lista para recibirlos; hoy muestra
-  PRÓXIMAMENTE. Cuando existan, añadirlos con imágenes reales optimizadas.
+- **Proyectos reales:** no hay ninguno publicable, así que **no existe** página
+  ni enlace de Proyectos (`/projects` y `/es/proyectos` → 301 a
+  `/#what-we-build`). La capacidad se demuestra con los paneles abstractos.
+  Cuando haya proyectos reales, se crea la página y se reactiva el enlace.
 - **Correo público:** se usa `305webservice@gmail.com` (confirmado por Dany
   para las piezas impresas). Si prefieres `info@305webservice.com` en la web,
   basta con setear `VITE_CONTACT_EMAIL` en Vercel.
@@ -110,7 +131,8 @@ NITRO_PRESET=node-server npm run build && node .output/server/index.mjs  # prod 
 ## Capturas
 
 `qa-screenshots/` — home hero y página completa en 390×844 y 1440×900,
-menú móvil abierto, acordeón abierto, formulario, páginas interiores a 390 y
-1440, y `lighthouse-home-mobile.json`.
+`what-we-build-{en,es}-{390,768,1440}.png` (sección completa), menú móvil
+abierto, acordeón abierto, formulario, páginas interiores a 390 y 1440, y
+`lighthouse-home-mobile.json`.
 
 *(Sin commit ni push, pendiente de autorización.)*

@@ -132,6 +132,11 @@
     color: transparent;
     -webkit-text-stroke: 1px rgba(247, 249, 252, 0.16);
   }
+  /* fragmento monumental sobre azul eléctrico — textura, nunca protagonista */
+  .monument-ghost-blue {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(7, 20, 38, 0.22);
+  }
 
   /* números de proceso en contorno (sobre navy) */
   .outline-num {
@@ -255,6 +260,27 @@
     transition: transform 500ms var(--ease-editorial) 150ms;
   }
   html.js .reveal-rule.in { transform: scaleX(1); }
+
+  /* máscara horizontal — entrada de las demostraciones visuales */
+  html.js .reveal-mask {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 550ms var(--ease-editorial) 150ms;
+  }
+  html.js .reveal-mask.in { clip-path: inset(0 0 0 0); }
+
+  /* contenido interno de las demostraciones: stagger corto al entrar */
+  html.js .reveal-mask .demo-el {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 400ms var(--ease-editorial),
+      transform 400ms var(--ease-editorial);
+  }
+  html.js .reveal-mask.in .demo-el { opacity: 1; transform: none; }
+  html.js .reveal-mask.in .demo-el:nth-child(2) { transition-delay: 260ms; }
+  html.js .reveal-mask.in .demo-el:nth-child(3) { transition-delay: 320ms; }
+  html.js .reveal-mask.in .demo-el:nth-child(4) { transition-delay: 380ms; }
+  html.js .reveal-mask.in .demo-el:nth-child(5) { transition-delay: 440ms; }
   /* stagger corto */
   .reveal[data-delay="1"], .reveal-line[data-delay="1"] { transition-delay: 90ms; }
   .reveal[data-delay="2"], .reveal-line[data-delay="2"] { transition-delay: 180ms; }
@@ -325,6 +351,13 @@
     html.js [data-intro="run"] .intro-line .li,
     html.js [data-intro="run"] .intro-late {
       animation: none !important;
+    }
+    html.js .reveal-mask,
+    html.js .reveal-mask .demo-el {
+      clip-path: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;

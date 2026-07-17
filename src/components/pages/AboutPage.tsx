@@ -55,10 +55,10 @@ export default function AboutPage(props: { locale: Locale }) {
           <div class="mt-16 grid grid-cols-1 gap-x-12 gap-y-10 md:grid-cols-2">
             <For each={t().principles.items}>
               {(item, i) => (
-                <div class="reveal flex items-baseline gap-6 border-t border-hairline pt-6" data-delay={String(i() % 2)}>
-                  <span class="text-sm font-bold text-blue">{item.no}</span>
-                  <p class="text-lg font-extrabold uppercase tracking-tight text-navy md:text-xl">
-                    {item.name}
+                <div class="reveal border-t border-hairline pt-6" data-delay={String(i() % 2)}>
+                  <span class="block h-[3px] w-8 bg-turquoise" aria-hidden="true" />
+                  <p class="mt-5 text-lg font-extrabold uppercase tracking-tight text-navy md:text-xl">
+                    {item}
                   </p>
                 </div>
               )}
@@ -75,11 +75,11 @@ export default function AboutPage(props: { locale: Locale }) {
             <span class="ln"><span class="li">{t().miami.line2}</span></span>
           </h2>
           <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-12">
-            <p class="reveal max-w-prose text-body-lg font-medium text-navy md:col-span-6" data-delay="1">
+            <p class="reveal max-w-prose text-xl font-bold leading-relaxed text-navy md:col-span-6" data-delay="1">
               {t().miami.text}
             </p>
             <div class="flex md:col-span-6 md:items-end md:justify-end">
-              <p class="reveal micro-caps text-navy" data-delay="2">{t().miami.micro}</p>
+              <p class="reveal text-base font-bold uppercase tracking-[0.2em] text-navy" data-delay="2">{t().miami.micro}</p>
             </div>
           </div>
         </Container>
