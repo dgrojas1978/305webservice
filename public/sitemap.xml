@@ -1,43 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.305webservice.com/</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/services</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/servicios"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/services"/>
   </url>
   <url>
-    <loc>https://www.305webservice.com/web-design</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.9</priority>
+    <loc>https://www.305webservice.com/projects</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proyectos"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/projects"/>
   </url>
   <url>
-    <loc>https://www.305webservice.com/custom-software</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.305webservice.com/it-infrastructure</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.9</priority>
+    <loc>https://www.305webservice.com/process</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proceso"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/process"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/about</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/nosotros"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/about"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/contact</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/contacto"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/contact"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/privacy</loc>
-    <lastmod>2026-07-15</lastmod>
-    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/privacidad"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/privacy"/>
   </url>
+  <url><loc>https://www.305webservice.com/es</loc></url>
+  <url><loc>https://www.305webservice.com/es/servicios</loc></url>
+  <url><loc>https://www.305webservice.com/es/proyectos</loc></url>
+  <url><loc>https://www.305webservice.com/es/proceso</loc></url>
+  <url><loc>https://www.305webservice.com/es/nosotros</loc></url>
+  <url><loc>https://www.305webservice.com/es/contacto</loc></url>
+  <url><loc>https://www.305webservice.com/es/privacidad</loc></url>
 </urlset>

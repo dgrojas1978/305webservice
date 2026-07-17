@@ -1,47 +1,47 @@
 import { A } from "@solidjs/router";
 import { For } from "solid-js";
-import { CONTACT_EMAIL, waLink, WA_DEFAULT_MESSAGE, NAV_LINKS } from "~/lib/site";
-import { WhatsAppIcon } from "~/components/ui/Button";
+import { C } from "~/data/content";
+import { PATHS, type Locale } from "~/lib/i18n";
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, WEB_DISPLAY, waLink } from "~/lib/site";
 
-const serviceLinks = [
-  { href: "/web-design", label: "Web Design" },
-  { href: "/custom-software", label: "Custom Software" },
-  { href: "/services#automation", label: "Business Automation" },
-  { href: "/it-infrastructure", label: "Networks & Servers" },
-  { href: "/services#support", label: "IT Support & Consulting" },
-];
+interface Props {
+  locale: Locale;
+}
 
-export default function Footer() {
+export default function Footer(props: Props) {
+  const t = () => C[props.locale];
   const year = new Date().getFullYear();
 
+  const navLinks = () => [
+    { href: PATHS.services[props.locale], label: t().nav.services },
+    { href: PATHS.projects[props.locale], label: t().nav.projects },
+    { href: PATHS.process[props.locale], label: t().nav.process },
+    { href: PATHS.about[props.locale], label: t().nav.about },
+    { href: PATHS.contact[props.locale], label: t().nav.contact },
+  ];
+
   return (
-    <footer class="bg-brand-navyDeep text-slate-300">
-      <div class="mx-auto w-full max-w-content px-4 py-14 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
+    <footer data-surface="navy" class="bg-navy text-on-navy">
+      <div class="container-site">
+        <div class="grid grid-cols-1 gap-12 py-16 sm:grid-cols-2 md:py-20 lg:grid-cols-4">
+          {/* marca */}
           <div>
-            <A href="/" class="inline-flex items-baseline gap-1.5 text-xl font-extrabold tracking-tight">
-              <span class="text-blue-400">305</span>
-              <span class="text-white">Web Service</span>
-            </A>
-            <p class="mt-4 text-sm leading-relaxed text-slate-400">
-              Professional websites, custom software and IT solutions for small
-              and medium-sized businesses — local in Miami, remote across the
-              United States.
+            <p class="micro-caps text-paper">305 Web Service</p>
+            <div class="rule-t mt-5" />
+            <p class="micro-caps mt-5 leading-loose text-on-navy-faint">
+              {t().footer.tagline}
             </p>
-            <p class="mt-3 text-sm text-slate-400">
-              Bilingual service in English and Spanish.
-            </p>
+            <p class="micro-caps mt-8 text-on-navy-faint">Miami · Florida</p>
           </div>
 
-          {/* Services */}
-          <nav aria-label="Services">
-            <h2 class="mb-4 text-sm font-semibold text-white">Services</h2>
-            <ul class="space-y-2.5">
-              <For each={serviceLinks}>
+          {/* navegación */}
+          <nav aria-label={t().footer.navTitle}>
+            <h2 class="micro-caps text-on-navy-faint">{t().footer.navTitle}</h2>
+            <ul class="mt-6 space-y-3">
+              <For each={navLinks()}>
                 {(link) => (
                   <li>
-                    <A href={link.href} class="text-sm text-slate-400 transition-colors hover:text-white">
+                    <A href={link.href} class="link-underline text-sm font-medium text-paper">
                       {link.label}
                     </A>
                   </li>
@@ -50,67 +50,73 @@ export default function Footer() {
             </ul>
           </nav>
 
-          {/* Company */}
-          <nav aria-label="Company">
-            <h2 class="mb-4 text-sm font-semibold text-white">Company</h2>
-            <ul class="space-y-2.5">
-              <For each={NAV_LINKS.filter((l) => ["/about", "/services", "/contact"].includes(l.href))}>
-                {(link) => (
+          {/* servicios */}
+          <nav aria-label={t().footer.servicesTitle}>
+            <h2 class="micro-caps text-on-navy-faint">{t().footer.servicesTitle}</h2>
+            <ul class="mt-6 space-y-3">
+              <For each={t().services.items.slice(0, 5)}>
+                {(svc) => (
                   <li>
-                    <A href={link.href} class="text-sm text-slate-400 transition-colors hover:text-white">
-                      {link.label}
+                    <A
+                      href={`${PATHS.services[props.locale]}#${svc.id}`}
+                      class="link-underline text-sm font-medium text-paper"
+                    >
+                      {svc.name}
                     </A>
                   </li>
                 )}
               </For>
-              <li>
-                <A href="/privacy" class="text-sm text-slate-400 transition-colors hover:text-white">
-                  Privacy Policy
-                </A>
-              </li>
             </ul>
           </nav>
 
-          {/* Contact */}
+          {/* contacto */}
           <div>
-            <h2 class="mb-4 text-sm font-semibold text-white">Contact</h2>
-            <ul class="space-y-3">
+            <h2 class="micro-caps text-on-navy-faint">{t().footer.contactTitle}</h2>
+            <ul class="mt-6 space-y-3 text-sm font-medium">
               <li>
-                <a
-                  href={waLink(WA_DEFAULT_MESSAGE)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-white"
-                >
-                  <WhatsAppIcon class="h-4 w-4" />
-                  Chat on WhatsApp
+                <a href={`tel:${PHONE_TEL}`} class="link-underline font-bold text-paper">
+                  {PHONE_DISPLAY}
                 </a>
               </li>
               <li>
-                <a
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  class="text-sm text-slate-400 transition-colors hover:text-white"
-                >
+                <a href={`mailto:${CONTACT_EMAIL}`} class="link-underline text-paper">
                   {CONTACT_EMAIL}
                 </a>
               </li>
-              <li class="pt-2">
-                <A
-                  href="/contact"
-                  class="inline-block rounded-xl bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blueDark"
+              <li>
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link-underline text-paper"
                 >
-                  Request a Quote
-                </A>
+                  WhatsApp
+                </a>
+              </li>
+              <li class="pt-2">
+                <span class="micro-caps text-turquoise">{WEB_DISPLAY}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div class="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 sm:flex-row">
-          <p class="text-xs text-slate-400">
-            © {year} 305 Web Service. All rights reserved.
+        <div class="hr-line-navy" />
+
+        <div class="flex flex-col items-start justify-between gap-4 py-8 sm:flex-row sm:items-center">
+          <p class="text-xs text-on-navy-faint">
+            © {year} 305 Web Service. {t().footer.rights}
           </p>
-          <p class="text-xs text-slate-400">Miami, Florida · Serving businesses across the United States</p>
+          <div class="flex items-center gap-8">
+            <A
+              href={PATHS.privacy[props.locale]}
+              class="link-underline text-xs text-on-navy-faint hover:text-paper"
+            >
+              {t().footer.privacy}
+            </A>
+            <a href="#top" class="link-underline micro-caps text-on-navy-faint hover:text-paper">
+              {t().footer.backToTop} ↑
+            </a>
+          </div>
         </div>
       </div>
     </footer>

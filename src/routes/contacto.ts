@@ -1,6 +1,6 @@
 import { permanentRedirect } from "~/lib/redirect";
 
-// Legacy Spanish route → new English contact page
+// Ruta legacy → página española real
 export function GET() {
-  return permanentRedirect("/contact");
+  return permanentRedirect("/es/contacto");
 }

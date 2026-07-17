@@ -1,43 +1,22 @@
 import { A } from "@solidjs/router";
 import type { JSX } from "solid-js";
 
-type Variant = "primary" | "secondary" | "whatsapp" | "onDark" | "onDarkOutline";
-
-const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
-
-const sizes = {
-  md: "px-5 py-2.5 text-sm",
-  lg: "px-6 py-3.5 text-base",
-};
-
-const variants: Record<Variant, string> = {
-  primary:
-    "bg-brand-blue text-white hover:bg-brand-blueDark shadow-cta focus-visible:outline-brand-blue",
-  secondary:
-    "bg-white text-ink border border-surface-line hover:border-slate-300 hover:bg-surface-muted focus-visible:outline-brand-blue",
-  whatsapp:
-    "bg-positive text-white hover:bg-green-800 focus-visible:outline-positive",
-  onDark:
-    "bg-white text-brand-navy hover:bg-blue-50 focus-visible:outline-white",
-  onDarkOutline:
-    "bg-transparent text-white border border-white/30 hover:border-white/60 hover:bg-white/10 focus-visible:outline-white",
-};
-
 interface ButtonLinkProps {
   href: string;
   children: JSX.Element;
-  variant?: Variant;
-  size?: keyof typeof sizes;
+  variant?: "primary" | "outline";
   class?: string;
   external?: boolean;
   ariaLabel?: string;
 }
 
-/** Every CTA on the site is a real link — internal route or external URL. */
+/**
+ * Botones del sistema «Monumento 305»: micro-caps, inversión limpia
+ * de color, sin sombras ni bordes redondeados. Todo CTA es un enlace real.
+ */
 export function ButtonLink(props: ButtonLinkProps) {
   const cls = () =>
-    `${base} ${sizes[props.size ?? "md"]} ${variants[props.variant ?? "primary"]} ${props.class ?? ""}`;
+    `btn ${props.variant === "outline" ? "btn-outline" : "btn-primary"} ${props.class ?? ""}`;
 
   if (props.external) {
     return (

@@ -5,7 +5,6 @@
  * Vercel env vars, never hardcoded in components:
  *   - VITE_WHATSAPP_NUMBER  digits only, incl. country code (e.g. 13055551234)
  *   - VITE_CONTACT_EMAIL    public contact email
- *
  */
 
 export const SITE_URL = "https://www.305webservice.com";
@@ -13,26 +12,19 @@ export const SITE_NAME = "305 Web Service";
 
 export const WHATSAPP_NUMBER =
   import.meta.env.VITE_WHATSAPP_NUMBER || "13058332984";
+/** Confirmado por Dany (jul 2026) para todas las piezas de marca. */
 export const CONTACT_EMAIL =
-  import.meta.env.VITE_CONTACT_EMAIL || "info@305webservice.com";
+  import.meta.env.VITE_CONTACT_EMAIL || "305webservice@gmail.com";
+/** Número público en formato US. */
+export const PHONE_DISPLAY = "(305) 833-2984";
+export const PHONE_TEL = "+13058332984";
+export const WEB_DISPLAY = "305WEBSERVICE.COM";
 
 /** wa.me link with an optional prefilled message. */
 export function waLink(message?: string): string {
   const base = `https://wa.me/${WHATSAPP_NUMBER}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
-
-export const WA_DEFAULT_MESSAGE =
-  "Hi! I'd like to talk about a project for my business.";
-
-export const NAV_LINKS = [
-  { href: "/services", label: "Services" },
-  { href: "/web-design", label: "Web Design" },
-  { href: "/custom-software", label: "Custom Software" },
-  { href: "/it-infrastructure", label: "IT Infrastructure" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-] as const;
 
 /** Canonical URL for a route path ("/", "/services", ...). */
 export function canonical(path: string): string {

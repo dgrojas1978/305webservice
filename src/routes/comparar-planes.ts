@@ -1,5 +1,5 @@
 import { permanentRedirect } from "~/lib/redirect";
 
 export function GET() {
-  return permanentRedirect("/web-design");
+  return permanentRedirect("/es/servicios");
 }

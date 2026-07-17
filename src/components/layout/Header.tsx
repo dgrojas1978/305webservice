@@ -1,162 +1,207 @@
-import { A, useLocation } from "@solidjs/router";
-import { createSignal, createEffect, onMount, onCleanup, Show, For } from "solid-js";
-import { NAV_LINKS, waLink, WA_DEFAULT_MESSAGE } from "~/lib/site";
-import { WhatsAppIcon } from "~/components/ui/Button";
+import { A } from "@solidjs/router";
+import { createSignal, onCleanup, onMount, Show, For } from "solid-js";
+import { C } from "~/data/content";
+import { PATHS, altPath, otherLocale, type Locale, type PageKey } from "~/lib/i18n";
 
-export function Logo() {
-  return (
-    <span class="inline-flex items-baseline gap-1.5 text-xl font-extrabold tracking-tight">
-      <span class="text-brand-blue">305</span>
-      <span class="text-ink">Web Service</span>
-    </span>
-  );
+interface Props {
+  locale: Locale;
+  page: PageKey;
 }
 
-export default function Header() {
-  const location = useLocation();
+/**
+ * Header «Monumento 305»:
+ * - transparente sobre el hero; al hacer scroll, barra navy compacta con hairline.
+ * - móvil: menú full-screen navy con enlaces numerados, stagger breve,
+ *   Escape para cerrar, scroll bloqueado y foco gestionado.
+ */
+export default function Header(props: Props) {
+  const t = () => C[props.locale];
   const [scrolled, setScrolled] = createSignal(false);
-  const [menuOpen, setMenuOpen] = createSignal(false);
+  const [open, setOpen] = createSignal(false);
+
+  let toggleRef: HTMLButtonElement | undefined;
+  let overlayRef: HTMLDivElement | undefined;
 
   onMount(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMenuOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    onCleanup(() => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("keydown", onKey);
+    onCleanup(() => window.removeEventListener("scroll", onScroll));
+  });
+
+  function openMenu() {
+    setOpen(true);
+    document.documentElement.style.overflow = "hidden";
+    queueMicrotask(() => {
+      overlayRef?.querySelector<HTMLElement>("a, button")?.focus();
     });
+  }
+
+  function closeMenu(returnFocus = true) {
+    setOpen(false);
+    document.documentElement.style.overflow = "";
+    if (returnFocus) toggleRef?.focus();
+  }
+
+  function onOverlayKeydown(e: KeyboardEvent) {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeMenu();
+      return;
+    }
+    if (e.key === "Tab" && overlayRef) {
+      // trap de foco simple dentro del menú
+      const focusables = overlayRef.querySelectorAll<HTMLElement>("a, button");
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  onCleanup(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.style.overflow = "";
+    }
   });
 
-  // Close the mobile menu on navigation
-  createEffect(() => {
-    location.pathname;
-    setMenuOpen(false);
-  });
+  const navItems = () => [
+    { href: PATHS.services[props.locale], label: t().nav.services },
+    { href: PATHS.projects[props.locale], label: t().nav.projects },
+    { href: PATHS.process[props.locale], label: t().nav.process },
+    { href: PATHS.about[props.locale], label: t().nav.about },
+  ];
 
-  const isActive = (href: string) => location.pathname === href;
+  const mobileItems = () => [
+    ...navItems(),
+    { href: PATHS.contact[props.locale], label: t().nav.contact },
+  ];
+
+  const switchHref = () => altPath(props.page, props.locale);
+  const switchLabel = () => otherLocale(props.locale).toUpperCase();
 
   return (
     <header
-      class={`sticky top-0 z-50 bg-white/95 backdrop-blur transition-shadow ${
-        scrolled() || menuOpen() ? "border-b border-surface-line shadow-sm" : ""
+      data-surface="navy"
+      class={`fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow] duration-300 ease-editorial ${
+        scrolled() ? "bg-navy shadow-[0_1px_0_rgba(247,249,252,0.12)]" : "bg-transparent"
       }`}
     >
-      <div class="mx-auto flex h-16 w-full max-w-content items-center justify-between px-4 sm:px-6 lg:h-[4.5rem] lg:px-8">
-        {/* Logo */}
-        <A href="/" class="rounded-md">
-          <Logo />
-        </A>
-
-        {/* Desktop nav */}
-        <nav class="hidden items-center gap-1 lg:flex" aria-label="Main navigation">
-          <For each={NAV_LINKS}>
-            {(link) => (
-              <A
-                href={link.href}
-                aria-current={isActive(link.href) ? "page" : undefined}
-                class={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                  isActive(link.href)
-                    ? "text-brand-blue"
-                    : "text-ink-soft hover:bg-surface-muted hover:text-ink"
-                }`}
-              >
-                {link.label}
-              </A>
-            )}
-          </For>
-        </nav>
-
-        {/* Desktop CTA */}
-        <div class="hidden items-center gap-3 lg:flex">
-          <a
-            href={waLink(WA_DEFAULT_MESSAGE)}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-positive hover:bg-positive-soft transition-colors"
-          >
-            <WhatsAppIcon class="h-4 w-4" />
-            WhatsApp
-          </a>
+      <div class="container-site">
+        <div
+          class={`flex items-center justify-between transition-[height] duration-300 ease-editorial ${
+            scrolled() ? "h-16" : "h-20 md:h-24"
+          }`}
+        >
+          {/* wordmark */}
           <A
-            href="/contact"
-            class="rounded-xl bg-brand-blue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-blueDark"
+            href={PATHS.home[props.locale]}
+            class="micro-caps text-paper"
+            aria-label="305 Web Service"
           >
-            Request a Quote
+            305 Web Service
           </A>
-        </div>
 
-        {/* Mobile: WhatsApp + menu button */}
-        <div class="flex items-center gap-1 lg:hidden">
-          <a
-            href={waLink(WA_DEFAULT_MESSAGE)}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Chat on WhatsApp"
-            class="flex h-11 w-11 items-center justify-center rounded-lg text-positive hover:bg-positive-soft transition-colors"
-          >
-            <WhatsAppIcon class="h-5 w-5" />
-          </a>
-          <button
-            type="button"
-            class="flex h-11 w-11 items-center justify-center rounded-lg text-ink-soft hover:bg-surface-muted transition-colors"
-            aria-expanded={menuOpen()}
-            aria-controls="mobile-menu"
-            aria-label={menuOpen() ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen(!menuOpen())}
-          >
-            <Show
-              when={!menuOpen()}
-              fallback={
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              }
+          {/* nav desktop */}
+          <nav class="hidden items-center gap-8 md:flex" aria-label="Main">
+            <For each={navItems()}>
+              {(item) => (
+                <A href={item.href} class="link-underline micro-caps text-on-navy hover:text-paper">
+                  {item.label}
+                </A>
+              )}
+            </For>
+            <a
+              href={switchHref()}
+              class="link-underline micro-caps text-on-navy-faint hover:text-paper"
+              aria-label={t().langSwitch.toOther}
             >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 7h16M4 12h16M4 17h16" />
-              </svg>
-            </Show>
+              {switchLabel()}
+            </a>
+            <A href={PATHS.contact[props.locale]} class="btn btn-primary !min-h-[40px] !px-5 !py-2">
+              {t().nav.cta}
+            </A>
+          </nav>
+
+          {/* botón menú móvil */}
+          <button
+            ref={toggleRef}
+            type="button"
+            class="micro-caps flex min-h-[44px] min-w-[44px] items-center justify-center text-paper md:hidden"
+            aria-expanded={open()}
+            aria-controls="mobile-menu"
+            onClick={() => (open() ? closeMenu() : openMenu())}
+          >
+            {open() ? t().nav.menuClose : "Menu"}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <Show when={menuOpen()}>
-        <nav
+      {/* menú móvil full-screen */}
+      <Show when={open()}>
+        <div
           id="mobile-menu"
-          aria-label="Main navigation"
-          class="border-t border-surface-line bg-white lg:hidden"
+          ref={overlayRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={t().nav.menuOpen}
+          class="fixed inset-0 z-50 bg-navy md:hidden"
+          onKeyDown={onOverlayKeydown}
         >
-          <div class="space-y-1 px-4 py-4">
-            <For each={NAV_LINKS}>
-              {(link) => (
-                <A
-                  href={link.href}
-                  aria-current={isActive(link.href) ? "page" : undefined}
-                  class={`block rounded-lg px-4 py-3 text-base font-medium transition-colors ${
-                    isActive(link.href)
-                      ? "bg-brand-blueSoft text-brand-blue"
-                      : "text-ink-soft hover:bg-surface-muted"
-                  }`}
-                >
-                  {link.label}
-                </A>
-              )}
-            </For>
-            <div class="pt-3">
-              <A
-                href="/contact"
-                class="block w-full rounded-xl bg-brand-blue px-4 py-3.5 text-center text-base font-semibold text-white transition-colors hover:bg-brand-blueDark"
+          <div class="container-site flex h-full flex-col">
+            <div class="flex h-20 items-center justify-between">
+              <span class="micro-caps text-paper">305 Web Service</span>
+              <button
+                type="button"
+                class="micro-caps flex min-h-[44px] min-w-[44px] items-center justify-center text-paper"
+                onClick={() => closeMenu()}
               >
-                Request a Quote
-              </A>
+                {t().nav.menuClose}
+              </button>
+            </div>
+
+            <nav class="mt-10 flex-1" aria-label="Mobile">
+              <ul>
+                <For each={mobileItems()}>
+                  {(item, i) => (
+                    <li
+                      class="menu-item-in border-b border-[rgba(247,249,252,0.12)]"
+                      style={{ "animation-delay": `${i() * 60}ms` }}
+                    >
+                      <A
+                        href={item.href}
+                        class="flex items-baseline gap-5 py-5 text-paper"
+                        onClick={() => closeMenu(false)}
+                      >
+                        <span class="text-sm font-bold text-blue">{`0${i() + 1}`}</span>
+                        <span class="text-3xl font-black uppercase tracking-tight">
+                          {item.label}
+                        </span>
+                      </A>
+                    </li>
+                  )}
+                </For>
+              </ul>
+            </nav>
+
+            <div class="flex items-center justify-between pb-10">
+              <a
+                href={switchHref()}
+                class="link-underline micro-caps text-on-navy"
+                aria-label={t().langSwitch.toOther}
+              >
+                {t().langSwitch.toOther}
+              </a>
+              <span class="micro-caps text-on-navy-faint">Miami · FL</span>
             </div>
           </div>
-        </nav>
+        </div>
       </Show>
     </header>
   );

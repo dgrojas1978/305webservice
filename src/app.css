@@ -1,13 +1,40 @@
-/* Self-hosted Inter (latin) — no external font requests, no render-blocking CSS */
+/* Inter autoalojada (latin) — sin peticiones externas ni CSS bloqueante */
 @import "@fontsource/inter/latin-400.css";
 @import "@fontsource/inter/latin-500.css";
 @import "@fontsource/inter/latin-600.css";
 @import "@fontsource/inter/latin-700.css";
 @import "@fontsource/inter/latin-800.css";
+@import "@fontsource/inter/latin-900.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   «Monumento 305» — tokens globales y utilidades editoriales
+   ============================================================ */
+
+:root {
+  --navy: #071426;
+  --electric-blue: #146cff;
+  --turquoise: #20d7c5;
+  --warm-white: #f7f9fc;
+  --body-gray: #526071;
+  --hairline: #cdd5df;
+  --pure-white: #ffffff;
+
+  /* escala tipográfica fluida */
+  --display-xl: clamp(5rem, 17vw, 15rem);
+  --display: clamp(4rem, 11vw, 10rem);
+  --h1: clamp(2.7rem, 7vw, 7rem);
+  --h2: clamp(2.4rem, 5vw, 5rem);
+  --h3: clamp(1.5rem, 2.5vw, 2.5rem);
+  --body-lg: clamp(1.1rem, 1.4vw, 1.35rem);
+  --body: 1rem;
+  --micro: 0.72rem;
+
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 
 @layer base {
   html {
@@ -16,41 +43,32 @@
     scroll-behavior: smooth;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
   body {
-    @apply font-sans text-ink-muted bg-white;
+    @apply bg-paper font-sans text-body;
+    font-size: var(--body);
     text-rendering: optimizeLegibility;
+    overflow-x: clip;
   }
 
   ::selection {
-    background: rgba(37, 99, 235, 0.15);
+    background: var(--electric-blue);
+    color: var(--pure-white);
   }
 
-  /* Visible, consistent keyboard focus everywhere */
+  /* foco visible consistente */
   :focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-    border-radius: 4px;
+    outline: 2px solid var(--electric-blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  [data-surface="navy"] :focus-visible {
+    outline-color: var(--turquoise);
   }
 
-  /* Skip link */
+  /* skip link */
   .skip-link {
     @apply sr-only;
   }
-
   .skip-link:focus {
     position: fixed;
     top: 0.75rem;
@@ -63,42 +81,255 @@
     clip: auto;
     white-space: normal;
     overflow: visible;
-    background: #0b1d3a;
-    color: #fff;
-    border-radius: 0.5rem;
+    background: var(--navy);
+    color: var(--warm-white);
     font-size: 0.875rem;
     font-weight: 600;
   }
 }
 
+@layer components {
+  /* contenedor editorial: 1440px máx + gutter fluido */
+  .container-site {
+    @apply mx-auto w-full max-w-site;
+    padding-left: clamp(24px, 5vw, 88px);
+    padding-right: clamp(24px, 5vw, 88px);
+  }
+
+  /* micro-caps */
+  .micro-caps {
+    font-size: var(--micro);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* filete turquesa */
+  .rule-t {
+    width: 64px;
+    height: 3px;
+    background: var(--turquoise);
+  }
+
+  /* hairlines */
+  .hr-line { height: 1px; background: var(--hairline); }
+  .hr-line-navy { height: 1px; background: rgba(247, 249, 252, 0.14); }
+
+  /* número monumental */
+  .monument {
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.78;
+    color: var(--electric-blue);
+    user-select: none;
+    white-space: nowrap;
+  }
+  .monument-ghost {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--hairline);
+  }
+  .monument-ghost-navy {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(247, 249, 252, 0.16);
+  }
+
+  /* números de proceso en contorno (sobre navy) */
+  .outline-num {
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(247, 249, 252, 0.3);
+  }
+
+  /* enlace con subrayado animado */
+  .link-underline {
+    position: relative;
+    text-decoration: none;
+  }
+  .link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 200ms var(--ease-editorial);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+
+  /* botones: inversión limpia de color, sin sombras */
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-3 px-7 py-3 text-center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1.5px solid transparent;
+    transition:
+      background-color 180ms var(--ease-editorial),
+      color 180ms var(--ease-editorial),
+      border-color 180ms var(--ease-editorial);
+  }
+  .btn-primary {
+    background: var(--electric-blue);
+    color: var(--pure-white);
+    border-color: var(--electric-blue);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--electric-blue);
+  }
+  [data-surface="navy"] .btn-primary:hover {
+    color: var(--pure-white);
+    border-color: var(--pure-white);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--navy);
+    border-color: var(--navy);
+  }
+  .btn-outline:hover {
+    background: var(--navy);
+    color: var(--pure-white);
+  }
+  [data-surface="navy"] .btn-outline {
+    color: var(--warm-white);
+    border-color: rgba(247, 249, 252, 0.4);
+  }
+  [data-surface="navy"] .btn-outline:hover {
+    background: var(--warm-white);
+    color: var(--navy);
+    border-color: var(--warm-white);
+  }
+
+  /* campos de formulario editoriales */
+  .field-input {
+    @apply w-full border-0 border-b bg-transparent px-0 py-3 text-navy;
+    border-bottom: 1px solid var(--hairline);
+    border-radius: 0;
+    font-size: 1rem;
+    transition: border-color 180ms var(--ease-editorial);
+  }
+  .field-input:focus {
+    outline: none;
+    box-shadow: none;
+    border-bottom-color: var(--electric-blue);
+  }
+  .field-input::placeholder {
+    color: rgba(82, 96, 113, 0.55);
+  }
+}
+
 @layer utilities {
-  /* Fine dotted grid used sparingly as a background texture */
-  .bg-dots {
-    background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .bg-dots-navy {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  /* Soft reveal on scroll — respects prefers-reduced-motion via the base rule */
-  .reveal {
+  /* ---------- reveals de entrada (una sola vez) ----------
+     Solo se ocultan cuando <html> tiene .js — sin JS todo queda visible. */
+  html.js .reveal {
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(24px);
+    transition:
+      opacity 600ms var(--ease-editorial),
+      transform 600ms var(--ease-editorial);
   }
-
-  .reveal.visible {
+  html.js .reveal.in {
     opacity: 1;
     transform: none;
   }
+  .reveal-line .ln { display: block; overflow: hidden; }
+  html.js .reveal-line .li {
+    display: block;
+    transform: translateY(112%);
+    transition: transform 650ms var(--ease-editorial);
+  }
+  html.js .reveal-line.in .li { transform: none; }
+  html.js .reveal-rule {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 500ms var(--ease-editorial) 150ms;
+  }
+  html.js .reveal-rule.in { transform: scaleX(1); }
+  /* stagger corto */
+  .reveal[data-delay="1"], .reveal-line[data-delay="1"] { transition-delay: 90ms; }
+  .reveal[data-delay="2"], .reveal-line[data-delay="2"] { transition-delay: 180ms; }
+  .reveal[data-delay="3"], .reveal-line[data-delay="3"] { transition-delay: 270ms; }
 
+  /* ---------- intro del hero (≤ 1.4 s, una vez por sesión) ---------- */
+  .intro-line { display: block; overflow: hidden; }
+  .intro-line .li { display: block; }
+  html.js [data-intro="run"] .intro-monument {
+    animation: intro-mask 700ms var(--ease-editorial) both;
+  }
+  html.js [data-intro="run"] .intro-brand {
+    animation: intro-fade 500ms var(--ease-editorial) 150ms both;
+  }
+  html.js [data-intro="run"] .intro-line .li {
+    animation: intro-line 650ms var(--ease-editorial) 200ms both;
+  }
+  html.js [data-intro="run"] .intro-line[data-l="2"] .li { animation-delay: 290ms; }
+  html.js [data-intro="run"] .intro-line[data-l="3"] .li { animation-delay: 380ms; }
+  html.js [data-intro="run"] .intro-late {
+    animation: intro-fade 500ms var(--ease-editorial) 750ms both;
+  }
+  @keyframes intro-mask {
+    from { clip-path: inset(0 0 0 100%); }
+    to { clip-path: inset(0 -10% 0 0); }
+  }
+  @keyframes intro-fade {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes intro-line {
+    from { transform: translateY(112%); }
+    to { transform: none; }
+  }
+
+  /* entrada escalonada del menú móvil */
+  html.js .menu-item-in {
+    animation: intro-fade 350ms var(--ease-editorial) both;
+  }
+
+  /* indicador vertical de scroll */
+  .scroll-indicator {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.3em;
+  }
+
+  /* acordeón sin salto brusco de layout */
+  .acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 350ms var(--ease-editorial);
+  }
+  .acc-panel > div { overflow: hidden; }
+  .acc-panel[data-open="true"] { grid-template-rows: 1fr; }
+
+  /* ---------- reduced motion ---------- */
   @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
+    html { scroll-behavior: auto; }
+    html.js .reveal,
+    html.js .reveal-line .li,
+    html.js .reveal-rule {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    html.js [data-intro="run"] .intro-monument,
+    html.js [data-intro="run"] .intro-brand,
+    html.js [data-intro="run"] .intro-line .li,
+    html.js [data-intro="run"] .intro-late {
+      animation: none !important;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

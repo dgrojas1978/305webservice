@@ -1,9 +1,6 @@
 import type { JSX } from "solid-js";
 
+/** Contenedor editorial: máx. 1440px, gutter fluido clamp(24px, 5vw, 88px). */
 export default function Container(props: { children: JSX.Element; class?: string }) {
-  return (
-    <div class={`mx-auto w-full max-w-content px-4 sm:px-6 lg:px-8 ${props.class ?? ""}`}>
-      {props.children}
-    </div>
-  );
+  return <div class={`container-site ${props.class ?? ""}`}>{props.children}</div>;
 }

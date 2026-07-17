@@ -1,46 +1,44 @@
 /** @type {import('tailwindcss').Config} */
+/*
+ * Sistema visual «Monumento 305».
+ * Paleta obligatoria — sin degradados, sin sombras grandes, sin colores extra.
+ */
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        // Light, premium system: white canvas, charcoal text, technology blue accent
-        ink: {
-          DEFAULT: "#0F172A", // headings / charcoal
-          soft: "#334155",    // strong body text
-          muted: "#475569",   // body text (AA on white)
-          faint: "#64748B",   // captions (AA on white)
-        },
-        brand: {
-          blue: "#2563EB",       // primary accent
-          blueDark: "#1D4ED8",   // hover
-          blueSoft: "#EFF6FF",   // tinted surfaces
-          navy: "#0B1D3A",       // secondary / dark sections
-          navyDeep: "#081527",   // footer
-        },
-        positive: {
-          DEFAULT: "#15803D",    // green, positive states only (AA on white)
-          soft: "#F0FDF4",
-        },
-        surface: {
-          DEFAULT: "#FFFFFF",
-          muted: "#F8FAFC",
-          line: "#E2E8F0",
-        },
+        navy: "#071426",
+        blue: "#146cff",
+        turquoise: "#20d7c5",
+        paper: "#f7f9fc",
+        body: "#526071",
+        hairline: "#cdd5df",
+        // texto sobre navy
+        "on-navy": "rgba(247, 249, 252, 0.78)",
+        "on-navy-faint": "rgba(247, 249, 252, 0.5)",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        sans: ["Inter", "Helvetica Neue", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        "display-xl": ["var(--display-xl)", { lineHeight: "0.9", fontWeight: "900" }],
+        display: ["var(--display)", { lineHeight: "0.95", fontWeight: "900" }],
+        h1: ["var(--h1)", { lineHeight: "1.02", fontWeight: "900" }],
+        h2: ["var(--h2)", { lineHeight: "1.05", fontWeight: "800" }],
+        h3: ["var(--h3)", { lineHeight: "1.2", fontWeight: "700" }],
+        "body-lg": ["var(--body-lg)", { lineHeight: "1.65" }],
+        micro: ["var(--micro)", { lineHeight: "1.4", fontWeight: "600", letterSpacing: "0.22em" }],
       },
       maxWidth: {
-        content: "72rem",
+        site: "1440px",
       },
-      boxShadow: {
-        card: "0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.05)",
-        "card-hover": "0 2px 4px rgba(15, 23, 42, 0.05), 0 12px 32px rgba(15, 23, 42, 0.09)",
-        cta: "0 8px 24px rgba(37, 99, 235, 0.22)",
+      spacing: {
+        section: "clamp(96px, 12vw, 190px)",
+        gutter: "clamp(24px, 5vw, 88px)",
       },
-      borderRadius: {
-        xl2: "1rem",
+      transitionTimingFunction: {
+        editorial: "cubic-bezier(0.22, 0.61, 0.36, 1)",
       },
     },
   },
