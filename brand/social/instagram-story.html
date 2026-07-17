@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Historia 1080×1920</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  @page { size: 1080px 1920px; margin: 0; }
+  html, body { width: 1080px; height: 1920px; }
+
+  .canvas { width: 1080px; height: 1920px; background: var(--navy); }
+
+  /* monumento decorativo cortado por la derecha (fuera de la zona de texto) */
+  .monument { font-size: 620px; right: -190px; top: -260px; }
+
+  /* texto esencial entre Y=250 y Y=1600 */
+  .content { position: absolute; left: 90px; right: 90px; top: 265px; }
+
+  .brand {
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--paper);
+  }
+  .brand-rule { width: 64px; height: 3px; background: var(--turquoise); margin-top: 22px; }
+
+  .headline {
+    margin-top: 120px;
+    font-size: 92px; font-weight: 900;
+    letter-spacing: -0.015em; line-height: 1.05;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .sub {
+    margin-top: 44px;
+    font-size: 40px; font-weight: 700;
+    letter-spacing: 0.01em; line-height: 1.35;
+    text-transform: uppercase;
+    color: var(--turquoise);
+  }
+
+  .services {
+    margin-top: 48px;
+    font-size: 25px; font-weight: 600;
+    letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--paper-80);
+    line-height: 2.1;
+  }
+
+  /* CTA + QR: termina antes de Y=1600 */
+  .cta {
+    position: absolute; left: 90px; right: 90px; top: 1300px;
+    display: flex; align-items: center; gap: 56px;
+  }
+  .cta-text { flex: 1; min-width: 0; }
+  .cta-title {
+    font-size: 46px; font-weight: 900;
+    letter-spacing: 0.01em; line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .cta-rule { width: 64px; height: 3px; background: var(--turquoise); margin: 26px 0; }
+  .web { font-size: 30px; font-weight: 700; letter-spacing: 0.12em; color: var(--turquoise); }
+
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 235px; flex-shrink: 0; }
+  .qr-card { width: 235px; }
+  .qr-caption {
+    margin-top: 14px;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--paper-80); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="monument" aria-hidden="true">305</div>
+    <div class="content">
+      <div class="brand">305 Web Service</div>
+      <div class="brand-rule"></div>
+      <h1 class="headline">Tu negocio<br>no necesita<br>otra plantilla.</h1>
+      <div class="sub">Necesita una solución<br>creada para crecer.</div>
+      <div class="services">Páginas web<br>E-commerce<br>Automatización<br>Soporte</div>
+    </div>
+    <div class="cta">
+      <div class="cta-text">
+        <div class="cta-title">Hablemos de tu proyecto</div>
+        <div class="cta-rule"></div>
+        <div class="web">305WEBSERVICE.COM</div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="../src/assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+        </div>
+        <div class="qr-caption">Escanea aquí</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

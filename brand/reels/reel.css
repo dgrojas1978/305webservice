@@ -1,0 +1,140 @@
+/* ============================================================
+   Estilos compartidos de reels 1080×1920 — «Monumento 305»
+   Zonas seguras de texto: X 90–990 · Y 250–1550
+   ============================================================ */
+
+:root {
+  --navy: #071426;
+  --blue: #146cff;
+  --turquoise: #20d7c5;
+  --paper: #f7f9fc;
+  --gray: #526071;
+  --hairline: #cdd5df;
+  --paper-80: rgba(247, 249, 252, 0.8);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { width: 1080px; height: 1920px; }
+
+body {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.canvas { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+.canvas[data-theme="navy"] { background: var(--navy); }
+.canvas[data-theme="paper"] { background: var(--paper); }
+
+.scene { position: absolute; inset: 0; }
+
+/* máscara de líneas: cada .li se revela dentro de su .ln */
+.ln { display: block; overflow: hidden; }
+.li { display: block; will-change: transform; }
+
+/* monumento con máscara de entrada */
+.mon-mask { position: absolute; inset: 0; overflow: hidden; }
+.mask-inner {
+  position: absolute;
+  font-weight: 900;
+  font-size: 720px;
+  letter-spacing: -0.06em;
+  line-height: 0.78;
+  color: var(--blue);
+  right: -230px;
+  top: -180px;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* número fantasma (reel 2) */
+.ghost-num {
+  position: absolute;
+  right: -110px;
+  top: 210px;
+  font-weight: 900;
+  font-size: 780px;
+  letter-spacing: -0.04em;
+  line-height: 0.78;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--hairline);
+  white-space: nowrap;
+}
+
+/* marca micro-caps */
+.brand-micro {
+  font-size: 30px; font-weight: 700;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--paper);
+}
+
+/* declaraciones */
+.st { position: absolute; left: 90px; right: 90px; top: 800px; }
+.st .l1 {
+  font-size: 80px; font-weight: 900;
+  letter-spacing: -0.01em; line-height: 1.12;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.st .l2 {
+  margin-top: 22px;
+  font-size: 56px; font-weight: 900;
+  letter-spacing: 0; line-height: 1.18;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+/* titulares sobre navy */
+.h-navy {
+  position: absolute; left: 90px; right: 90px; top: 780px;
+  font-size: 88px; font-weight: 900;
+  letter-spacing: -0.015em; line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.h-navy.small { font-size: 64px; top: 820px; }
+
+.rule-t { width: 64px; height: 3px; background: var(--turquoise); }
+
+/* CTA final */
+.cta-title {
+  position: absolute; left: 90px; right: 90px; top: 560px;
+  font-size: 64px; font-weight: 900;
+  letter-spacing: -0.005em; line-height: 1.14;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+.cta-rule { position: absolute; left: 90px; top: 750px; }
+.cta-web {
+  position: absolute; left: 90px; top: 796px;
+  font-size: 40px; font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--turquoise);
+}
+
+.qr-block {
+  position: absolute; left: 50%; top: 920px;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+}
+.qr-card { width: 320px; background: #fff; }
+.qr-card img { display: block; width: 100%; height: auto; }
+.qr-caption {
+  margin-top: 20px;
+  font-size: 22px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--paper-80);
+  white-space: nowrap;
+}
+
+/* subtítulos incorporados (narración) */
+.sub {
+  position: absolute; left: 140px; right: 140px; top: 1440px;
+  font-size: 30px; font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+}
+.canvas[data-theme="navy"] .sub { color: var(--paper-80); }
+.canvas[data-theme="paper"] .sub { color: var(--gray); }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Icono de perfil 1080×1080</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  @page { size: 1080px 1080px; margin: 0; }
+  html, body { width: 1080px; height: 1080px; }
+
+  .canvas {
+    width: 1080px; height: 1080px;
+    background: var(--navy);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+
+  /* variante simplificada del monumento: número completo, sin cortes,
+     dentro del círculo seguro del 72% (Ø 777px) */
+  .num {
+    font-weight: 900;
+    font-size: 385px;
+    letter-spacing: -0.06em;
+    line-height: 0.78;
+    color: var(--blue);
+    user-select: none;
+  }
+
+  .rule { width: 110px; height: 10px; background: var(--turquoise); margin-top: 56px; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="num">305</div>
+    <div class="rule"></div>
+  </div>
+</body>
+</html>

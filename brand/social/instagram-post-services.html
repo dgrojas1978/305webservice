@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Post de servicios 1080×1350</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  @page { size: 1080px 1350px; margin: 0; }
+  html, body { width: 1080px; height: 1350px; }
+
+  .canvas {
+    width: 1080px; height: 1350px;
+    background: var(--paper);
+    display: flex; flex-direction: column;
+  }
+
+  /* ---------- encabezado navy ≈ 34% ---------- */
+  .head { position: relative; height: 460px; background: var(--navy); overflow: hidden; flex-shrink: 0; }
+  .head .monument { font-size: 430px; right: -120px; top: -105px; }
+  .head-content { position: absolute; inset: 64px 72px; }
+
+  .brand {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--paper);
+  }
+  .brand-rule { width: 64px; height: 3px; background: var(--turquoise); margin-top: 20px; }
+
+  .headline {
+    position: absolute; left: 0; bottom: 0;
+    font-size: 56px; font-weight: 900;
+    letter-spacing: -0.01em; line-height: 1.14;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  /* ---------- servicios ---------- */
+  .services { flex: 1; padding: 48px 72px 24px; }
+  .svc-row { gap: 40px; padding: 22px 0; }
+  .svc-row .no { font-size: 24px; }
+  .svc-row .label { font-size: 29px; }
+
+  /* ---------- CTA navy ---------- */
+  .cta {
+    background: var(--navy);
+    padding: 48px 72px 56px;
+    display: flex; align-items: center; gap: 56px;
+    flex-shrink: 0;
+  }
+  .cta-text { flex: 1; min-width: 0; }
+  .cta-title {
+    font-size: 38px; font-weight: 900;
+    letter-spacing: 0.01em; line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--paper);
+    max-width: 640px;
+  }
+  .cta-rule { width: 64px; height: 3px; background: var(--turquoise); margin: 24px 0; }
+  .web { font-size: 27px; font-weight: 700; letter-spacing: 0.12em; color: var(--turquoise); }
+
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 180px; flex-shrink: 0; }
+  .qr-card { width: 180px; }
+  .qr-caption {
+    margin-top: 12px;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--paper-80); white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <header class="head">
+      <div class="monument" aria-hidden="true">305</div>
+      <div class="head-content">
+        <div>
+          <div class="brand">305 Web Service</div>
+          <div class="brand-rule"></div>
+        </div>
+        <h1 class="headline">Soluciones digitales<br>para hacer crecer<br>tu negocio</h1>
+      </div>
+    </header>
+
+    <section class="services" aria-label="Servicios">
+      <div class="svc-row"><span class="no">01</span><span class="label">Diseño y desarrollo web</span></div>
+      <div class="svc-row"><span class="no">02</span><span class="label">Tiendas en línea</span></div>
+      <div class="svc-row"><span class="no">03</span><span class="label">Aplicaciones personalizadas</span></div>
+      <div class="svc-row"><span class="no">04</span><span class="label">SEO y optimización</span></div>
+      <div class="svc-row"><span class="no">05</span><span class="label">Automatización de procesos</span></div>
+      <div class="svc-row"><span class="no">06</span><span class="label">Mantenimiento y soporte</span></div>
+    </section>
+
+    <footer class="cta">
+      <div class="cta-text">
+        <div class="cta-title">Conoce todo lo que podemos hacer</div>
+        <div class="cta-rule"></div>
+        <div class="web">305WEBSERVICE.COM</div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="../src/assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+        </div>
+        <div class="qr-caption">Escanea aquí</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

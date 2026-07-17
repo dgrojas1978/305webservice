@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Post 1080×1080</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="identity.css">
+<style>
+  @page { size: 1080px 1080px; margin: 0; }
+  html, body { width: 1080px; height: 1080px; }
+
+  .canvas { width: 1080px; height: 1080px; background: var(--navy); display: flex; flex-direction: column; }
+
+  .main { position: relative; flex: 1; overflow: hidden; }
+
+  /* 305 monumental ≈ 65% del lienzo, cortado por el borde derecho */
+  .monument {
+    font-size: 700px;
+    right: -200px;
+    top: 130px;
+  }
+
+  .main-content { position: absolute; inset: 84px 84px 60px; }
+
+  .brand {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .brand-rule { margin-top: 18px; }
+
+  .headline {
+    position: absolute; left: 0; bottom: 96px;
+    font-size: 88px;
+    font-weight: 900;
+    letter-spacing: -0.015em;
+    line-height: 1.06;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .tags {
+    position: absolute; left: 0; bottom: 0;
+    font-size: 19px;
+    color: var(--paper-80);
+    line-height: 1.9;
+  }
+
+  /* banda blanca inferior */
+  .band {
+    flex-shrink: 0;
+    background: var(--paper);
+    padding: 44px 84px;
+    display: flex; align-items: center; gap: 56px;
+  }
+  .band-text { flex: 1; min-width: 0; }
+  .band .cta {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+  .band .rule-turquoise { margin: 22px 0 24px; }
+  .band .web {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+  }
+
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 190px; flex-shrink: 0; }
+  .qr-card { width: 190px; }
+  .qr-caption { margin-top: 14px; font-size: 13px; color: var(--gray); white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="main">
+      <div class="monument" aria-hidden="true">305</div>
+      <div class="main-content">
+        <div>
+          <div class="brand">305 Web Service</div>
+          <div class="rule-turquoise brand-rule"></div>
+        </div>
+        <h1 class="headline">Tu negocio,<br>mejor conectado.</h1>
+        <div class="micro tags">Páginas web · E-commerce · SEO<br>Automatización · Soporte</div>
+      </div>
+    </div>
+    <div class="band">
+      <div class="band-text">
+        <div class="cta">Conoce nuestros servicios</div>
+        <div class="rule-turquoise"></div>
+        <div class="web">305WEBSERVICE.COM</div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+        </div>
+        <div class="micro qr-caption">Escanea para conocer más</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

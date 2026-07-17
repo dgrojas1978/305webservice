@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Reel 03 · Automatiza tu negocio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap">
+<link rel="stylesheet" href="reel.css">
+<style>
+  .h-navy.q { font-size: 68px; top: 820px; }
+</style>
+</head>
+<body>
+  <div class="canvas" id="canvas" data-theme="navy">
+
+    <!-- E1 · 0.0–2.5 s -->
+    <div class="h-navy q" id="t-q">
+      <span class="ln"><span class="li">¿Cuánto tiempo pierdes</span></span>
+      <span class="ln"><span class="li">en tareas repetitivas?</span></span>
+    </div>
+
+    <!-- E2–E5 · declaraciones sobre blanco -->
+    <div class="st" id="t-s1">
+      <div class="ln"><span class="li l1">Formularios</span></div>
+      <div class="ln"><span class="li l2">que organizan solicitudes</span></div>
+    </div>
+    <div class="st" id="t-s2">
+      <div class="ln"><span class="li l1">Reservas</span></div>
+      <div class="ln"><span class="li l2">sin mensajes innecesarios</span></div>
+    </div>
+    <div class="st" id="t-s3">
+      <div class="ln"><span class="li l1">Pagos</span></div>
+      <div class="ln"><span class="li l2">integrados a tu web</span></div>
+    </div>
+    <div class="st" id="t-s4">
+      <div class="ln"><span class="li l1" style="font-size:72px;">Procesos conectados</span></div>
+      <div class="ln"><span class="li l2">con tu negocio</span></div>
+    </div>
+
+    <!-- E6 · 12.5–14.5 s: monumento + afirmación -->
+    <div class="mon-mask" id="t-mon"><div class="mask-inner">305</div></div>
+    <div class="h-navy small" id="t-claim">
+      <span class="ln"><span class="li">Menos tareas manuales.</span></span>
+      <span class="ln"><span class="li">Más tiempo para crecer.</span></span>
+    </div>
+
+    <!-- E7 · 14.5–17.0 s: CTA -->
+    <div class="cta-title" id="t-cta">
+      <span class="ln"><span class="li">Descubre qué podemos</span></span>
+      <span class="ln"><span class="li">automatizar</span></span>
+    </div>
+    <div class="rule-t cta-rule" id="t-ctarule"></div>
+    <div class="cta-web" id="t-ctaweb">305WEBSERVICE.COM</div>
+    <div class="qr-block" id="t-qr">
+      <div class="qr-card"><img src="../src/assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com"></div>
+      <div class="qr-caption">Escanea para conocer más</div>
+    </div>
+
+    <div class="sub" id="sub"></div>
+  </div>
+
+  <script src="timeline.js"></script>
+  <script>
+    window.REEL = {
+      total: 17000,
+      bgs: [
+        { t0: 0, theme: "navy" },
+        { t0: 2500, theme: "paper" },
+        { t0: 12500, theme: "navy" },
+      ],
+      tracks: [
+        { id: "t-q", in: 0, out: 2500, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 280 },
+        { id: "t-s1", in: 2500, out: 5000, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 260 },
+        { id: "t-s2", in: 5000, out: 7500, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 260 },
+        { id: "t-s3", in: 7500, out: 10000, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 260 },
+        { id: "t-s4", in: 10000, out: 12500, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 260 },
+        { id: "t-mon", in: 12500, out: 14500, enter: "maskx", dur: 450, exit: "fade", exitDur: 280 },
+        { id: "t-claim", in: 12600, out: 14500, enter: "lines", dur: 420, stagger: 90, exit: "fade", exitDur: 280 },
+        { id: "t-cta", in: 14500, out: 17000, enter: "lines", dur: 400, stagger: 90 },
+        { id: "t-ctarule", in: 14700, out: 17000, enter: "rule", dur: 350 },
+        { id: "t-ctaweb", in: 14800, out: 17000, enter: "fade", dur: 350 },
+        { id: "t-qr", in: 14500, out: 17000, enter: "static" },
+      ],
+      subs: [
+        { t0: 400, t1: 4900, text: "Automatizamos formularios, reservas, pagos" },
+        { t0: 5000, t1: 9900, text: "y procesos digitales para reducir tareas manuales" },
+        { t0: 10000, t1: 16600, text: "y ayudarte a dedicar más tiempo al crecimiento de tu negocio." },
+      ],
+    };
+    initReel();
+  </script>
+</body>
+</html>

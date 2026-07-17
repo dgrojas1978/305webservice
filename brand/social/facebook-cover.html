@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Portada de Facebook 1702×630</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  @page { size: 1702px 630px; margin: 0; }
+  html, body { width: 1702px; height: 630px; }
+
+  .canvas { width: 1702px; height: 630px; background: var(--navy); }
+
+  /* monumento al extremo derecho, cortado por arriba, derecha y abajo */
+  .monument {
+    font-size: 860px;
+    right: -300px;
+    top: -100px;
+  }
+
+  /* contenido esencial dentro de la zona segura central 1280×500
+     (x 211–1491 · y 65–565); espacio negativo a la izquierda para el perfil */
+  .content {
+    position: absolute;
+    left: 320px; top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .brand {
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .rule { width: 64px; height: 3px; background: var(--turquoise); margin: 26px 0 30px; }
+
+  .headline {
+    font-size: 84px; font-weight: 900;
+    letter-spacing: -0.015em; line-height: 1.06;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .services {
+    margin-top: 34px;
+    font-size: 21px; font-weight: 600;
+    letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--paper-80);
+    line-height: 2;
+  }
+
+  .web {
+    margin-top: 30px;
+    font-size: 27px; font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--turquoise);
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="monument" aria-hidden="true">305</div>
+    <div class="content">
+      <div class="brand">305 Web Service</div>
+      <div class="rule"></div>
+      <div class="headline">Tu negocio,<br>mejor conectado.</div>
+      <div class="services">Páginas web · E-commerce · SEO<br>Automatización · Soporte</div>
+      <div class="web">305WEBSERVICE.COM</div>
+    </div>
+  </div>
+</body>
+</html>

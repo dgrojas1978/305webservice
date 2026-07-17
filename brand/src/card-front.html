@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Tarjeta (frente)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="identity.css">
+<style>
+  /* Trim 3.5 × 2 in + sangrado 0.125 in → lienzo 3.75 × 2.25 in (1125 × 675 px @300) */
+  @page { size: 3.75in 2.25in; margin: 0; }
+  html, body { width: 3.75in; height: 2.25in; }
+
+  .canvas { width: 3.75in; height: 2.25in; background: var(--navy); }
+
+  /* 305 monumental: centro → esquina inferior derecha, cortado por
+     borde derecho e inferior. ~75% del ancho, ~78% de la altura. */
+  .monument {
+    font-size: 1.9in;             /* protagonista, sin invadir el tagline */
+    right: -0.78in;
+    bottom: -0.5in;
+  }
+
+  /* área segura: 0.25in desde el borde del lienzo */
+  .content { position: absolute; inset: 0.25in; }
+
+  .brand {
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .brand-rule { margin-top: 0.1in; }
+
+  .tag {
+    position: absolute; left: 0; bottom: 0;
+    font-size: 4.8pt;
+    letter-spacing: 0.18em;
+    color: var(--paper-80);
+    line-height: 2;
+    max-width: 1.45in;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="monument" aria-hidden="true">305</div>
+    <div class="content">
+      <div class="brand">305 Web Service</div>
+      <div class="rule-turquoise brand-rule"></div>
+      <div class="micro tag">Digital solutions<br>for growing businesses</div>
+    </div>
+  </div>
+</body>
+</html>

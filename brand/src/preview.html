@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Sistema "Monumento 305" (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    background: #e8ecf1;
+    color: #071426;
+    padding: 48px;
+  }
+  h1 { font-size: 22px; font-weight: 900; letter-spacing: -0.01em; }
+  .sub { margin-top: 6px; font-size: 12px; color: #526071; }
+  .grid { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; }
+  figure { display: flex; flex-direction: column; gap: 10px; }
+  figcaption {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: #526071;
+  }
+  .frame { background: #fff; outline: 1px solid #cdd5df; }
+  iframe { display: block; border: 0; transform-origin: top left; pointer-events: none; }
+
+  /* tarjetas 360×216 mostradas a 1.5× */
+  .card .frame { width: 540px; height: 324px; }
+  .card iframe { width: 360px; height: 216px; transform: scale(1.5); }
+
+  /* flyers 504×696 mostrados a 0.86× */
+  .flyer .frame { width: 434px; height: 599px; }
+  .flyer iframe { width: 504px; height: 696px; transform: scale(0.861); }
+
+  /* post 1080 mostrado a 0.4× */
+  .social .frame { width: 432px; height: 432px; }
+  .social iframe { width: 1080px; height: 1080px; transform: scale(0.4); }
+</style>
+</head>
+<body>
+  <h1>305 Web Service — Sistema «Monumento 305»</h1>
+  <p class="sub">Tarjeta 3.5×2 in · Flyers 5×7 in (con sangrado 0.125 in) · Post 1080×1080 px — QR verificado → https://305webservice.com</p>
+  <div class="grid">
+    <figure class="card">
+      <figcaption>Tarjeta · Frente</figcaption>
+      <div class="frame"><iframe src="card-front.html" title="Tarjeta frente"></iframe></div>
+    </figure>
+    <figure class="card">
+      <figcaption>Tarjeta · Reverso</figcaption>
+      <div class="frame"><iframe src="card-back.html" title="Tarjeta reverso"></iframe></div>
+    </figure>
+    <figure class="flyer">
+      <figcaption>Flyer 5×7 · Español</figcaption>
+      <div class="frame"><iframe src="flyer-es.html" title="Flyer español"></iframe></div>
+    </figure>
+    <figure class="flyer">
+      <figcaption>Flyer 5×7 · English</figcaption>
+      <div class="frame"><iframe src="flyer-en.html" title="Flyer English"></iframe></div>
+    </figure>
+    <figure class="social">
+      <figcaption>Post redes · 1080×1080</figcaption>
+      <div class="frame"><iframe src="social-post.html" title="Post redes sociales"></iframe></div>
+    </figure>
+  </div>
+</body>
+</html>

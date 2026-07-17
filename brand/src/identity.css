@@ -1,0 +1,77 @@
+/* ============================================================
+   305 Web Service — Identity "Monumento 305"
+   Paleta obligatoria · sin degradados · sin sombras · sin iconos
+   ============================================================ */
+
+:root {
+  --navy: #071426;       /* fondo/tinta principal */
+  --blue: #146cff;       /* azul eléctrico — monumento y números */
+  --turquoise: #20d7c5;  /* filetes de 48px × 2px */
+  --paper: #f7f9fc;      /* blanco cálido */
+  --gray: #526071;       /* texto secundario */
+  --hairline: #cdd5df;   /* separadores y 305 fantasma */
+  --paper-80: rgba(247, 249, 252, 0.8);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body {
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-feature-settings: "tnum" 1;
+  color: var(--navy);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.canvas { position: relative; overflow: hidden; }
+
+/* ---- 305 monumental (Black 900) ---- */
+.monument {
+  position: absolute;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.78;          /* cap-height tight box */
+  color: var(--blue);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* fantasma: solo contorno 1px hairline, sin relleno */
+.monument.ghost {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hairline);
+}
+
+/* ---- micro-caps ---- */
+.micro {
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+/* ---- filete turquesa: 48px × 2px (referencia digital) ---- */
+.rule-turquoise {
+  width: 48px;
+  height: 2px;
+  background: var(--turquoise);
+}
+
+/* ---- lista de servicios numerada ---- */
+.svc-row {
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid var(--hairline);
+  text-transform: uppercase;
+}
+.svc-row .no { font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.svc-row .label { font-weight: 700; color: var(--navy); letter-spacing: 0.04em; }
+
+/* ---- QR ---- */
+.qr-card { background: #ffffff; }
+.qr-card img { display: block; width: 100%; height: auto; }

@@ -1,0 +1,15 @@
+1
+00:00:00,400 --> 00:00:04,900
+Tu página debe verse profesional,
+
+2
+00:00:05,000 --> 00:00:09,900
+funcionar en cualquier dispositivo
+
+3
+00:00:10,000 --> 00:00:12,400
+y convertir visitas en oportunidades.
+
+4
+00:00:12,500 --> 00:00:16,600
+No es solamente una página; es parte de tu negocio.

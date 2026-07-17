@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Tarjeta (reverso)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="identity.css">
+<style>
+  @page { size: 3.75in 2.25in; margin: 0; }
+  html, body { width: 3.75in; height: 2.25in; }
+
+  .canvas { width: 3.75in; height: 2.25in; background: var(--paper); }
+
+  /* 305 fantasma: ~68% del ancho, cortado por bordes superior y derecho */
+  .monument.ghost {
+    font-size: 1.38in;            /* ancho ≈ 2.4in ≈ 68% */
+    right: -0.5in;
+    top: -0.34in;
+  }
+
+  .content { position: absolute; inset: 0.25in; }
+
+  .person {
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--navy);
+  }
+  .person-rule { margin-top: 0.09in; }
+
+  .contact {
+    position: absolute; left: 0; bottom: 0.24in;
+    display: grid; row-gap: 0.045in;
+  }
+  .contact .tel { font-size: 8pt; font-weight: 700; color: var(--navy); }
+  .contact div:not(.tel) { font-size: 8pt; font-weight: 400; color: var(--gray); letter-spacing: 0.02em; }
+
+  .place {
+    position: absolute; left: 0; bottom: 0;
+    font-size: 5.2pt;
+    color: var(--navy);
+  }
+
+  .qr-wrap {
+    position: absolute; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center;
+    width: 0.62in;
+  }
+  .qr-card { width: 0.62in; }
+  .qr-caption {
+    margin-top: 0.05in;
+    font-size: 4.6pt;
+    color: var(--navy);
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="monument ghost" aria-hidden="true">305</div>
+    <div class="content">
+      <div>
+        <div class="person">Daniel Gonzalez</div>
+        <div class="rule-turquoise person-rule"></div>
+      </div>
+      <div class="contact">
+        <div class="tel">(305) 833-2984</div>
+        <div>305webservice@gmail.com</div>
+        <div>305WEBSERVICE.COM</div>
+      </div>
+      <div class="micro place">Miami · Florida</div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+        </div>
+        <div class="micro qr-caption">Visit our website</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

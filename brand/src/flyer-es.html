@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Flyer 5×7 (español)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="identity.css">
+<style>
+  /* Trim 5 × 7 in + sangrado 0.125 in → lienzo 5.25 × 7.25 in */
+  @page { size: 5.25in 7.25in; margin: 0; }
+  html, body { width: 5.25in; height: 7.25in; }
+
+  .canvas {
+    width: 5.25in; height: 7.25in;
+    background: var(--paper);
+    display: flex; flex-direction: column;
+  }
+
+  /* ---------- 1 · encabezado navy ≈ 31% de la altura ---------- */
+  .head {
+    position: relative;
+    height: 2.25in;
+    background: var(--navy);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .head .monument {
+    font-size: 2.1in;
+    right: -0.55in;
+    top: -0.55in;
+  }
+  .head-content { position: absolute; inset: 0.3in 0.44in; }
+
+  .brand {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .brand-rule { margin-top: 0.09in; }
+
+  .headline {
+    position: absolute; left: 0; bottom: 0;
+    font-size: 17pt;
+    font-weight: 900;
+    letter-spacing: 0.005em;
+    line-height: 1.22;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .headline .l2 { color: var(--paper); }
+
+  /* ---------- 2 · lista de servicios ---------- */
+  .services { flex: 1; padding: 0.26in 0.44in 0.12in; }
+  .svc-row { gap: 0.24in; padding: 0.082in 0; }
+  .svc-row .no { font-size: 8pt; }
+  .svc-row .label { font-size: 9.5pt; }
+
+  /* ---------- 3 · banda CTA navy ---------- */
+  .cta {
+    background: var(--navy);
+    padding: 0.26in 0.44in 0.3in;
+    display: flex; align-items: center; gap: 0.36in;
+    flex-shrink: 0;
+  }
+  .cta-text { flex: 1; min-width: 0; }
+  .cta-title {
+    font-size: 15pt;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .cta-rule { margin: 0.1in 0 0.13in; }
+  .cta-ask { font-size: 6pt; color: var(--paper-80); margin-bottom: 0.07in; }
+  .cta-lines { display: grid; row-gap: 0.045in; }
+  .cta-lines .tel { font-size: 11pt; font-weight: 700; color: var(--paper); font-variant-numeric: tabular-nums; }
+  .cta-lines .web { font-size: 9.5pt; font-weight: 400; color: var(--paper-80); letter-spacing: 0.06em; }
+
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 1.05in; flex-shrink: 0; }
+  .qr-card { width: 1.05in; }
+  .qr-caption { margin-top: 0.08in; font-size: 5.4pt; color: var(--paper-80); white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <header class="head">
+      <div class="monument" aria-hidden="true">305</div>
+      <div class="head-content">
+        <div class="brand">305 Web Service</div>
+        <div class="rule-turquoise brand-rule"></div>
+        <h1 class="headline">Tu negocio merece<br><span class="l2">una mejor presencia digital</span></h1>
+      </div>
+    </header>
+
+    <section class="services" aria-label="Servicios">
+      <div class="svc-row"><span class="no">01</span><span class="label">Diseño y desarrollo web</span></div>
+      <div class="svc-row"><span class="no">02</span><span class="label">Tiendas en línea</span></div>
+      <div class="svc-row"><span class="no">03</span><span class="label">Aplicaciones personalizadas</span></div>
+      <div class="svc-row"><span class="no">04</span><span class="label">SEO y optimización</span></div>
+      <div class="svc-row"><span class="no">05</span><span class="label">Hosting y correo empresarial</span></div>
+      <div class="svc-row"><span class="no">06</span><span class="label">Mantenimiento y soporte</span></div>
+      <div class="svc-row"><span class="no">07</span><span class="label">Automatización de procesos</span></div>
+      <div class="svc-row"><span class="no">08</span><span class="label">Pagos, formularios y reservas</span></div>
+    </section>
+
+    <footer class="cta">
+      <div class="cta-text">
+        <div class="cta-title">Haz crecer tu negocio</div>
+        <div class="rule-turquoise cta-rule"></div>
+        <div class="micro cta-ask">Solicita una consulta</div>
+        <div class="cta-lines">
+          <div class="tel">(305) 833-2984</div>
+          <div class="web">305WEBSERVICE.COM</div>
+        </div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+        </div>
+        <div class="micro qr-caption">Escanea para conocer más</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

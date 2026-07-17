@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Portada Reel 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  @page { size: 1080px 1920px; margin: 0; }
+  html, body { width: 1080px; height: 1920px; }
+
+  .canvas { width: 1080px; height: 1920px; background: var(--navy); }
+
+  .monument { font-size: 760px; right: -240px; top: -190px; }
+
+  /* título y marca en el área central (sobrevive el recorte 1:1 y 4:5 del grid) */
+  .center {
+    position: absolute; left: 90px; right: 90px; top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .ep {
+    font-size: 30px; font-weight: 700;
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .title {
+    margin-top: 34px;
+    font-size: 80px; font-weight: 900;
+    letter-spacing: -0.015em; line-height: 1.08;
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+
+  .rule { width: 64px; height: 3px; background: var(--turquoise); margin-top: 44px; }
+
+  .brand {
+    margin-top: 40px;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--paper-80);
+  }
+</style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="monument" aria-hidden="true">305</div>
+    <div class="center">
+      <div class="ep">02</div>
+      <div class="title">4 cosas que<br>tu web debe hacer</div>
+      <div class="rule"></div>
+      <div class="brand">305 Web Service</div>
+    </div>
+  </div>
+</body>
+</html>
