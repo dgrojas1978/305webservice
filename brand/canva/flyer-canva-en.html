@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>305 Web Service — Flyer Canva 8.5×11 (English)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="../src/identity.css">
+<style>
+  /* Flyer estándar de Canva: 8.5 × 11 in + sangrado 0.125 in → lienzo 8.75 × 11.25 in.
+     Área segura: contenido a ≥ 0.375 in del corte. */
+  @page { size: 8.75in 11.25in; margin: 0; }
+  html, body { width: 8.75in; height: 11.25in; }
+
+  .canvas {
+    width: 8.75in; height: 11.25in;
+    background: var(--paper);
+    display: flex; flex-direction: column;
+  }
+
+  /* ============ 1 · HERO (navy) ============ */
+  .hero {
+    position: relative; background: var(--navy); overflow: hidden;
+    flex-shrink: 0; padding: 0.44in 0.62in 0.26in;
+  }
+  .hero .monument {
+    position: absolute; font-size: 3.7in;
+    right: -0.55in; top: -0.62in;
+    color: rgba(20, 108, 255, 0.34);
+  }
+  .hero-top { position: relative; z-index: 1; display: flex; align-items: baseline; gap: 0.18in; }
+  .brand { font-size: 11pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--paper); }
+  .brand-tag { font-size: 7.5pt; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--turquoise); }
+  .hero-rule { position: relative; z-index: 1; width: 0.8in; height: 3px; background: var(--turquoise); margin-top: 0.16in; }
+
+  .headline {
+    position: relative; z-index: 1; margin-top: 0.42in;
+    font-size: 26pt; font-weight: 900; letter-spacing: -0.02em; line-height: 1.05;
+    text-transform: uppercase; color: var(--paper); max-width: 7.3in;
+  }
+  .headline .hl { color: var(--blue); }
+  .sub {
+    position: relative; z-index: 1; margin-top: 0.16in;
+    font-size: 10.5pt; font-weight: 400; line-height: 1.5; color: var(--paper-80); max-width: 5.3in;
+  }
+
+  .proof { position: relative; z-index: 1; margin-top: 0.26in; }
+  .proof-label {
+    font-size: 7.5pt; font-weight: 600; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--turquoise); margin-bottom: 0.13in;
+  }
+  .cards { display: flex; gap: 0.2in; }
+  .card { flex: 1; min-width: 0; }
+  .chrome { background: #0e2038; border: 1px solid rgba(247,249,252,0.16); border-radius: 0.07in; overflow: hidden; }
+  .chrome-bar { display: flex; align-items: center; gap: 0.045in; padding: 0.05in 0.07in; border-bottom: 1px solid rgba(247,249,252,0.1); }
+  .dot { width: 0.045in; height: 0.045in; border-radius: 50%; background: rgba(247,249,252,0.3); }
+  .chrome img { display: block; width: 100%; height: 0.66in; object-fit: cover; object-position: top; }
+  .card-domain {
+    margin-top: 0.07in; font-size: 6.8pt; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--paper-80); text-align: center; white-space: nowrap; overflow: hidden;
+  }
+
+  /* ============ 2 · OFERTA (azul eléctrico) ============ */
+  .offer {
+    background: var(--blue); flex-shrink: 0; padding: 0.18in 0.62in 0.2in;
+    display: flex; align-items: center; justify-content: space-between; gap: 0.36in;
+  }
+  .offer-what .label { font-size: 14pt; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #fff; }
+  .offer-what .meta { margin-top: 0.07in; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--navy); }
+  .offer-price { display: flex; align-items: baseline; justify-content: flex-end; gap: 0.2in; flex-shrink: 0; }
+  .offer-price .was {
+    font-size: 14pt; font-weight: 700; color: var(--navy);
+    text-decoration: line-through; text-decoration-color: var(--turquoise);
+    text-decoration-thickness: 2.5px; font-variant-numeric: tabular-nums;
+  }
+  .offer-price .now { display: flex; flex-direction: column; align-items: flex-end; }
+  .offer-price .now .k { font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--navy); }
+  .offer-price .now .v { margin-top: 0.02in; font-size: 34pt; font-weight: 900; letter-spacing: -0.03em; line-height: 0.86; color: #fff; font-variant-numeric: tabular-nums; }
+
+  /* ============ 3 · VALOR (blanco) ============ */
+  .value { flex: 1; padding: 0.22in 0.62in 0; display: flex; flex-direction: column; min-height: 0; }
+  .overline { font-size: 8pt; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.12in; }
+  .pillars { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 0.34in; }
+  .pillar { display: flex; align-items: baseline; gap: 0.3in; padding-top: 0.26in; border-top: 1px solid var(--hairline); }
+  .pillar .no { font-size: 9pt; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .pillar .title { font-size: 16pt; font-weight: 900; letter-spacing: -0.015em; line-height: 1.1; text-transform: uppercase; color: var(--navy); }
+  .pillar .benefit { margin-top: 0.09in; font-size: 10.5pt; font-weight: 400; line-height: 1.45; color: var(--gray); max-width: 5.6in; }
+
+  /* ============ 3b · BREADTH (banda paper) ============ */
+  .breadth { background: var(--paper); flex-shrink: 0; padding: 0.2in 0.62in 0.22in; border-top: 1px solid var(--hairline); }
+  .breadth .k { font-size: 9pt; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); }
+  .breadth .list { margin-top: 0.08in; font-size: 7.5pt; font-weight: 400; letter-spacing: 0.04em; line-height: 1.5; color: var(--gray); }
+
+  /* ============ 4 · CTA (navy) ============ */
+  .cta { background: var(--navy); flex-shrink: 0; padding: 0.28in 0.62in 0.34in; display: flex; align-items: center; gap: 0.44in; }
+  .cta-text { flex: 1; min-width: 0; }
+  .cta-proof { font-size: 7.5pt; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--turquoise); margin-bottom: 0.12in; }
+  .cta-title { font-size: 18pt; font-weight: 900; letter-spacing: -0.015em; line-height: 1.08; text-transform: uppercase; color: var(--paper); }
+  .cta-rule { width: 0.8in; height: 3px; background: var(--turquoise); margin: 0.15in 0 0.17in; }
+  .cta-lines { display: grid; row-gap: 0.07in; }
+  .cta-lines .tel { font-size: 16pt; font-weight: 700; color: var(--paper); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .cta-lines .web { font-size: 11pt; font-weight: 400; color: var(--paper-80); letter-spacing: 0.08em; }
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 1.2in; flex-shrink: 0; }
+  .qr-card { width: 1.2in; background: #fff; border-radius: 0.05in; padding: 0.07in; }
+  .qr-card img { display: block; width: 100%; height: auto; }
+  .qr-caption { margin-top: 0.1in; font-size: 7pt; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--paper-80); text-align: center; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <div class="canvas">
+
+    <!-- 1 · HERO + PRUEBA -->
+    <header class="hero">
+      <div class="monument" aria-hidden="true">305</div>
+      <div class="hero-top">
+        <span class="brand">305 Web Service</span>
+        <span class="brand-tag">Miami · FL</span>
+      </div>
+      <div class="hero-rule"></div>
+      <h1 class="headline">Your business is good.<br><span class="hl">Does your site show it?</span></h1>
+      <p class="sub">
+        Your customers look you up on their phone before calling. If your
+        site is slow, dated or missing, the call goes to your competitor.
+      </p>
+
+      <div class="proof">
+        <div class="proof-label">Real sites we built — live right now</div>
+        <div class="cards">
+          <div class="card">
+            <div class="chrome">
+              <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <img src="../src/assets/site-lsf.jpg" alt="lightspecterfilm.com">
+            </div>
+            <div class="card-domain">lightspecterfilm.com</div>
+          </div>
+          <div class="card">
+            <div class="chrome">
+              <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <img src="../src/assets/site-polkanea.jpg" alt="polkaneaproductions.com">
+            </div>
+            <div class="card-domain">polkaneaproductions.com</div>
+          </div>
+          <div class="card">
+            <div class="chrome">
+              <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <img src="../src/assets/site-aguiar.jpg" alt="aguiarflooring.com">
+            </div>
+            <div class="card-domain">aguiarflooring.com</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2 · OFERTA -->
+    <section class="offer">
+      <div class="offer-what">
+        <div class="label">Professional website</div>
+        <div class="meta">8 services · One team</div>
+      </div>
+      <div class="offer-price">
+        <span class="was">Was $800</span>
+        <span class="now"><span class="k">Now from</span><span class="v">$499</span></span>
+      </div>
+    </section>
+
+    <!-- 3 · VALOR -->
+    <section class="value">
+      <div class="overline">What your website will do for you</div>
+      <div class="pillars">
+        <div class="pillar">
+          <span class="no">01</span>
+          <div>
+            <div class="title">Found when they search</div>
+            <div class="benefit">Fast, mobile-first and SEO-ready, so customers find you.</div>
+          </div>
+        </div>
+        <div class="pillar">
+          <span class="no">02</span>
+          <div>
+            <div class="title">Every visit, an opportunity</div>
+            <div class="benefit">Built to turn every visit into a call or a sale.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3b · BREADTH -->
+    <section class="breadth">
+      <div class="k">One team for your entire digital presence</div>
+      <div class="list">Online stores · Custom software · Automation · Hosting &amp; email · Support</div>
+    </section>
+
+    <!-- 4 · CTA -->
+    <footer class="cta">
+      <div class="cta-text">
+        <div class="cta-proof">Live sites · English &amp; Spanish · Miami, FL</div>
+        <div class="cta-title">Book your free consultation</div>
+        <div class="cta-rule"></div>
+        <div class="cta-lines">
+          <div class="tel">(305) 833-2984</div>
+          <div class="web">305WEBSERVICE.COM</div>
+        </div>
+      </div>
+      <div class="qr-wrap">
+        <div class="qr-card">
+          <img src="../src/assets/qr-305webservice.svg" alt="QR code: https://305webservice.com">
+        </div>
+        <div class="qr-caption">Scan and<br>start today</div>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>

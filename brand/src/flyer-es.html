@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>305 Web Service — Flyer 5×7 (español)</title>
+<title>305 Web Service — Flyer 5×7 (Español)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap">
 <link rel="stylesheet" href="identity.css">
 <style>
-  /* Trim 5 × 7 in + sangrado 0.125 in → lienzo 5.25 × 7.25 in */
+  /* Trim 5 × 7 in + sangrado 0.125 in → lienzo 5.25 × 7.25 in.
+     Contenido a ≥ 0.315 in del corte (área segura 0.25 in). */
   @page { size: 5.25in 7.25in; margin: 0; }
   html, body { width: 5.25in; height: 7.25in; }
 
@@ -18,100 +19,298 @@
     display: flex; flex-direction: column;
   }
 
-  /* ---------- 1 · encabezado navy ≈ 31% de la altura ---------- */
+  /* ---------- 1 · promesa (navy) ---------- */
   .head {
     position: relative;
-    height: 2.25in;
     background: var(--navy);
+    padding: 0.39in 0.44in 0.12in;
     overflow: hidden;
     flex-shrink: 0;
   }
   .head .monument {
-    font-size: 2.1in;
-    right: -0.55in;
-    top: -0.55in;
+    font-size: 1.5in;
+    right: -0.4in;
+    top: -0.34in;
+    opacity: 0.9;
   }
-  .head-content { position: absolute; inset: 0.3in 0.44in; }
+  .head-content { position: relative; z-index: 1; }
 
   .brand {
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
+    font-size: 8.5pt; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--paper);
   }
-  .brand-rule { margin-top: 0.09in; }
+  .brand-rule { margin-top: 0.08in; }
 
   .headline {
-    position: absolute; left: 0; bottom: 0;
-    font-size: 17pt;
-    font-weight: 900;
-    letter-spacing: 0.005em;
-    line-height: 1.22;
+    margin-top: 0.13in;
+    font-size: 16.5pt; font-weight: 900;
+    letter-spacing: -0.012em; line-height: 1.1;
     text-transform: uppercase;
     color: var(--paper);
+    max-width: 4.05in;
   }
-  .headline .l2 { color: var(--paper); }
+  .headline .hl { color: var(--blue); }
 
-  /* ---------- 2 · lista de servicios ---------- */
-  .services { flex: 1; padding: 0.26in 0.44in 0.12in; }
-  .svc-row { gap: 0.24in; padding: 0.082in 0; }
-  .svc-row .no { font-size: 8pt; }
-  .svc-row .label { font-size: 9.5pt; }
+  .sub {
+    margin-top: 0.1in;
+    font-size: 7.4pt; font-weight: 400; line-height: 1.45;
+    color: var(--paper-80);
+    max-width: 3.7in;
+  }
 
-  /* ---------- 3 · banda CTA navy ---------- */
+  /* ---------- 2 · trabajo real (galería de sitios en vivo) ---------- */
+  .work {
+    background: var(--navy);
+    padding: 0.04in 0.44in 0.13in;
+    flex-shrink: 0;
+  }
+  .work-label {
+    font-size: 5.4pt; color: var(--turquoise);
+    margin-bottom: 0.07in;
+  }
+  .cards { display: flex; gap: 0.12in; }
+  .card { flex: 1; min-width: 0; }
+  .chrome {
+    background: #0e2038;
+    border: 1px solid rgba(247,249,252,0.14);
+    border-radius: 0.05in;
+    overflow: hidden;
+  }
+  .chrome-bar {
+    display: flex; align-items: center; gap: 0.035in;
+    padding: 0.035in 0.05in;
+    border-bottom: 1px solid rgba(247,249,252,0.10);
+  }
+  .dot { width: 0.035in; height: 0.035in; border-radius: 50%; background: rgba(247,249,252,0.28); }
+  .chrome img { display: block; width: 100%; height: 0.52in; object-fit: cover; object-position: top; }
+  .card-domain {
+    margin-top: 0.04in;
+    font-size: 4.9pt; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--paper-80);
+    text-align: center;
+    white-space: nowrap; overflow: hidden;
+  }
+
+
+  /* ---------- 2b · oferta (azul eléctrico) ----------
+     Sobre #146CFF: blanco solo en cuerpos grandes/bold (AA large),
+     navy en bold para lo pequeño (4.9:1). Tachado en turquesa. */
+  .offer {
+    background: var(--blue);
+    padding: 0.14in 0.44in 0.15in;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.2in; flex-shrink: 0;
+  }
+  .offer-what .label {
+    font-size: 9.5pt; font-weight: 900; letter-spacing: -0.005em;
+    text-transform: uppercase; color: #fff;
+  }
+  .offer-what .meta {
+    margin-top: 0.045in;
+    font-size: 5.2pt; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--navy);
+  }
+  .offer-price { display: flex; align-items: baseline; justify-content: flex-end; gap: 0.13in; flex-shrink: 0; }
+  .offer-price .was {
+    font-size: 10.5pt; font-weight: 700; color: var(--navy);
+    text-decoration: line-through;
+    text-decoration-color: var(--turquoise);
+    text-decoration-thickness: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .offer-price .now { display: flex; flex-direction: column; align-items: flex-end; }
+  .offer-price .now .k {
+    font-size: 5.2pt; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--navy);
+  }
+  .offer-price .now .v {
+    margin-top: 0.02in;
+    font-size: 25pt; font-weight: 900; letter-spacing: -0.03em;
+    line-height: 0.9; color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- 3 · resultados (tres pilares) ---------- */
+  .body { flex: 1; padding: 0.14in 0.44in 0.1in; display: flex; flex-direction: column; min-height: 0; }
+
+  .pillars { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 0.16in; }
+
+  .overline { font-size: 5.6pt; color: var(--blue); margin-bottom: 0.05in; }
+
+  .pillar {
+    display: flex; align-items: baseline; gap: 0.18in;
+    padding: 0.05in 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .pillar .no {
+    font-size: 6.4pt; font-weight: 700; color: var(--blue);
+    font-variant-numeric: tabular-nums; flex-shrink: 0;
+  }
+  .pillar .title {
+    font-size: 10.5pt; font-weight: 900;
+    letter-spacing: -0.012em; line-height: 1.15;
+    text-transform: uppercase; color: var(--navy);
+  }
+  .pillar .benefit {
+    margin-top: 0.035in;
+    font-size: 7pt; font-weight: 400; line-height: 1.36;
+    color: var(--gray); max-width: 4in;
+  }
+
+  /* banda breadth: sección propia, nunca la aprieta el flex del cuerpo */
+  .breadth {
+    background: var(--paper);
+    padding: 0.11in 0.44in 0.14in;
+    border-top: 1px solid var(--hairline);
+    flex-shrink: 0;
+  }
+  .breadth .k {
+    font-size: 6pt; font-weight: 800; letter-spacing: 0.05em;
+    text-transform: uppercase; color: var(--navy);
+  }
+  .breadth .list {
+    margin-top: 0.045in;
+    font-size: 5pt; letter-spacing: 0.04em; line-height: 1.5; color: var(--gray);
+  }
+
+  /* ---------- 4 · CTA (navy) ---------- */
   .cta {
     background: var(--navy);
-    padding: 0.26in 0.44in 0.3in;
-    display: flex; align-items: center; gap: 0.36in;
+    padding: 0.13in 0.44in 0.4in;
+    display: flex; align-items: center; gap: 0.28in;
     flex-shrink: 0;
   }
   .cta-text { flex: 1; min-width: 0; }
-  .cta-title {
-    font-size: 15pt;
-    font-weight: 900;
-    letter-spacing: 0.01em;
-    text-transform: uppercase;
-    color: var(--paper);
+  .cta-proof {
+    font-size: 5.2pt; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--turquoise);
+    margin-bottom: 0.08in;
   }
-  .cta-rule { margin: 0.1in 0 0.13in; }
-  .cta-ask { font-size: 6pt; color: var(--paper-80); margin-bottom: 0.07in; }
+  .cta-title {
+    font-size: 13.5pt; font-weight: 900;
+    letter-spacing: -0.008em; line-height: 1.12;
+    text-transform: uppercase; color: var(--paper);
+  }
+  .cta-rule { margin: 0.08in 0 0.09in; }
   .cta-lines { display: grid; row-gap: 0.045in; }
-  .cta-lines .tel { font-size: 11pt; font-weight: 700; color: var(--paper); font-variant-numeric: tabular-nums; }
-  .cta-lines .web { font-size: 9.5pt; font-weight: 400; color: var(--paper-80); letter-spacing: 0.06em; }
+  .cta-lines .tel {
+    font-size: 12pt; font-weight: 700; color: var(--paper);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
+  }
+  .cta-lines .web {
+    font-size: 8.4pt; font-weight: 400; color: var(--paper-80);
+    letter-spacing: 0.07em;
+  }
 
-  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 1.05in; flex-shrink: 0; }
-  .qr-card { width: 1.05in; }
-  .qr-caption { margin-top: 0.08in; font-size: 5.4pt; color: var(--paper-80); white-space: nowrap; }
+  .qr-wrap { display: flex; flex-direction: column; align-items: center; width: 0.92in; flex-shrink: 0; }
+  .qr-card { width: 0.92in; }
+  .qr-caption {
+    margin-top: 0.055in; font-size: 5pt; color: var(--paper-80);
+    text-align: center; line-height: 1.5;
+  }
 </style>
 </head>
 <body>
   <div class="canvas">
+
+    <!-- 1 · promesa -->
     <header class="head">
       <div class="monument" aria-hidden="true">305</div>
       <div class="head-content">
         <div class="brand">305 Web Service</div>
         <div class="rule-turquoise brand-rule"></div>
-        <h1 class="headline">Tu negocio merece<br><span class="l2">una mejor presencia digital</span></h1>
+        <h1 class="headline">Tu negocio es bueno.<br><span class="hl">¿Tu web lo demuestra?</span></h1>
+        <p class="sub">
+          Hoy tus clientes te buscan en el celular antes de llamar. Si tu
+          web es lenta, vieja o no existe, la llamada se la lleva tu
+          competencia.
+        </p>
       </div>
     </header>
 
-    <section class="services" aria-label="Servicios">
-      <div class="svc-row"><span class="no">01</span><span class="label">Diseño y desarrollo web</span></div>
-      <div class="svc-row"><span class="no">02</span><span class="label">Tiendas en línea</span></div>
-      <div class="svc-row"><span class="no">03</span><span class="label">Aplicaciones personalizadas</span></div>
-      <div class="svc-row"><span class="no">04</span><span class="label">SEO y optimización</span></div>
-      <div class="svc-row"><span class="no">05</span><span class="label">Hosting y correo empresarial</span></div>
-      <div class="svc-row"><span class="no">06</span><span class="label">Mantenimiento y soporte</span></div>
-      <div class="svc-row"><span class="no">07</span><span class="label">Automatización de procesos</span></div>
-      <div class="svc-row"><span class="no">08</span><span class="label">Pagos, formularios y reservas</span></div>
+    <!-- 2 · trabajo real: sitios en vivo -->
+    <section class="work">
+      <div class="micro work-label">Sitios reales que hicimos &mdash; en vivo ahora mismo</div>
+      <div class="cards">
+        <div class="card">
+          <div class="chrome">
+            <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <img src="assets/site-lsf.jpg" alt="lightspecterfilm.com">
+          </div>
+          <div class="card-domain">lightspecterfilm.com</div>
+        </div>
+        <div class="card">
+          <div class="chrome">
+            <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <img src="assets/site-polkanea.jpg" alt="polkaneaproductions.com">
+          </div>
+          <div class="card-domain">polkaneaproductions.com</div>
+        </div>
+        <div class="card">
+          <div class="chrome">
+            <div class="chrome-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <img src="assets/site-aguiar.jpg" alt="aguiarflooring.com">
+          </div>
+          <div class="card-domain">aguiarflooring.com</div>
+        </div>
+      </div>
     </section>
 
+
+    <!-- 2b · oferta -->
+    <section class="offer">
+      <div class="offer-what">
+        <div class="label">Página web profesional</div>
+        <div class="meta">8 servicios · Un solo equipo</div>
+      </div>
+      <div class="offer-price">
+        <span class="was">Antes $800</span>
+        <span class="now"><span class="k">Ahora desde</span><span class="v">$499</span></span>
+      </div>
+    </section>
+
+    <!-- 3 · resultados -->
+    <section class="body">
+      <div class="micro overline">Lo que tu web hará por ti</div>
+
+      <div class="pillars">
+      <div class="pillar">
+        <span class="no">01</span>
+        <div>
+          <div class="title">Te encuentran cuando te buscan</div>
+          <div class="benefit">
+            Rápida, mobile-first y con SEO, para que te encuentren.
+          </div>
+        </div>
+      </div>
+
+      <div class="pillar">
+        <span class="no">02</span>
+        <div>
+          <div class="title">Cada visita, una oportunidad</div>
+          <div class="benefit">
+            Diseñada para convertir cada visita en llamada, mensaje, reserva o venta.
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </section>
+
+    <!-- 3b · un solo equipo para todo -->
+    <section class="breadth">
+      <div class="k">Un solo equipo para todo lo digital</div>
+      <div class="list">Tiendas online · Software a medida · Automatización · Hosting y correo · Soporte</div>
+    </section>
+
+    <!-- 4 · CTA -->
     <footer class="cta">
       <div class="cta-text">
-        <div class="cta-title">Haz crecer tu negocio</div>
+        <div class="cta-proof">Sitios en vivo · Español e inglés · Miami, FL</div>
+        <div class="cta-title">Agenda tu consulta gratis</div>
         <div class="rule-turquoise cta-rule"></div>
-        <div class="micro cta-ask">Solicita una consulta</div>
         <div class="cta-lines">
           <div class="tel">(305) 833-2984</div>
           <div class="web">305WEBSERVICE.COM</div>
@@ -119,11 +318,12 @@
       </div>
       <div class="qr-wrap">
         <div class="qr-card">
-          <img src="assets/qr-305webservice.svg" alt="Código QR: https://305webservice.com">
+          <img src="assets/qr-305webservice.svg" alt="QR code: https://305webservice.com">
         </div>
-        <div class="micro qr-caption">Escanea para conocer más</div>
+        <div class="micro qr-caption">Escanea y empieza hoy</div>
       </div>
     </footer>
+
   </div>
 </body>
 </html>

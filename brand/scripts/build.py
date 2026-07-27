@@ -39,6 +39,16 @@ PIECES = [
 ]
 
 
+# Filtro opcional: `py scripts/build.py flyer-es flyer-en` reconstruye solo esas
+# piezas y omite los pipelines de social y reels.
+ONLY = set(sys.argv[1:])
+if ONLY:
+    PIECES = [p for p in PIECES if p[0] in ONLY]
+    unknown = ONLY - {p[0] for p in PIECES}
+    if unknown:
+        raise SystemExit(f"Piezas desconocidas: {', '.join(sorted(unknown))}")
+
+
 def edge(args: list[str]) -> None:
     subprocess.run([EDGE, "--headless", "--disable-gpu", "--hide-scrollbars",
                     "--virtual-time-budget=10000", *args],
@@ -81,6 +91,9 @@ for name, w, h, is_print, has_qr in PIECES:
     print(f"{name}: listo ({im.size[0]}x{im.size[1]} px)")
 
 print("\nPiezas de imprenta completas.")
+
+if ONLY:
+    raise SystemExit(0)
 
 # ---- piezas sociales y reels (pipelines dedicados) ----
 HERE = Path(__file__).resolve().parent
