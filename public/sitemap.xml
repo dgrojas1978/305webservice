@@ -1,40 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.305webservice.com/</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/services</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/servicios"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/services"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/servicios"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/services"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/servicios</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/services"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/servicios"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/services"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/website-packages</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/website-packages"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/paquetes-web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/website-packages"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/paquetes-web</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/website-packages"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/paquetes-web"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/website-packages"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/custom-software</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/custom-software"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/software-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/custom-software"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/software-a-medida</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/custom-software"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/software-a-medida"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/custom-software"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/automation-integrations</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/automation-integrations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/automatizacion-integraciones"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/automation-integrations"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/automatizacion-integraciones</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/automation-integrations"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/automatizacion-integraciones"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/automation-integrations"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/it-infrastructure</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/it-infrastructure"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/infraestructura-it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/it-infrastructure"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/infraestructura-it</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/it-infrastructure"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/infraestructura-it"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/it-infrastructure"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/nfc-business-solutions</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/nfc-business-solutions"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/soluciones-nfc"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/nfc-business-solutions"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/soluciones-nfc</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/nfc-business-solutions"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/soluciones-nfc"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/nfc-business-solutions"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/industries</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/industries"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/industries"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/industrias</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/industries"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/industrias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/industries"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/process</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proceso"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/process"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proceso"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/process"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/proceso</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/process"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/proceso"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/process"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/about</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/nosotros"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/nosotros"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/about"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/nosotros</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/about"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/nosotros"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/about"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/contact</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/contacto"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/contacto"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/contact"/>
+  </url>
+  <url>
+    <loc>https://www.305webservice.com/es/contacto</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/contacto"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/contact"/>
   </url>
   <url>
     <loc>https://www.305webservice.com/privacy</loc>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/privacidad"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/privacidad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/privacy"/>
   </url>
-  <url><loc>https://www.305webservice.com/es</loc></url>
-  <url><loc>https://www.305webservice.com/es/servicios</loc></url>
-  <url><loc>https://www.305webservice.com/es/proceso</loc></url>
-  <url><loc>https://www.305webservice.com/es/nosotros</loc></url>
-  <url><loc>https://www.305webservice.com/es/contacto</loc></url>
-  <url><loc>https://www.305webservice.com/es/privacidad</loc></url>
+  <url>
+    <loc>https://www.305webservice.com/es/privacidad</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.305webservice.com/privacy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.305webservice.com/es/privacidad"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.305webservice.com/privacy"/>
+  </url>
 </urlset>

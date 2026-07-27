@@ -8,6 +8,8 @@ export interface Lead {
   message: string;
   consent: boolean;
   locale?: "en" | "es";
+  /** Atribución (UTM/referrer) capturada con consentimiento del envío. */
+  attribution?: Record<string, string>;
   createdAt: Date;
   source?: string;
 }

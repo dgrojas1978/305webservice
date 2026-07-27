@@ -1,106 +1,36 @@
-import { For } from "solid-js";
 import Seo from "~/components/Seo";
+import JsonLd from "~/components/JsonLd";
 import Layout from "~/components/layout/Layout";
-import Container from "~/components/ui/Container";
 import PageHero from "~/components/pages/PageHero";
-import { ButtonLink } from "~/components/ui/Button";
+import PackageSelector from "~/components/sections/PackageSelector";
+import { Industries, WhyCustom, ProcessSteps, Faq, FinalCta } from "~/components/sections/HomeSections";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
+import { breadcrumbSchema, faqSchema } from "~/lib/schema";
+import { SITE_NAME } from "~/lib/site";
 
 export default function ServicesPage(props: { locale: Locale }) {
   const t = () => C[props.locale];
-
+  const intro = () =>
+    props.locale === "es"
+      ? "Cada servicio empaquetado alrededor de un resultado de negocio real — con un cliente ideal, entregables claros y un solo próximo paso."
+      : "Every service packaged around a real business outcome — with a clear ideal customer, defined deliverables and one simple next step.";
   return (
     <Layout locale={props.locale} page="services">
-      <Seo
-        title={t().meta.services.title}
-        description={t().meta.services.description}
-        path={PATHS.services[props.locale]}
-        altPath={altPath("services", props.locale)}
-        locale={props.locale}
-      />
+      <Seo title={t().meta.services.title} description={t().meta.services.description} path={PATHS.services[props.locale]} altPath={altPath("services", props.locale)} locale={props.locale} />
+      <JsonLd data={breadcrumbSchema([{ name: SITE_NAME, path: PATHS.home[props.locale] }, { name: t().nav.services, path: PATHS.services[props.locale] }])} />
+      <JsonLd data={faqSchema(t().faq.items)} />
 
-      <PageHero eyebrow={t().services.eyebrow} intro={t().services.pageIntro}>
-        {t().services.title1}
-        <br />
-        {t().services.title2}
+      <PageHero eyebrow={t().selector.eyebrow} intro={intro()}>
+        {props.locale === "es" ? "Elige el resultado que tu negocio necesita" : "Choose the outcome your business needs"}
       </PageHero>
 
-      <section class="bg-paper">
-        <Container>
-          <For each={t().services.items}>
-            {(svc) => (
-              <article
-                id={svc.id}
-                class="grid scroll-mt-28 grid-cols-1 gap-10 border-b border-hairline py-16 md:grid-cols-12 md:py-24"
-              >
-                {/* nombre */}
-                <div class="md:col-span-5">
-                  <h2 class="max-w-[14ch] text-h3 uppercase text-navy">{svc.name}</h2>
-                  <div class="rule-t mt-6" />
-                  <p class="mt-6 max-w-prose text-body-lg text-body">{svc.short}</p>
-                </div>
-
-                {/* detalle */}
-                <div class="space-y-10 md:col-span-6 md:col-start-7">
-                  <div class="reveal">
-                    <h3 class="micro-caps text-blue">{t().services.labels.problem}</h3>
-                    <p class="mt-3 max-w-prose text-base leading-relaxed text-body">
-                      {svc.problem}
-                    </p>
-                  </div>
-
-                  <div class="reveal">
-                    <h3 class="micro-caps text-blue">{t().services.labels.includes}</h3>
-                    <ul class="mt-3">
-                      <For each={svc.includes}>
-                        {(item) => (
-                          <li class="border-b border-hairline py-2.5 text-base font-medium text-navy">
-                            {item}
-                          </li>
-                        )}
-                      </For>
-                    </ul>
-                  </div>
-
-                  <div class="reveal">
-                    <h3 class="micro-caps text-blue">{t().services.labels.forWho}</h3>
-                    <p class="mt-3 max-w-prose text-base leading-relaxed text-body">
-                      {svc.forWho}
-                    </p>
-                  </div>
-
-                  <div class="reveal">
-                    <h3 class="micro-caps text-blue">{t().services.labels.integrations}</h3>
-                    <p class="mt-3 max-w-prose text-base leading-relaxed text-body">
-                      {svc.integrations}
-                    </p>
-                  </div>
-
-                  <ButtonLink
-                    href={`${PATHS.contact[props.locale]}?service=${svc.id}`}
-                    variant="outline"
-                  >
-                    {t().services.labels.cta}
-                  </ButtonLink>
-                </div>
-              </article>
-            )}
-          </For>
-        </Container>
-      </section>
-
-      {/* CTA final compacto */}
-      <section data-surface="navy" class="bg-navy py-24 md:py-32">
-        <Container>
-          <h2 class="text-h2 uppercase text-paper">
-            {t().finalCta.title1} {t().finalCta.title2}
-          </h2>
-          <div class="mt-10">
-            <ButtonLink href={PATHS.contact[props.locale]}>{t().finalCta.button}</ButtonLink>
-          </div>
-        </Container>
-      </section>
+      <PackageSelector locale={props.locale} heading={false} />
+      <WhyCustom locale={props.locale} />
+      <Industries locale={props.locale} />
+      <ProcessSteps locale={props.locale} />
+      <Faq locale={props.locale} />
+      <FinalCta locale={props.locale} />
     </Layout>
   );
 }

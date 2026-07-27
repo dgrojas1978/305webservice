@@ -34,7 +34,15 @@
   --micro: 0.72rem;
 
   --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* azules accesibles: tinta oscura para texto pequeño sobre claro (AA),
+     y azul claro para texto pequeño sobre navy (AA). */
+  --blue-ink: #0e47c8;
+  --blue-on-navy: #6aa2ff;
 }
+
+.text-blue-ink { color: var(--blue-ink); }
+.text-blue-navy { color: var(--blue-on-navy); }
 
 @layer base {
   html {
@@ -170,19 +178,30 @@
     transform-origin: left center;
   }
 
-  /* botones: inversión limpia de color, sin sombras */
+  /* botones: acción clara y reconocible, radio suave */
   .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-3 px-7 py-3 text-center;
-    font-size: 0.8rem;
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2.5 px-6 py-3 text-center;
+    font-size: 0.82rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     border: 1.5px solid transparent;
+    border-radius: 6px;
     transition:
       background-color 180ms var(--ease-editorial),
       color 180ms var(--ease-editorial),
       border-color 180ms var(--ease-editorial);
   }
+  .btn-ghost {
+    background: transparent;
+    color: var(--electric-blue);
+    border-color: transparent;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    padding-left: 0; padding-right: 0;
+  }
+  .btn-ghost:hover { color: var(--navy); }
+  [data-surface="navy"] .btn-ghost { color: var(--turquoise); }
   .btn-primary {
     background: var(--electric-blue);
     color: var(--pure-white);
@@ -214,6 +233,39 @@
     color: var(--navy);
     border-color: var(--warm-white);
   }
+
+  /* tarjetas comerciales: borde hairline + sombra sutil (permitido por el brief) */
+  .card {
+    background: var(--pure-white);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(7, 20, 38, 0.04), 0 8px 24px rgba(7, 20, 38, 0.05);
+    transition:
+      transform 200ms var(--ease-editorial),
+      box-shadow 200ms var(--ease-editorial),
+      border-color 200ms var(--ease-editorial);
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 4px rgba(7, 20, 38, 0.05), 0 16px 40px rgba(7, 20, 38, 0.1);
+    border-color: rgba(20, 108, 255, 0.35);
+  }
+  .card-featured {
+    border-color: var(--electric-blue);
+    box-shadow: 0 2px 4px rgba(7, 20, 38, 0.05), 0 18px 44px rgba(20, 108, 255, 0.16);
+  }
+
+  /* badge / pill */
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3em 0.7em; border-radius: 999px;
+  }
+  .badge-blue { background: #e7efff; color: var(--blue-ink); }
+  .badge-navy { background: var(--navy); color: var(--warm-white); }
+  /* badge para heroes navy: pill turquesa translúcido, texto turquesa (AA) */
+  .badge-onnavy { background: rgba(32, 215, 197, 0.14); color: var(--turquoise); }
 
   /* campos de formulario editoriales */
   .field-input {
