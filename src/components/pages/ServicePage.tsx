@@ -6,6 +6,7 @@ import Container from "~/components/ui/Container";
 import PageHero from "~/components/pages/PageHero";
 import { ButtonLink } from "~/components/ui/Button";
 import { ProcessSteps, Faq, FinalCta } from "~/components/sections/HomeSections";
+import SelectedWork from "~/components/sections/SelectedWork";
 import { C } from "~/data/content";
 import { OFFERS, type Offer, type OfferId } from "~/data/offers";
 import { PATHS, altPath, type Locale, type PageKey } from "~/lib/i18n";
@@ -22,6 +23,7 @@ interface Props {
   heroIntro: string;
   heroPrice?: string;
   heroService?: OfferId;
+  showWork?: boolean;
 }
 
 function OfferBlock(props: { locale: Locale; offer: Offer; index: number }) {
@@ -156,6 +158,8 @@ export default function ServicePage(props: Props) {
       >
         {props.heroTitle}
       </PageHero>
+
+      <Show when={props.showWork}><SelectedWork locale={props.locale} /></Show>
 
       <For each={offers()}>{(o, i) => <OfferBlock locale={props.locale} offer={o} index={i()} />}</For>
 

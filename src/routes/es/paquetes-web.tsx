@@ -5,6 +5,6 @@ export default function P() {
       offerIds={["website-starter", "business-website", "online-store"]}
       heroTitle="Paquetes web"
       heroIntro="Webs profesionales que convierten visitas en llamadas, mensajes y cotizaciones — desde un starter de $499 hasta una web empresarial o tienda en línea."
-      heroPrice="Desde $499" heroService="website-starter" />
+      heroPrice="Desde $499" heroService="website-starter" showWork />
   );
 }

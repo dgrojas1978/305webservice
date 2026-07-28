@@ -1,0 +1,717 @@
+/**
+ * Digital-card profile system (NFC / QR / link).
+ *
+ * Modelo reutilizable por diseño (brief §20): un CardProfile separa marca,
+ * persona, empresa, conversión y NFC para que futuros perfiles (empleados,
+ * Light Specter Film, Perlas del Cielo) cambien tokens y contenido, no código.
+ *
+ * Solo existe el perfil de EMPRESA "305". No se inventan personas, retratos
+ * ni cargos: un perfil personal se añade cuando haya datos verificados.
+ */
+import {
+  CONTACT_EMAIL,
+  PHONE_DISPLAY,
+  PHONE_TEL,
+  SITE_NAME,
+  SITE_URL,
+  WHATSAPP_NUMBER,
+} from "~/lib/site";
+import type {
+  BusinessReviewConfig,
+  CardLocationConfig,
+  VCardMediaConfig,
+} from "~/lib/cardModules";
+
+export type CardLocale = "en" | "es";
+
+/**
+ * Modalidad estructural de la tarjeta (benchmark maestro 2026-07-28).
+ * Todas comparten calidad/arquitectura/contacto/analítica; cada modo cambia
+ * CTA, prueba, flujo y módulos:
+ *  - professional: Identity → Save Contact → Book/Call → Credentials → Links → Exchange
+ *  - business:     Brand → Primary Business Action → Save Contact → Proof → Services → Exchange   (305)
+ *  - review:       Brand → Leave a Review → Rating → Location/Call → Social
+ *  - commerce:     Brand → Shop Now → Featured Products → Contact → Social
+ *  - creator:      Identity → Watch/Discover → Featured Work → Contact/Booking → Social            (LSF futuro)
+ *  - nonprofit:    Mission → Donate/Participate → Impact → Contact → Social
+ * Solo "business" está implementado (perfil 305). Los demás se construyen
+ * cuando exista un negocio real con datos aprobados — no se inventa contenido.
+ */
+export type CardMode = "professional" | "business" | "review" | "commerce" | "creator" | "nonprofit";
+
+/* ---------------- tipos del sistema ---------------- */
+
+export interface CardBrand {
+  /** Wordmark: parte acentuada + resto ("305" + "Web Service"). */
+  wordmarkAccent: string;
+  wordmarkRest: string;
+  /** Activo de logo real (raster) para vCard/compartir. */
+  logoUrl: string;
+}
+
+/** Datos de persona (solo para tarjetas personales; requiere datos verificados). */
+export interface CardPerson {
+  name: string;
+  role: Record<CardLocale, string>;
+  portraitUrl?: string;
+  statement?: Record<CardLocale, string>;
+}
+
+export interface CardCompany {
+  name: string;
+  descriptor: Record<CardLocale, string>;
+  positioning: Record<CardLocale, string>;
+  location: Record<CardLocale, string>;
+  website: string;
+  websiteDisplay: string;
+  phoneTel: string;
+  phoneDisplay: string;
+  whatsappNumber: string;
+  email: string;
+}
+
+export interface CardServiceOption {
+  id: string;
+  /** id del servicio en el formulario de cotización (content.formServices). */
+  formService: string;
+  label: Record<CardLocale, string>;
+  outcome: Record<CardLocale, string>;
+  price: Record<CardLocale, string>;
+  ctaLabel: Record<CardLocale, string>;
+  /** Ruta del sitio para "ver más" (EN; la ES se deriva en la página). */
+  href: string;
+}
+
+/** Necesidad del concierge («What are you ready to improve?»). */
+export interface CardNeed {
+  id: string;
+  /** Servicio del selector al que mapea (CardServiceOption.id). */
+  serviceId: string;
+  label: Record<CardLocale, string>;
+  /** Recomendación breve (1 frase). */
+  recommendation: Record<CardLocale, string>;
+  /** Resultado esperado (1 frase). */
+  outcome: Record<CardLocale, string>;
+  /** Proyecto real relacionado (key de CardProject) — solo cuando exista. */
+  projectKey?: string;
+  /** Nota de prueba textual cuando la prueba no es un proyecto (p. ej. esta tarjeta). */
+  proofNote?: Record<CardLocale, string>;
+  /** Precio inicial SOLO cuando está aprobado. */
+  price?: Record<CardLocale, string>;
+}
+
+export interface CardProject {
+  key: string;
+  domain: string;
+  url: string;
+  img: string;
+  industry: Record<CardLocale, string>;
+  fact: Record<CardLocale, string>;
+  alt: Record<CardLocale, string>;
+}
+
+export interface CardConversion {
+  quoteHref: string; // EN; ES derivada
+  packageHref: string;
+  services: CardServiceOption[];
+  needs: CardNeed[];
+  projects: CardProject[];
+}
+
+export interface CardNfc {
+  /** Slug público corto; el chip NFC guarda solo https://…/nfc/<slug>. */
+  slug: string;
+  /** Perfil canónico al que redirige el slug. */
+  canonicalPath: string;
+  /** Estado documentado (no se bloquea la tarjeta física sin aprobación). */
+  status: "draft" | "testing" | "live";
+}
+
+export interface CardProfile {
+  id: string;
+  kind: "company" | "person";
+  /** Modalidad estructural (ver CardMode). Define orden de capas y CTA dominante. */
+  mode: CardMode;
+  /** Módulos opcionales por negocio (reseñas / ubicación / media del vCard). */
+  reviews?: BusinessReviewConfig;
+  location?: CardLocationConfig;
+  vcardMedia?: VCardMediaConfig;
+  brand: CardBrand;
+  company: CardCompany;
+  person?: CardPerson;
+  conversion: CardConversion;
+  nfc: CardNfc;
+}
+
+/* ---------------- perfil «305» (empresa) ---------------- */
+
+export const CARD_305: CardProfile = {
+  id: "305",
+  kind: "company",
+  mode: "business",
+  /**
+   * Reseñas DESACTIVADAS: 305 no tiene todavía un Google Business Profile
+   * verificado, así que no hay Place ID ni URL oficial. No se inventa rating,
+   * conteo ni reseñas → el módulo no se renderiza para el visitante.
+   * Para activarlo: poner enabled:true + placeId + requestReviewUrl reales.
+   */
+  reviews: {
+    enabled: false,
+    provider: "google",
+    displayReviews: true,
+    maxDisplayedReviews: 3,
+    sortDisclosure: "Most relevant",
+  },
+  /**
+   * 305 no publica dirección postal (decisión de negocio ya vigente en el
+   * sitio y en el schema): es un negocio de ZONA DE SERVICIO. Las zonas son
+   * exactamente lo que la marca ya declara públicamente.
+   */
+  location: {
+    mode: "service-area",
+    showExactAddress: false,
+    headquartersLabel: "Miami, Florida",
+    serviceAreas: [
+      { label: "Miami, Florida", kind: "city" },
+      { label: "United States (remote)", labelEs: "Estados Unidos (remoto)", kind: "region" },
+    ],
+  },
+  /** vCard de organización con el logo real embebido (PHOTO + LOGO). */
+  vcardMedia: {
+    kind: "organization",
+    logoUrl: "/card/vcard-logo-305.png",
+    embedImage: true,
+  },
+  brand: {
+    wordmarkAccent: "305",
+    wordmarkRest: "Web Service",
+    logoUrl: `${SITE_URL}/icon-512.png`,
+  },
+  company: {
+    name: SITE_NAME,
+    descriptor: {
+      en: "Websites, Custom Software, NFC & IT Solutions",
+      es: "Páginas web, software personalizado, NFC y soluciones informáticas",
+    },
+    positioning: {
+      en: "Technology that helps your business sell, operate and grow.",
+      es: "Tecnología que ayuda a tu negocio a vender, operar y crecer.",
+    },
+    location: {
+      en: "Miami, Florida · Serving businesses across the United States",
+      es: "Miami, Florida · Servicio a negocios en todo Estados Unidos",
+    },
+    website: SITE_URL,
+    websiteDisplay: "305webservice.com",
+    phoneTel: PHONE_TEL,
+    phoneDisplay: PHONE_DISPLAY,
+    whatsappNumber: WHATSAPP_NUMBER,
+    email: CONTACT_EMAIL,
+  },
+  conversion: {
+    quoteHref: "/contact",
+    packageHref: "/website-packages",
+    services: [
+      {
+        id: "website", formService: "website-starter",
+        label: { en: "Website", es: "Página web" },
+        outcome: {
+          en: "Build a professional online presence that makes contacting your business easy.",
+          es: "Crea una presencia profesional que haga fácil contactar a tu negocio.",
+        },
+        price: { en: "Starting at $499", es: "Desde $499" },
+        ctaLabel: { en: "Start My Website", es: "Empezar mi página web" },
+        href: "/website-packages",
+      },
+      {
+        id: "online-store", formService: "online-store",
+        label: { en: "Online Store", es: "Tienda en línea" },
+        outcome: {
+          en: "Make it easier for customers to discover, order and pay online.",
+          es: "Haz más fácil descubrir, pedir y pagar en línea.",
+        },
+        price: { en: "Custom quote", es: "Cotización personalizada" },
+        ctaLabel: { en: "Plan My Online Store", es: "Planear mi tienda" },
+        href: "/website-packages#online-store",
+      },
+      {
+        id: "custom-software", formService: "custom-software",
+        label: { en: "Custom Software", es: "Software a medida" },
+        outcome: {
+          en: "Replace manual work with software built around your workflow.",
+          es: "Reemplaza trabajo manual con software hecho para tu flujo.",
+        },
+        price: { en: "Scoped proposal", es: "Propuesta con alcance" },
+        ctaLabel: { en: "Discuss My Software Idea", es: "Hablar de mi idea" },
+        href: "/custom-software",
+      },
+      {
+        id: "automation", formService: "automation",
+        label: { en: "Automation", es: "Automatización" },
+        outcome: {
+          en: "Connect your tools and cut out repetitive manual work.",
+          es: "Conecta tus herramientas y elimina trabajo repetitivo.",
+        },
+        price: { en: "Scoped proposal", es: "Propuesta con alcance" },
+        ctaLabel: { en: "Find What We Can Automate", es: "Ver qué automatizar" },
+        href: "/automation-integrations",
+      },
+      {
+        id: "nfc", formService: "nfc",
+        label: { en: "NFC Business Solutions", es: "Soluciones NFC" },
+        outcome: {
+          en: "Turn a tap into a contact, review, booking, menu or lead.",
+          es: "Convierte un toque en contacto, reseña, reserva, menú o lead.",
+        },
+        price: { en: "Custom quote", es: "Cotización personalizada" },
+        ctaLabel: { en: "Explore NFC Solutions", es: "Explorar NFC" },
+        href: "/nfc-business-solutions",
+      },
+      {
+        id: "it", formService: "it-infrastructure",
+        label: { en: "IT Infrastructure & Support", es: "Infraestructura y soporte IT" },
+        outcome: {
+          en: "Keep your business connected, protected and running.",
+          es: "Mantén tu negocio conectado, protegido y funcionando.",
+        },
+        price: { en: "Assessment first", es: "Evaluación primero" },
+        ctaLabel: { en: "Request an IT Assessment", es: "Pedir una evaluación" },
+        href: "/it-infrastructure",
+      },
+    ],
+    /** Concierge: necesidades del negocio → recomendación + prueba real. */
+    needs: [
+      {
+        id: "win-customers", serviceId: "website",
+        label: { en: "Win more customers", es: "Ganar más clientes" },
+        recommendation: {
+          en: "A professional website that explains what you do and makes contacting you effortless.",
+          es: "Una página profesional que explique lo que haces y haga fácil contactarte.",
+        },
+        outcome: {
+          en: "More calls, messages and quote requests from people already searching.",
+          es: "Más llamadas, mensajes y cotizaciones de gente que ya te busca.",
+        },
+        projectKey: "aguiar",
+        price: { en: "Websites from $499", es: "Webs desde $499" },
+      },
+      {
+        id: "sell-online", serviceId: "online-store",
+        label: { en: "Sell online", es: "Vender en línea" },
+        recommendation: {
+          en: "A store, catalog or subscription flow built around your products and how you charge.",
+          es: "Una tienda, catálogo o flujo de suscripción hecho para tus productos y tu forma de cobrar.",
+        },
+        outcome: {
+          en: "Customers can discover, order and pay without calling you first.",
+          es: "Tus clientes descubren, piden y pagan sin tener que llamarte primero.",
+        },
+        projectKey: "polkanea",
+      },
+      {
+        id: "automate", serviceId: "automation",
+        label: { en: "Automate operations", es: "Automatizar operaciones" },
+        recommendation: {
+          en: "Connect the tools you already use and remove the repetitive manual steps.",
+          es: "Conecta las herramientas que ya usas y elimina los pasos manuales repetitivos.",
+        },
+        outcome: {
+          en: "Fewer errors, faster follow-ups and hours back every week.",
+          es: "Menos errores, seguimiento más rápido y horas recuperadas cada semana.",
+        },
+      },
+      {
+        id: "custom-software", serviceId: "custom-software",
+        label: { en: "Build custom software", es: "Crear software a medida" },
+        recommendation: {
+          en: "Portals, dashboards and platforms designed around your exact workflow.",
+          es: "Portales, dashboards y plataformas diseñadas para tu flujo exacto.",
+        },
+        outcome: {
+          en: "Software that fits your business — instead of forcing your business to fit software.",
+          es: "Software que se adapta a tu negocio — y no al revés.",
+        },
+        projectKey: "polkanea",
+      },
+      {
+        id: "nfc-experience", serviceId: "nfc",
+        label: { en: "Create an NFC experience", es: "Crear una experiencia NFC" },
+        recommendation: {
+          en: "Cards, stands and tags that turn one tap into a contact, review, menu or lead.",
+          es: "Tarjetas, stands y tags que convierten un toque en contacto, reseña, menú o lead.",
+        },
+        outcome: {
+          en: "Every in-person encounter becomes a saved contact or a next step.",
+          es: "Cada encuentro en persona se convierte en contacto guardado o siguiente paso.",
+        },
+        proofNote: {
+          en: "You're using one right now — this card is a live NFC experience by 305.",
+          es: "Estás usando una ahora mismo — esta tarjeta es una experiencia NFC de 305.",
+        },
+      },
+      {
+        id: "it", serviceId: "it",
+        label: { en: "Improve IT infrastructure", es: "Mejorar la infraestructura IT" },
+        recommendation: {
+          en: "Networks, cloud tools, backups and support your team can rely on.",
+          es: "Redes, nube, respaldos y soporte en los que tu equipo pueda confiar.",
+        },
+        outcome: {
+          en: "Your business stays connected, protected and running.",
+          es: "Tu negocio se mantiene conectado, protegido y funcionando.",
+        },
+      },
+    ],
+    /** Proyectos reales, los 4 APROBADOS para exhibición (2026-07-27). */
+    projects: [
+      {
+        key: "aguiar", domain: "aguiarflooring.com", url: "https://aguiarflooring.com", img: "/work/aguiar.jpg",
+        industry: { en: "Flooring & remodeling", es: "Pisos y remodelación" },
+        fact: {
+          en: "Product catalog + quote generation",
+          es: "Catálogo de productos + cotizaciones",
+        },
+        alt: {
+          en: "aguiarflooring.com — flooring company website built by 305 Web Service",
+          es: "aguiarflooring.com — web de pisos construida por 305 Web Service",
+        },
+      },
+      {
+        key: "lsf", domain: "lightspecterfilm.com", url: "https://lightspecterfilm.com", img: "/work/lsf.jpg",
+        industry: { en: "Film & production", es: "Cine y producción" },
+        fact: {
+          en: "Cinematic brand and lead experience",
+          es: "Marca cinematográfica y captación de leads",
+        },
+        alt: {
+          en: "lightspecterfilm.com — film production website built by 305 Web Service",
+          es: "lightspecterfilm.com — web de producción de cine construida por 305 Web Service",
+        },
+      },
+      {
+        key: "polkanea", domain: "polkaneaproductions.com", url: "https://polkaneaproductions.com", img: "/work/polkanea.jpg",
+        industry: { en: "Streaming platform", es: "Plataforma de streaming" },
+        fact: {
+          en: "Subscription streaming platform",
+          es: "Plataforma de streaming por suscripción",
+        },
+        alt: {
+          en: "polkaneaproductions.com — streaming platform built by 305 Web Service",
+          es: "polkaneaproductions.com — plataforma de streaming construida por 305 Web Service",
+        },
+      },
+      {
+        key: "cosme", domain: "cosmeproenza.com", url: "https://cosmeproenza.com", img: "/work/cosme.jpg",
+        industry: { en: "Arts & culture", es: "Arte y cultura" },
+        fact: {
+          en: "Digital art archive",
+          es: "Archivo digital de arte",
+        },
+        alt: {
+          en: "cosmeproenza.com — art archive website built by 305 Web Service",
+          es: "cosmeproenza.com — web de archivo de arte construida por 305 Web Service",
+        },
+      },
+    ],
+  },
+  nfc: {
+    slug: "305",
+    canonicalPath: "/card/305",
+    status: "draft", // no bloquear tarjetas físicas hasta aprobar el destino
+  },
+};
+
+/** Registro de perfiles publicables. Futuros perfiles se agregan aquí. */
+export const CARD_PROFILES: Record<string, CardProfile> = {
+  [CARD_305.id]: CARD_305,
+};
+
+/* ---------------- copy de la tarjeta (EN/ES, brief §25–26) ---------------- */
+
+export const CARD_COPY = {
+  en: {
+    langLabel: "Language",
+    hero: {
+      eyebrow: "Miami-based technology partner",
+      avail: "Miami · Available for projects",
+      headline: "Technology built to move your business forward.",
+      sub: "Websites, custom software, NFC experiences and IT solutions—built around your business.",
+      proof: ["Real projects", "English & Spanish", "Direct support"],
+      ctaPrimary: "Start a Project",
+      ctaSave: "Save Contact",
+      viewProject: "View Project",
+      quick: { whatsapp: "WhatsApp", call: "Call", share: "Share" },
+    },
+    /** Conversion Panel: el panel derecho VENDE (no comparte). */
+    convertPanel: {
+      eyebrow: "Your next move",
+      heading: "Let's build what your business needs next.",
+      sub: "Tell us what you want to improve. We'll recommend a practical solution and a clear next step.",
+      outcomes: [
+        "Look more professional",
+        "Turn more visitors into customers",
+        "Operate with less manual work",
+      ],
+      trust: "English & Spanish · Direct communication · Clear project scope",
+      price: "Professional websites from $499. Custom solutions quoted by scope.",
+    },
+    /** Mensaje precargado de WhatsApp (localizado). */
+    waMessage: "Hi 305 Web Service, I'd like to discuss a project for my business.",
+    more: "More",
+    reviews: {
+      heading: "Trusted by customers",
+      basedOn: "Based on {count} Google reviews",
+      read: "Read Google Reviews",
+      leave: "Leave a Google Review",
+      sortRelevance: "Reviews shown are ordered by relevance from Google Maps.",
+      sortNewest: "Reviews shown are ordered newest first from Google Maps.",
+      source: "Reviews from Google",
+      viewOnGoogle: "View on Google Maps",
+      translated: "Translated by Google",
+      stars: "{rating} out of 5",
+    },
+    location: {
+      heading: "Where we work",
+      visit: "Visit us",
+      serviceArea: "Service area",
+      alsoServe: "We also serve",
+      directions: "Get directions",
+      call: "Call",
+      hours: "Hours",
+      appointment: "Appointment required",
+      checkArea: "Check availability in your area",
+      nearest: "Find nearest location",
+      selectLocation: "Choose a location",
+      basedIn: "Based in",
+    },
+    shareCopied: "Link copied",
+    ribbon: ["Websites from $499", "Custom solutions", "Miami based", "Nationwide service"],
+    concierge: {
+      heading: "What are you ready to improve?",
+      proofLabel: "Related project",
+      cta: "Start a Project",
+    },
+    work: {
+      heading: "Built for real businesses.",
+      sub: "Selected custom projects by 305 Web Service.",
+      note: "Features, scope and pricing vary by project.",
+      visit: "Visit site",
+      prev: "Previous project",
+      next: "Next project",
+    },
+    convert: {
+      heading: "Let's find the right solution for your business.",
+      ctaPrimary: "Start a Project",
+      ctaWhatsApp: "Chat on WhatsApp",
+      note: "Professional websites start at $499. Custom solutions are quoted by scope.",
+    },
+    exchange: {
+      cta: "Share Your Contact",
+      explain: "Send your details securely so 305 can follow up.",
+    },
+    share: {
+      heading: "Share this card",
+      copy: "Copy link",
+      native: "Share",
+      qrText: "Scan to open this card",
+      saveContact: "Save contact",
+      links: [
+        { label: "Website", href: "/" },
+        { label: "Website Packages", href: "/website-packages" },
+        { label: "Custom Software", href: "/custom-software" },
+        { label: "NFC Solutions", href: "/nfc-business-solutions" },
+        { label: "Privacy", href: "/privacy" },
+      ],
+    },
+    sheet: {
+      titleProject: "Start a project",
+      titleExchange: "Share your contact",
+      step1: "Step 1 of 2",
+      step2: "Step 2 of 2",
+      name: "Name",
+      method: "Preferred contact method",
+      methods: { whatsapp: "WhatsApp", call: "Phone call", email: "Email" },
+      need: "What do you need?",
+      selectNeed: "Select an option",
+      continue: "Continue",
+      back: "Back",
+      company: "Company",
+      optional: "optional",
+      email: "Email",
+      phone: "Phone",
+      message: "Short message",
+      consent: "I agree to be contacted about my request. See our",
+      privacy: "privacy policy",
+      submit: "Send",
+      sending: "Sending…",
+      close: "Close",
+      success: {
+        title: "Thanks—your information was received.",
+        text: "We'll follow up shortly. You can also continue right now:",
+        whatsapp: "Continue on WhatsApp",
+        back: "Back to the card",
+      },
+      errors: {
+        required: "Please complete your name, contact method and what you need.",
+        email: "Please enter a valid email address.",
+        phone: "Please enter a phone number so we can reach you.",
+        consent: "Please accept the consent checkbox so we can contact you.",
+        server: "We could not send your information. Please try again or use WhatsApp.",
+      },
+    },
+    barStart: "Start",
+    barSave: "Save",
+    footerNote: "Digital card by 305 Web Service — the same kind we build for businesses.",
+  },
+  es: {
+    langLabel: "Idioma",
+    hero: {
+      eyebrow: "Tu socio tecnológico en Miami",
+      avail: "Miami · Disponible para proyectos",
+      headline: "Tecnología hecha para impulsar tu negocio.",
+      sub: "Páginas web, software a medida, experiencias NFC y soluciones IT — hechas para tu negocio.",
+      proof: ["Proyectos reales", "Español e inglés", "Atención directa"],
+      ctaPrimary: "Empezar un proyecto",
+      ctaSave: "Guardar contacto",
+      viewProject: "Ver proyecto",
+      quick: { whatsapp: "WhatsApp", call: "Llamar", share: "Compartir" },
+    },
+    /** Conversion Panel: el panel derecho VENDE (no comparte). */
+    convertPanel: {
+      eyebrow: "Tu siguiente paso",
+      heading: "Construyamos lo que tu negocio necesita ahora.",
+      sub: "Cuéntanos qué quieres mejorar. Te recomendamos una solución práctica y un siguiente paso claro.",
+      outcomes: [
+        "Verte más profesional",
+        "Convertir más visitas en clientes",
+        "Operar con menos trabajo manual",
+      ],
+      trust: "Español e inglés · Comunicación directa · Alcance claro",
+      price: "Páginas web profesionales desde $499. Soluciones a medida cotizadas por alcance.",
+    },
+    /** Mensaje precargado de WhatsApp (localizado). */
+    waMessage: "Hola 305 Web Service, quisiera conversar sobre un proyecto para mi negocio.",
+    more: "Más",
+    reviews: {
+      heading: "La confianza de nuestros clientes",
+      basedOn: "Basado en {count} reseñas de Google",
+      read: "Ver reseñas en Google",
+      leave: "Dejar una reseña en Google",
+      sortRelevance: "Las reseñas se muestran por relevancia desde Google Maps.",
+      sortNewest: "Las reseñas se muestran de más recientes a más antiguas desde Google Maps.",
+      source: "Reseñas de Google",
+      viewOnGoogle: "Ver en Google Maps",
+      translated: "Traducido por Google",
+      stars: "{rating} de 5",
+    },
+    location: {
+      heading: "Dónde trabajamos",
+      visit: "Visítanos",
+      serviceArea: "Zona de servicio",
+      alsoServe: "También atendemos",
+      directions: "Cómo llegar",
+      call: "Llamar",
+      hours: "Horario",
+      appointment: "Con cita previa",
+      checkArea: "Consultar disponibilidad en tu zona",
+      nearest: "Encontrar la ubicación más cercana",
+      selectLocation: "Elige una ubicación",
+      basedIn: "Con base en",
+    },
+    shareCopied: "Enlace copiado",
+    ribbon: ["Webs desde $499", "Soluciones a medida", "Base en Miami", "Servicio nacional"],
+    concierge: {
+      heading: "¿Qué estás listo para mejorar?",
+      proofLabel: "Proyecto relacionado",
+      cta: "Empezar un proyecto",
+    },
+    work: {
+      heading: "Construido para negocios reales.",
+      sub: "Proyectos personalizados seleccionados de 305 Web Service.",
+      note: "Las funciones, el alcance y el precio varían según el proyecto.",
+      visit: "Ver sitio",
+      prev: "Proyecto anterior",
+      next: "Proyecto siguiente",
+    },
+    convert: {
+      heading: "Encontremos la solución correcta para tu negocio.",
+      ctaPrimary: "Empezar un proyecto",
+      ctaWhatsApp: "Chatear por WhatsApp",
+      note: "Las páginas web profesionales empiezan en $499. Las soluciones a medida se cotizan por alcance.",
+    },
+    exchange: {
+      cta: "Compartir mis datos",
+      explain: "Envía tus datos de forma segura para que 305 te dé seguimiento.",
+    },
+    share: {
+      heading: "Compartir esta tarjeta",
+      copy: "Copiar enlace",
+      native: "Compartir",
+      qrText: "Escanea para abrir esta tarjeta",
+      saveContact: "Guardar contacto",
+      links: [
+        { label: "Sitio web", href: "/es" },
+        { label: "Paquetes web", href: "/es/paquetes-web" },
+        { label: "Software a medida", href: "/es/software-a-medida" },
+        { label: "Soluciones NFC", href: "/es/soluciones-nfc" },
+        { label: "Privacidad", href: "/es/privacidad" },
+      ],
+    },
+    sheet: {
+      titleProject: "Empezar un proyecto",
+      titleExchange: "Compartir mis datos",
+      step1: "Paso 1 de 2",
+      step2: "Paso 2 de 2",
+      name: "Nombre",
+      method: "¿Cómo prefieres que te contactemos?",
+      methods: { whatsapp: "WhatsApp", call: "Llamada", email: "Correo" },
+      need: "¿Qué necesitas?",
+      selectNeed: "Elige una opción",
+      continue: "Continuar",
+      back: "Atrás",
+      company: "Empresa",
+      optional: "opcional",
+      email: "Correo",
+      phone: "Teléfono",
+      message: "Mensaje corto",
+      consent: "Acepto que me contacten sobre mi solicitud. Ver la",
+      privacy: "política de privacidad",
+      submit: "Enviar",
+      sending: "Enviando…",
+      close: "Cerrar",
+      success: {
+        title: "Gracias — recibimos tu información.",
+        text: "Te contactamos pronto. También puedes continuar ahora:",
+        whatsapp: "Continuar por WhatsApp",
+        back: "Volver a la tarjeta",
+      },
+      errors: {
+        required: "Completa tu nombre, cómo contactarte y qué necesitas.",
+        email: "Escribe un correo válido.",
+        phone: "Escribe un teléfono para poder contactarte.",
+        consent: "Acepta el consentimiento para poder contactarte.",
+        server: "No pudimos enviar tu información. Intenta de nuevo o usa WhatsApp.",
+      },
+    },
+    barStart: "Empezar",
+    barSave: "Guardar",
+    footerNote: "Tarjeta digital de 305 Web Service — como las que construimos para negocios.",
+  },
+} as const;
+
+/** Ruta ES equivalente para un href EN del sitio (para CTAs de la tarjeta). */
+export const CARD_ES_ROUTES: Record<string, string> = {
+  "/": "/es",
+  "/contact": "/es/contacto",
+  "/website-packages": "/es/paquetes-web",
+  "/website-packages#online-store": "/es/paquetes-web#online-store",
+  "/custom-software": "/es/software-a-medida",
+  "/automation-integrations": "/es/automatizacion-integraciones",
+  "/nfc-business-solutions": "/es/soluciones-nfc",
+  "/it-infrastructure": "/es/infraestructura-it",
+  "/privacy": "/es/privacidad",
+};
+
+export function cardHref(href: string, locale: CardLocale): string {
+  return locale === "es" ? (CARD_ES_ROUTES[href] ?? href) : href;
+}

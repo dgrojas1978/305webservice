@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from "solid-js";
-import { trackEvent } from "~/lib/analytics";
+import { persistAttribution, trackEvent } from "~/lib/analytics";
 
 /**
  * Captura eventos de conversión por delegación, sin datos personales:
@@ -8,6 +8,8 @@ import { trackEvent } from "~/lib/analytics";
  */
 export default function AnalyticsListener() {
   onMount(() => {
+    persistAttribution(); // primer toque: conserva UTM del QR hasta el envío del formulario
+
     const onClick = (e: MouseEvent) => {
       const el = (e.target as HTMLElement)?.closest<HTMLElement>("[data-track], a[href]");
       if (!el) return;
