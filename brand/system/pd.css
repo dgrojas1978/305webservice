@@ -1,0 +1,47 @@
+/* ============================================================
+   305 — RECOMPOSICIONES DIGITALES + HALF-LETTER
+   Mismo lenguaje que pf.css/la tarjeta digital, pero cada formato
+   se RECOMPONE (jerarquía propia), nunca se recorta el letter.
+   Invariante por pieza: 1 wordmark · 1 hook · 1 prueba · 1 CTA · 1 QR.
+   ============================================================ */
+
+:root {
+  --ink-bg: #050d1a; --surface: #0a1728; --blue: #146cff; --blue-navy: #6aa2ff;
+  --aqua: #20d7c5; --paper: #f7f9fc;
+  --on: rgba(247,249,252,0.82); --faint: rgba(247,249,252,0.55);
+  --hair: rgba(247,249,252,0.12);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family:"Inter",Arial,sans-serif; color:var(--paper); background:var(--ink-bg); }
+
+.canvas {
+  position:relative; overflow:hidden; background:var(--ink-bg);
+  display:flex; flex-direction:column;
+  background-image:
+    radial-gradient(52% 30% at 18% 0%, rgba(20,108,255,0.18), transparent 70%),
+    radial-gradient(38% 24% at 94% 12%, rgba(32,215,197,0.08), transparent 70%);
+}
+.wordmark { font-weight:900; letter-spacing:-0.01em; text-transform:uppercase; }
+.wordmark b { color:var(--blue-navy); }
+.eyebrow { font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--aqua); }
+.hook { font-family:"Fraunces",Georgia,serif; font-weight:600; line-height:1.02; letter-spacing:-0.02em; }
+.sub { font-weight:400; color:var(--on); }
+.price { font-family:"Fraunces",Georgia,serif; font-weight:600; letter-spacing:-0.02em; }
+
+/* prueba: UNA sola captura real, marco editorial */
+.proof { border-radius:0.9%; overflow:hidden; border:1px solid var(--hair); box-shadow:0 18px 60px rgba(2,8,18,0.6); }
+.proof img { display:block; width:100%; height:100%; object-fit:cover; object-position:top; }
+.proof-meta .ind { font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--aqua); }
+.proof-meta .cap { font-weight:600; color:var(--paper); }
+.proof-meta .dom { font-weight:500; color:var(--faint); }
+
+.cta { display:inline-block; background:var(--blue); color:#fff; font-weight:800; letter-spacing:0.02em; }
+.contact { display:flex; align-items:center; flex-wrap:wrap; }
+.contact .tel { font-weight:800; color:var(--paper); letter-spacing:-0.01em; }
+.contact .wa { display:inline-flex; align-items:center; color:#25b869; font-weight:700; }
+.qrbox { background:#fff; border-radius:2%; }
+.qrbox img { display:block; width:100%; height:auto; }
+.qrlb { font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--on); }
+.trust { font-weight:600; letter-spacing:0.05em; color:var(--faint); }
+.note { font-weight:400; color:var(--faint); line-height:1.42; }
