@@ -41,8 +41,9 @@ RADIUS_MM, QR_MM = 3.18, 25.0                                # QR ≥ 22 mm exig
 
 FINAL_QR_URL = ("https://www.305webservice.com/c/305"
                 "?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal")
-# /c/305 responde 404 → placeholder marcado. Nunca localhost, nunca la home genérica.
-QR_URL = FINAL_QR_URL + "&proof=PREPRESS-PLACEHOLDER"
+# /c/305 verificado en producción (302 → /card/305 conservando las UTMs del QR).
+# Se acabó el placeholder: el QR lleva la URL DEFINITIVA.
+QR_URL = FINAL_QR_URL
 NFC_URL = ("https://www.305webservice.com/c/305"
            "?utm_source=nfc&utm_medium=physical-card&utm_campaign=305-portal")
 
@@ -209,7 +210,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{W*2+46+112}
  <div style="font-size:17px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#8fb4ff">
    305 Portal &#183; CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215</div>
  <div style="font-size:16px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#ff6b6b">
-   Prepress pending final QR &#8212; not for print</div>
+   Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
 </div></div></body></html>"""
 
 
@@ -241,7 +242,7 @@ body{{font-family:"Inter",Arial,sans-serif;width:{LW}px;height:{LH}px;background
     (sin &#8220;ajustar a p&#225;gina&#8221;).<br>
     Verificar con una tarjeta NTAG215 real encima. Marcas grises = l&#237;nea de corte.</div>
   <div style="margin-top:{3*MM}px;font-size:{3.0*MM}px;font-weight:800;letter-spacing:0.14em;
-       text-transform:uppercase;color:#dc2626">Prepress pending final QR &#8212; not for print</div>
+       text-transform:uppercase;color:#dc2626">Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
 </div>
 {block(front_png, "Front", 62*MM)}
 {block(back_png, "Back", 62*MM + H + 22*MM)}
@@ -279,7 +280,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{bw*2+80+140
   sin alterar el resto de la composici&#243;n.
 </div>
 <div style="margin-top:28px;font-size:25px;font-weight:800;letter-spacing:0.2em;
-     text-transform:uppercase;color:#ff6b6b">Prepress pending final QR &#8212; not for print</div>
+     text-transform:uppercase;color:#ff6b6b">Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
 </div></body></html>"""
 
 
@@ -340,9 +341,10 @@ def main():
             qa[side]["no_collision"] = widest >= 24
 
     rep = {
-        "status": "PREPRESS PENDING FINAL QR",
-        "production_exports": "HELD — se emiten solo tras confirmar URL final y plantilla del fabricante",
-        "blocker": "https://www.305webservice.com/c/305 responde 404; el QR embebido es placeholder",
+        "status": "PREPRESS READY — QR FINAL",
+        "production_exports": "HELD — URL final confirmada; faltan plantilla del fabricante y prueba NFC en dispositivo",
+        "blocker": "pendiente: plantilla del fabricante y prueba NFC en iPhone/Android",
+        "canonical_url_live": True,
         "copy": {
             "front": ["305 WEB SERVICE", "TECHNOLOGY THAT MOVES YOU FORWARD.",
                       "WEBSITES · SOFTWARE · CONNECTED EXPERIENCES", "TAP TO EXPLORE",
@@ -363,7 +365,7 @@ def main():
         "routes": {"front": 1, "back": 1,
                    "note": "una acción por cara: NFC delante, QR detrás"},
         "qr": {"decoded_from_final_file": d == QR_URL, "decoded": d,
-               "placeholder_url": QR_URL, "final_url_when_live": FINAL_QR_URL,
+               "is_placeholder": False, "final_url": FINAL_QR_URL,
                "ecc": "Q", "size_mm": QR_MM, "min_required_mm": 22.0,
                "quiet_zone_modules": 4, "logo_inside": False, "localhost": False,
                "points_to_canonical_card_route": True},

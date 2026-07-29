@@ -6,16 +6,24 @@
 
 | | |
 |---|---|
-| Arte | `PREPRESS PENDING FINAL QR` |
-| Exportaciones de producción | **RETENIDAS** — se emiten solo tras confirmar URL final **y** plantilla del fabricante |
+| Arte | `PREPRESS READY — QR FINAL` |
+| URL canónica | **EN VIVO** |
+| Exportaciones de producción | **RETENIDAS** — falta plantilla del fabricante y prueba NFC en dispositivo |
 | NFC | no programado, no bloqueado |
 
-Verificado el 29 jul 2026: `https://www.305webservice.com/c/305` → **404**
-(y `/card/305` → 404). El QR embebido es un **placeholder marcado**
-(`…&proof=PREPRESS-PLACEHOLDER`). **No imprimir.**
+PR #1 mergeado el 29 jul 2026. `https://www.305webservice.com/c/305` responde
+**302 → `/card/305`** conservando `utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal`.
+Se acabó el placeholder: **el QR del arte lleva la URL definitiva.**
 
-Los paquetes `direct-print/` y `vendor-cmyk/` generados antes de este refinamiento
-**se eliminaron**: contenían la copy anterior y podían imprimirse por error.
+Verificado de extremo a extremo: se decodificó el QR **desde el PNG exportado**, se llamó
+a esa URL y devolvió 302 → 200 en el dominio de producción, con la atribución del QR intacta.
+
+⚠️ El QR decodifica con OpenCV a partir de 2× de escala, no a 1011×638 nativos. Un teléfono
+capta muchos más píxeles que eso a corta distancia, así que no es un problema esperado —
+pero **hay que confirmarlo escaneando el proof impreso**.
+
+Los paquetes `direct-print/` y `vendor-cmyk/` anteriores se eliminaron: tenían copy vieja
+y QR placeholder.
 
 ---
 

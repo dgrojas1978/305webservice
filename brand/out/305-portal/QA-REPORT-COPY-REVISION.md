@@ -109,18 +109,21 @@ juicio mío, no una medición**, y la legibilidad física solo la confirma el pa
 
 ---
 
-## Bloqueo de producción — sin cambios
+## Bloqueo de producción — actualizado
 
-`https://www.305webservice.com/c/305` → **404** (verificado 29 jul 2026).
+`https://www.305webservice.com/c/305` → **302, en vivo** (verificado 29 jul 2026, tras
+mergear el PR #1). El QR ya no es placeholder.
 
-**No se generan** archivos de impresión directa, CMYK de imprenta, ni NFC grabado o
-bloqueado hasta que se cumplan **las cinco** condiciones:
+Condiciones para emitir producción:
 
-1. La URL canónica HTTPS de la tarjeta esté en vivo.
-2. El QR se genere desde esa URL final.
-3. El QR se decodifique desde el arte exportado.
-4. El destino NFC se pruebe en iPhone y Android — **PENDING USER DEVICE TEST**.
-5. La plantilla del fabricante esté confirmada.
+1. ~~URL canónica HTTPS en vivo~~ — **cumplida**
+2. ~~QR generado desde esa URL final~~ — **cumplida**
+3. ~~QR decodificado desde el arte exportado~~ — **cumplida** (302 → 200, atribución intacta)
+4. Destino NFC probado en iPhone y Android — **PENDING USER DEVICE TEST**
+5. Plantilla del fabricante confirmada — **pendiente**
+
+Siguen sin generarse archivos de impresión directa, CMYK de imprenta, ni NFC grabado
+o bloqueado.
 
 ---
 

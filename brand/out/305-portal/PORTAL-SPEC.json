@@ -1,7 +1,8 @@
 {
- "status": "PREPRESS PENDING FINAL QR",
- "production_exports": "HELD — se emiten solo tras confirmar URL final y plantilla del fabricante",
- "blocker": "https://www.305webservice.com/c/305 responde 404; el QR embebido es placeholder",
+ "status": "PREPRESS READY — QR FINAL",
+ "production_exports": "HELD — URL final confirmada; faltan plantilla del fabricante y prueba NFC en dispositivo",
+ "blocker": "pendiente: plantilla del fabricante y prueba NFC en iPhone/Android",
+ "canonical_url_live": true,
  "copy": {
   "front": [
    "305 WEB SERVICE",
@@ -43,9 +44,9 @@
  },
  "qr": {
   "decoded_from_final_file": true,
-  "decoded": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal&proof=PREPRESS-PLACEHOLDER",
-  "placeholder_url": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal&proof=PREPRESS-PLACEHOLDER",
-  "final_url_when_live": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal",
+  "decoded": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal",
+  "is_placeholder": false,
+  "final_url": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal",
   "ecc": "Q",
   "size_mm": 25.0,
   "min_required_mm": 22.0,
