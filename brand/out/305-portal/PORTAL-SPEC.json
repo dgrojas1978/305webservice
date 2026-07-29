@@ -1,0 +1,136 @@
+{
+ "status": "PREPRESS PENDING FINAL QR",
+ "production_exports": "HELD — se emiten solo tras confirmar URL final y plantilla del fabricante",
+ "blocker": "https://www.305webservice.com/c/305 responde 404; el QR embebido es placeholder",
+ "copy": {
+  "front": [
+   "305 WEB SERVICE",
+   "TECHNOLOGY THAT MOVES YOU FORWARD.",
+   "WEBSITES · SOFTWARE · CONNECTED EXPERIENCES",
+   "TAP TO EXPLORE",
+   "MIAMI · WORKING NATIONWIDE"
+  ],
+  "back": [
+   "READY TO BUILD WHAT'S NEXT?",
+   "Explore our work and discover what we can build around your business.",
+   "[QR]",
+   "SCAN TO START",
+   "305WEBSERVICE.COM"
+  ],
+  "removed": [
+   "STRATEGY · DESIGN · ENGINEERING",
+   "DIGITAL SYSTEMS, BUILT FOR BUSINESS.",
+   "TAP TO CONNECT",
+   "LET'S BUILD WHAT'S NEXT.",
+   "Explore our work, capabilities and ways to connect.",
+   "SCAN TO CONNECT",
+   "BUSINESS TECHNOLOGY",
+   "lista de 4 servicios y sus 4 detalles",
+   "MIAMI, FLORIDA · UNITED STATES",
+   "DIRECT LINE",
+   "teléfono impreso",
+   "dirección Gmail",
+   "Technology built around your business.",
+   "Tell us what you're trying to improve.",
+   "305-001"
+  ],
+  "forward_occurrences_front": 1
+ },
+ "routes": {
+  "front": 1,
+  "back": 1,
+  "note": "una acción por cara: NFC delante, QR detrás"
+ },
+ "qr": {
+  "decoded_from_final_file": true,
+  "decoded": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal&proof=PREPRESS-PLACEHOLDER",
+  "placeholder_url": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal&proof=PREPRESS-PLACEHOLDER",
+  "final_url_when_live": "https://www.305webservice.com/c/305?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal",
+  "ecc": "Q",
+  "size_mm": 25.0,
+  "min_required_mm": 22.0,
+  "quiet_zone_modules": 4,
+  "logo_inside": false,
+  "localhost": false,
+  "points_to_canonical_card_route": true
+ },
+ "nfc": {
+  "ndef_uri_when_live": "https://www.305webservice.com/c/305?utm_source=nfc&utm_medium=physical-card&utm_campaign=305-portal",
+  "bytes": 99,
+  "chip": "NTAG215 (504 B)",
+  "fits": true,
+  "programmed": false,
+  "locked": false
+ },
+ "format": {
+  "standard": "CR80 / ISO-IEC 7810 ID-1",
+  "trim_mm": [
+   85.6,
+   53.98
+  ],
+  "thickness_mm": 0.76,
+  "corner_radius_mm": 3.18,
+  "dpi": 300,
+  "trim_px": [
+   1011,
+   638
+  ],
+  "bleed_px": [
+   1082,
+   708
+  ],
+  "bleed_mm": 3.0,
+  "bleed_note": "PROVISIONAL — confirmar con proveedor",
+  "safe_mm": 3.0
+ },
+ "typography": {
+  "families": [
+   "Inter"
+  ],
+  "count": 1,
+  "wordmark_mm_pt": [
+   4.95,
+   14.0
+  ],
+  "descriptor_mm_pt": [
+   1.55,
+   4.4
+  ],
+  "statement_mm_pt": [
+   3.75,
+   10.6
+  ],
+  "hook_mm_pt": [
+   3.55,
+   10.1
+  ],
+  "support_mm_pt": [
+   1.82,
+   5.2
+  ],
+  "cta_mm_pt": [
+   1.55,
+   4.4
+  ],
+  "place_mm_pt": [
+   1.36,
+   3.9
+  ],
+  "domain_mm_pt": [
+   1.6,
+   4.5
+  ],
+  "statement_tracking": "-0.008em (sin tracking ancho en el mensaje principal)"
+ },
+ "qa": {
+  "front": {
+   "safe_area_clear": true,
+   "hook_to_portal_gap_px": 56,
+   "hook_to_portal_gap_mm": 4.74,
+   "no_collision": true
+  },
+  "back": {
+   "safe_area_clear": true
+  }
+ }
+}

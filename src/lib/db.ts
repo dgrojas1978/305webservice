@@ -17,7 +17,9 @@ async function getDb(): Promise<Db> {
     client = new MongoClient(uri);
     await client.connect();
   }
-  return client.db("305-web-service");
+  // MONGODB_DB permite apuntar staging a una base separada para que las
+  // pruebas nunca contaminen los leads reales de producción.
+  return client.db(process.env.MONGODB_DB || "305-web-service");
 }
 
 export async function saveLead(lead: Lead): Promise<void> {

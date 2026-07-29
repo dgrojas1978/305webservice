@@ -7,3 +7,21 @@ dist/
 .env.local
 .DS_Store
 *.log
+
+.vercel
+
+# --- brand/system: artefactos temporales del renderer (CDP/Edge) ---
+brand/system/__pycache__/
+brand/system/_*.html
+brand/system/_*.py
+
+# --- capturas de diagnostico (se regeneran con las suites de QA) ---
+qa-screenshots/
+
+# --- disenos DESCARTADOS: solo historial local, fuera del repo ---
+# 305 SIGNAL y los proofs Midnight/Porcelain quedaron superseded por 305 PORTAL.
+# Sus paquetes direct-print/ y vendor-cmyk/ son arte de impresion de un diseno
+# muerto: no deben poder enviarse a imprenta por error.
+brand/out/305-signal/
+brand/out/305-signal-v2/
+brand/out/nfc-card-proofs/

@@ -1,0 +1,164 @@
+/* ============================================================
+   305 WEBSITE SALES FLYER — proof-first layout (Option A, US Letter)
+   Reutiliza tokens + trust/cta/qr de flyer.css. Añade: hero-gancho,
+   montaje de dispositivos, galería de pruebas, grupos de resultado,
+   micro-transformación, y el SISTEMA DE MAQUETAS DE SITIO WEB.
+   Las maquetas son CONCEPTOS DE MUESTRA (etiquetados), no clientes reales.
+   ============================================================ */
+
+.wsf { position: relative; width: 8.75in; height: 11.25in; background: var(--paper);
+  overflow: hidden; display: flex; flex-direction: column; }
+
+/* ---------- BLOCK 1 · HERO (navy, hook + price + device montage) ---------- */
+.wsf-hero { position: relative; background: var(--navy); overflow: hidden;
+  padding: 0.4in var(--gutter) 0.28in; flex-shrink: 0; }
+.wsf-hero .mono { position: absolute; right: -0.42in; top: -0.4in; font-size: 2.3in; font-weight: 900;
+  letter-spacing: -0.06em; line-height: 0.78; color: rgba(20,108,255,0.18); user-select: none; white-space: nowrap; }
+.wsf-grid { position: relative; z-index: 1; margin-top: 0.26in;
+  display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 0.4in; align-items: center; }
+.wsf-hook { margin-top: 0.16in; font-size: 23pt; font-weight: 800; letter-spacing: -0.022em; line-height: 1.08; color: var(--white); }
+.wsf-hook .hl { color: var(--blue-navy); }
+.wsf-priceline { margin-top: 0.16in; display: flex; align-items: baseline; gap: 0.13in; }
+.wsf-priceline .k { font-size: 9.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--turquoise); }
+.wsf-priceline .v { font-size: 34pt; font-weight: 900; letter-spacing: -0.03em; line-height: 0.8; color: var(--white); }
+.wsf-support { margin-top: 0.15in; font-size: 10pt; font-weight: 400; line-height: 1.45; color: var(--on-navy); max-width: 4.2in; }
+
+/* device montage (real desktop capture; phone opcional cuando haya móvil) */
+.montage { position: relative; }
+.montage .m-desktop { width: 100%; }
+.montage .m-phone { position: absolute; right: 0; bottom: -0.42in; width: 1.02in; z-index: 3; }
+.montage .m-label { margin-top: 0.16in; font-size: 6.6pt; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--turquoise); }
+
+/* ---------- BLOCK 2 · PROOF GALLERY ---------- */
+.wsf-gallery { flex-shrink: 0; background: var(--paper); padding: 0.2in var(--gutter) 0.14in; }
+.wsf-seclabel { font-size: 8pt; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-ink); margin-bottom: 0.16in; }
+.gal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.22in; }
+.gal-card { display: flex; flex-direction: column; }
+.gal-shot { border: 1px solid var(--hairline); border-radius: var(--radius); overflow: hidden;
+  box-shadow: 0 0.04in 0.12in rgba(7,20,38,0.10); }
+.gal-meta { margin-top: 0.09in; display: flex; align-items: center; justify-content: space-between; gap: 0.1in; }
+.gal-ind { font-size: 8pt; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--navy); }
+.gal-tag { font-size: 5.4pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray);
+  border: 1px solid var(--hairline); border-radius: 999px; padding: 0.02in 0.07in; white-space: nowrap; }
+.gal-out { margin-top: 0.035in; font-size: 8pt; font-weight: 500; color: var(--gray); line-height: 1.28; }
+.gal-note { margin-top: 0.09in; font-size: 7.4pt; font-weight: 500; font-style: italic; color: var(--gray); letter-spacing: 0.01em; }
+
+/* ---------- BLOCK 3 · PACKAGE + OUTCOME GROUPS ---------- */
+.wsf-pkg { flex: 1; min-height: 0; display: grid; grid-template-columns: 0.68fr 1.32fr;
+  gap: 0.34in; background: var(--white); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+  padding: 0.18in var(--gutter); align-items: center; }
+.pkg-name { font-size: 13.5pt; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--navy); }
+.pkg-for { margin-top: 0.08in; font-size: 8.5pt; font-weight: 500; line-height: 1.38; color: var(--gray); }
+.pkg-from { margin-top: 0.1in; font-size: 8pt; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue-ink); }
+.out-groups { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.2in; }
+.out-g h4 { font-size: 8pt; font-weight: 900; letter-spacing: 0.02em; text-transform: uppercase; color: var(--navy);
+  padding-bottom: 0.05in; border-bottom: 2px solid var(--blue); margin-bottom: 0.07in; }
+.out-g ul { list-style: none; }
+.out-g li { font-size: 7.6pt; font-weight: 500; color: var(--ink); line-height: 1.28; padding: 0.025in 0; display: flex; gap: 0.055in; }
+.out-g li::before { content: ""; margin-top: 0.05in; width: 0.055in; height: 0.055in; flex-shrink: 0; border-radius: 50%; background: var(--turquoise); }
+
+/* ---------- BLOCK 4 · TRANSFORMATION + TRUST ---------- */
+.wsf-trans { flex-shrink: 0; background: var(--paper); padding: 0.14in var(--gutter) 0.12in;
+  display: flex; align-items: center; gap: 0.3in; }
+.trans-h { font-size: 7.5pt; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); flex-shrink: 0; max-width: 1.4in; line-height: 1.25; }
+.trans-flow { display: flex; align-items: center; gap: 0.12in; flex-wrap: wrap; }
+.trans-step { font-size: 8.5pt; font-weight: 600; color: var(--gray); }
+.trans-step.on { color: var(--blue-ink); font-weight: 800; }
+.trans-arrow { color: var(--turquoise); font-weight: 800; }
+.wsf-trust { flex-shrink: 0; background: var(--paper); padding: 0.02in var(--gutter) 0.16in;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.08in 0.2in; border-bottom: 1px solid var(--hairline); }
+.wsf-trust .chip { font-size: 7pt; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+.wsf-trust .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--turquoise); }
+
+/* ---------- BLOCK 5 · ACTION (navy) ---------- */
+.wsf-cta { flex-shrink: 0; background: var(--navy); padding: 0.16in var(--gutter) 0.15in;
+  display: grid; grid-template-columns: 1fr auto; gap: 0.4in; align-items: center; }
+.cta-q { font-size: 14pt; font-weight: 800; letter-spacing: -0.01em; color: var(--white); line-height: 1.1; max-width: 4.2in; }
+.cta-scan { margin-top: 0.12in; font-size: 11pt; font-weight: 700; color: var(--turquoise); }
+.cta-lines { margin-top: 0.14in; display: flex; flex-wrap: wrap; align-items: center; gap: 0.05in 0.22in; }
+.cta-lines .tel { font-size: 13pt; font-weight: 800; color: var(--white); letter-spacing: -0.01em; }
+.cta-lines .wa { display: inline-flex; align-items: center; gap: 0.06in; font-size: 9.5pt; font-weight: 700; color: var(--green); }
+.cta-lines .wa svg { width: 0.15in; height: 0.15in; }
+.cta-lines .web { font-size: 9.5pt; font-weight: 500; color: var(--on-navy); letter-spacing: 0.06em; }
+.cta-qr { display: flex; flex-direction: column; align-items: center; width: 1.1in; }
+.cta-qr .card { width: 1.1in; background: var(--white); border-radius: 0.06in; padding: 0.06in; }
+.cta-qr .card img { display: block; width: 100%; height: auto; }
+.cta-qr .lb { margin-top: 0.08in; font-size: 6.6pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--on-navy); text-align: center; line-height: 1.35; }
+
+/* ---------- Clarification (más legible que el master) ---------- */
+.wsf-clarify { flex-shrink: 0; padding: 0.13in var(--gutter) 0.15in; background: var(--navy);
+  font-size: 8.4pt; font-weight: 400; line-height: 1.4; color: var(--on-navy); border-top: 1px solid rgba(247,249,252,0.14); }
+
+/* ============================================================
+   MARCO DE CAPTURA REAL (browser chrome + screenshot real de cliente)
+   ============================================================ */
+.rshot { border-radius: 0.06in; overflow: hidden; background: #fff;
+  box-shadow: 0 0.05in 0.16in rgba(7,20,38,0.20); border: 1px solid var(--hairline); }
+.rshot .chrome { display: flex; align-items: center; gap: 0.04in; padding: 0.055in 0.09in; background: #e9edf3; }
+.rshot .chrome i { width: 0.05in; height: 0.05in; border-radius: 50%; background: #c3ccd8; }
+.rshot .chrome .addr { margin-left: 0.06in; flex: 1; height: 0.13in; border-radius: 0.07in; background: #fff;
+  display: flex; align-items: center; padding: 0 0.09in; font-size: 6pt; color: #8a97a6; font-weight: 600; letter-spacing: 0.01em; }
+.rshot .win { overflow: hidden; }
+.rshot .win img { display: block; width: 100%; height: auto; }
+/* recortes por contexto: galería (compacto, muestra el hero) y héroe (más alto) */
+.gal-shot .rshot .win { height: 0.85in; }
+.montage .rshot .win { height: 1.5in; }
+
+/* ============================================================
+   SISTEMA DE MAQUETAS DE SITIO WEB (concepto de muestra)
+   Escala con el ancho del marco vía container queries (cqw).
+   Temas por --m-*. Sin fotos de stock: "imágenes" = degradados.
+   ============================================================ */
+.mock { border-radius: 0.06in; overflow: hidden; background: #fff;
+  box-shadow: 0 0.05in 0.16in rgba(7,20,38,0.22); container-type: inline-size; }
+.mock .chrome { display: flex; align-items: center; gap: 3cqw; padding: 2.4cqw 3cqw; background: #e9edf3; }
+.mock .chrome i { width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: #c3ccd8; }
+.mock .chrome .addr { margin-left: 1.5cqw; flex: 1; height: 4cqw; border-radius: 2cqw; background: #fff;
+  display: flex; align-items: center; padding: 0 3cqw; font-size: 2.9cqw; color: #9aa6b4; font-weight: 600; letter-spacing: 0.02em; }
+.mock .site { font-size: 4cqw; background: var(--m-bg, #fff); color: var(--m-ink, #10202f); }
+.mock .m-nav { display: flex; align-items: center; justify-content: space-between; padding: 3.4cqw 4cqw;
+  background: var(--m-navbg, transparent); }
+.mock .m-logo { font-weight: 900; font-size: 1.15em; letter-spacing: -0.02em; color: var(--m-logo, var(--m-ink)); font-family: var(--m-head, inherit); }
+.mock .m-menu { display: flex; gap: 3cqw; }
+.mock .m-menu span { font-size: 0.72em; font-weight: 600; color: var(--m-muted, #7c8b9c); }
+.mock .m-btn { font-size: 0.72em; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--m-accent); color: var(--m-btnink, #fff); padding: 1.6cqw 3cqw; border-radius: 1.4cqw; }
+.mock .m-hero { padding: 3.4cqw 4cqw; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3.5cqw; align-items: center; }
+.mock .m-hero .h { font-family: var(--m-head, inherit); font-weight: 900; font-size: 1.9em; line-height: 1.02;
+  letter-spacing: -0.02em; color: var(--m-head-ink, var(--m-ink)); }
+.mock .m-hero .p { margin-top: 2cqw; font-size: 0.76em; line-height: 1.35; color: var(--m-muted, #6b7a8b); font-weight: 500; }
+.mock .m-hero .cta { display: inline-block; margin-top: 2.6cqw; font-size: 0.72em; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.04em; background: var(--m-accent); color: var(--m-btnink, #fff); padding: 1.8cqw 3.4cqw; border-radius: 1.4cqw; }
+.mock .m-shot { border-radius: 2cqw; height: 16cqw; background: var(--m-img, linear-gradient(135deg,#334155,#0f172a)); position: relative; overflow: hidden; }
+.mock .m-shot::after { content: ""; position: absolute; inset: 0; background:
+  radial-gradient(60% 80% at 75% 20%, rgba(255,255,255,0.22), transparent 60%); }
+.mock .m-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.4cqw; padding: 0 4cqw 3.6cqw; }
+.mock .m-card { background: var(--m-cardbg, rgba(0,0,0,0.04)); border-radius: 1.6cqw; padding: 2.8cqw; }
+.mock .m-card .ico { width: 5.2cqw; height: 5.2cqw; border-radius: 1.4cqw; background: var(--m-accent); opacity: 0.9; }
+.mock .m-card b { display: block; margin-top: 2cqw; height: 2cqw; width: 70%; border-radius: 1cqw; background: var(--m-line, rgba(0,0,0,0.18)); }
+.mock .m-card s { display: block; margin-top: 1.4cqw; height: 1.5cqw; width: 92%; border-radius: 1cqw; background: var(--m-line, rgba(0,0,0,0.10)); }
+
+/* PHONE frame (aspect ~1:2, dark bezel) */
+.phone { border-radius: 9cqw; background: #0b1524; padding: 3cqw 2.6cqw; box-shadow: 0 0.06in 0.2in rgba(7,20,38,0.34);
+  container-type: inline-size; }
+.phone .scr { border-radius: 6cqw; overflow: hidden; background: var(--m-bg, #fff); position: relative; }
+.phone .notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 30%; height: 4cqw;
+  background: #0b1524; border-radius: 0 0 3.5cqw 3.5cqw; z-index: 5; }
+.phone .p-nav { display: flex; align-items: center; justify-content: space-between; padding: 8cqw 6cqw 4cqw; }
+.phone .p-logo { font-family: var(--m-head, inherit); font-weight: 900; font-size: 6cqw; letter-spacing: -0.02em; color: var(--m-logo, var(--m-ink)); }
+.phone .p-burger { display: grid; gap: 1.6cqw; }
+.phone .p-burger i { width: 7cqw; height: 1.6cqw; border-radius: 1cqw; background: var(--m-muted, #7c8b9c); }
+.phone .p-hero { padding: 4cqw 6cqw 0; }
+.phone .p-hero .h { font-family: var(--m-head, inherit); font-weight: 900; font-size: 9.6cqw; line-height: 1.0;
+  letter-spacing: -0.02em; color: var(--m-head-ink, var(--m-ink)); }
+.phone .p-hero .cta { display: block; margin-top: 5cqw; text-align: center; font-size: 5.4cqw; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.04em; background: var(--m-accent); color: var(--m-btnink,#fff); padding: 4.4cqw; border-radius: 3.5cqw; }
+.phone .p-shot { margin: 6cqw; height: 62cqw; border-radius: 5cqw; background: var(--m-img, linear-gradient(135deg,#334155,#0f172a)); }
+
+/* En la galería: recorta la maqueta a chrome + nav + hero (más compacta) */
+.gal-shot .mock .m-strip { display: none; }
+.gal-shot .mock .m-hero { padding: 3cqw 4cqw 4cqw; }
+.gal-shot .mock .m-hero .h { font-size: 1.45em; }
+.gal-shot .mock .m-shot { height: 12cqw; }
+.gal-shot .mock .m-nav { padding: 3cqw 4cqw; }

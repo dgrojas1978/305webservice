@@ -24,12 +24,14 @@ export function trackEvent(event: string, props: TrackProps = {}): void {
   }
 }
 
-/** Lee parámetros UTM, gclid y referrer, con consentimiento implícito del envío. */
-export function captureAttribution(): Record<string, string> {
-  if (typeof window === "undefined") return {};
+const ATTR_KEY = "305_attr";
+const ATTR_FIELDS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid"] as const;
+
+/** Lee UTM/gclid/referrer de la URL actual (sin persistir). */
+function readUrlAttribution(): Record<string, string> {
   const out: Record<string, string> = {};
   const p = new URLSearchParams(window.location.search);
-  for (const k of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid"]) {
+  for (const k of ATTR_FIELDS) {
     const v = p.get(k);
     if (v) out[k] = v.slice(0, 120);
   }
@@ -37,4 +39,33 @@ export function captureAttribution(): Record<string, string> {
     out.referrer = document.referrer.slice(0, 200);
   }
   return out;
+}
+
+/**
+ * Guarda la atribución de primer toque en sessionStorage al aterrizar, para que
+ * los UTM del QR del flyer sobrevivan la navegación interna hasta el formulario.
+ * Llamar en el mount de cada página; solo escribe si aún no hay atribución guardada.
+ */
+export function persistAttribution(): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (sessionStorage.getItem(ATTR_KEY)) return; // primer toque gana
+    const url = readUrlAttribution();
+    if (Object.keys(url).length) sessionStorage.setItem(ATTR_KEY, JSON.stringify(url));
+  } catch {
+    /* sessionStorage no disponible: se degrada a solo-URL */
+  }
+}
+
+/** Atribución para el envío: URL actual con respaldo del primer toque guardado. */
+export function captureAttribution(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  const url = readUrlAttribution();
+  let stored: Record<string, string> = {};
+  try {
+    stored = JSON.parse(sessionStorage.getItem(ATTR_KEY) || "{}");
+  } catch {
+    /* ignore */
+  }
+  return { ...stored, ...url };
 }
