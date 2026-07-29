@@ -15,6 +15,16 @@ interface Dict {
     eyebrow: string; h1: string; sub: string; priceLine: string;
     ctaPrimary: string; ctaSecondary: string; trust: string[];
   };
+  /** Posicionamiento aprobado: STRATEGY / DESIGN / ENGINEERING. Tres grupos, no un catalogo. */
+  capabilities: {
+    heading: string;
+    groups: { name: string; text: string }[];
+  };
+  /** Cuatro pasos. Sustituye al proceso de cinco. */
+  approach: {
+    heading: string;
+    steps: { name: string; text: string }[];
+  };
   problems: { heading: string; items: string[]; cta: string };
   selector: { eyebrow: string; heading: string; sub: string; bestForLabel: string; includesLabel: string };
   whyCustom: { heading: string; sub: string; beforeLabel: string; before: string[]; afterLabel: string; after: string[] };
@@ -79,13 +89,33 @@ const en: Dict = {
     cta: "Request a Quote", menuOpen: "Open menu", menuClose: "Close menu", skip: "Skip to content", whatsapp: "Chat on WhatsApp",
   },
   hero: {
-    eyebrow: "Websites, Custom Software, NFC & IT Solutions",
-    h1: "Technology that helps your business sell, operate and grow.",
-    sub: "We build professional websites, custom business software, smart NFC experiences and practical IT solutions for small and growing companies in Miami and across the United States.",
-    priceLine: "Professional websites starting at $499",
-    ctaPrimary: "Request a Quote",
-    ctaSecondary: "Explore Service Packages",
-    trust: ["Based in Miami", "English & Spanish service", "Local & remote support", "Clear scope before work begins", "Direct communication"],
+    eyebrow: "Strategy · Design · Engineering",
+    h1: "Technology designed around how your business works.",
+    sub: "We create high-performing websites, custom software and connected digital experiences that help businesses operate clearly, serve customers better and move forward with confidence.",
+    priceLine: "",
+    ctaPrimary: "Start a project",
+    ctaSecondary: "View our work",
+    trust: ["Real projects", "English & Spanish", "Direct collaboration"],
+  },
+  capabilities: {
+    heading: "What we build.",
+    groups: [
+      { name: "Digital experiences",
+        text: "Websites, online stores and customer-facing platforms designed for clarity, credibility and conversion." },
+      { name: "Custom systems",
+        text: "Software and internal tools shaped around real workflows, information and operational needs." },
+      { name: "Connected business solutions",
+        text: "NFC experiences, digital cards, review journeys, lead capture and practical business automation." },
+    ],
+  },
+  approach: {
+    heading: "Built around the business — not around a template.",
+    steps: [
+      { name: "Understand", text: "Clarify the business, audience and objective." },
+      { name: "Design", text: "Define the experience, message and system." },
+      { name: "Build", text: "Develop, integrate and test the solution." },
+      { name: "Evolve", text: "Support improvements as the business changes." },
+    ],
   },
   problems: {
     heading: "Technology should remove friction — not create more of it.",
@@ -278,13 +308,33 @@ const es: Dict = {
     cta: "Solicitar cotización", menuOpen: "Abrir menú", menuClose: "Cerrar menú", skip: "Saltar al contenido", whatsapp: "Chatear por WhatsApp",
   },
   hero: {
-    eyebrow: "Webs, software a medida, NFC y soluciones IT",
-    h1: "Tecnología que ayuda a tu negocio a vender, operar y crecer.",
-    sub: "Creamos webs profesionales, software de negocio a medida, experiencias NFC inteligentes y soluciones IT prácticas para pequeñas y medianas empresas en Miami y en todo Estados Unidos.",
-    priceLine: "Webs profesionales desde $499",
-    ctaPrimary: "Solicitar cotización",
-    ctaSecondary: "Ver paquetes de servicio",
-    trust: ["Con base en Miami", "Atención en español e inglés", "Soporte local y remoto", "Alcance claro antes de empezar", "Comunicación directa"],
+    eyebrow: "Estrategia · Diseño · Ingeniería",
+    h1: "Tecnología pensada para cómo funciona tu negocio.",
+    sub: "Creamos sitios web de alto rendimiento, software a medida y experiencias digitales conectadas que ayudan a las empresas a operar con claridad, atender mejor a sus clientes y avanzar con confianza.",
+    priceLine: "",
+    ctaPrimary: "Empezar un proyecto",
+    ctaSecondary: "Ver nuestro trabajo",
+    trust: ["Proyectos reales", "Español e inglés", "Colaboración directa"],
+  },
+  capabilities: {
+    heading: "Lo que construimos.",
+    groups: [
+      { name: "Experiencias digitales",
+        text: "Sitios web, tiendas en línea y plataformas de cara al cliente, diseñadas para dar claridad, credibilidad y conversión." },
+      { name: "Sistemas a medida",
+        text: "Software y herramientas internas construidas alrededor de flujos de trabajo, información y necesidades operativas reales." },
+      { name: "Soluciones de negocio conectadas",
+        text: "Experiencias NFC, tarjetas digitales, rutas de reseñas, captación de prospectos y automatización práctica." },
+    ],
+  },
+  approach: {
+    heading: "Construido alrededor del negocio, no de una plantilla.",
+    steps: [
+      { name: "Entender", text: "Aclarar el negocio, la audiencia y el objetivo." },
+      { name: "Diseñar", text: "Definir la experiencia, el mensaje y el sistema." },
+      { name: "Construir", text: "Desarrollar, integrar y probar la solución." },
+      { name: "Evolucionar", text: "Acompañar mejoras a medida que el negocio cambia." },
+    ],
   },
   problems: {
     heading: "La tecnología debería quitar fricción — no crear más.",

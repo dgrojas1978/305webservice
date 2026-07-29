@@ -1,4 +1,6 @@
+import { Show } from "solid-js";
 import Seo from "~/components/Seo";
+import SelectedWork from "~/components/sections/SelectedWork";
 import JsonLd from "~/components/JsonLd";
 import Layout from "~/components/layout/Layout";
 import Container from "~/components/ui/Container";
@@ -40,13 +42,16 @@ export default function HomePage(props: { locale: Locale }) {
             </h1>
             <p class="mt-6 max-w-2xl text-body-lg leading-relaxed text-on-navy">{t().hero.sub}</p>
 
-            {/* precio + CTA — visible en el primer viewport móvil */}
-            <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3">
-              <span class="badge badge-onnavy !text-[0.8rem]">{t().hero.priceLine}</span>
-            </div>
-            <div class="mt-6 flex flex-col gap-4 sm:flex-row">
+            {/* El precio dejó de ser el mensaje maestro: vive en la página del
+                paquete starter. Si algún locale lo deja vacío, no se pinta. */}
+            <Show when={t().hero.priceLine}>
+              <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3">
+                <span class="badge badge-onnavy !text-[0.8rem]">{t().hero.priceLine}</span>
+              </div>
+            </Show>
+            <div class="mt-8 flex flex-col gap-4 sm:flex-row">
               <ButtonLink href={quoteLink(props.locale)} track="hero_cta_primary">{t().hero.ctaPrimary}</ButtonLink>
-              <ButtonLink href="#packages" variant="outline">{t().hero.ctaSecondary}</ButtonLink>
+              <ButtonLink href="#selected-work" variant="outline">{t().hero.ctaSecondary}</ButtonLink>
             </div>
             <div class="mt-9">
               <TrustStrip locale={props.locale} />
@@ -54,6 +59,9 @@ export default function HomePage(props: { locale: Locale }) {
           </div>
         </Container>
       </section>
+
+      {/* ============ SELECTED WORK (destino de "View our work") ============ */}
+      <SelectedWork locale={props.locale} />
 
       {/* ================= PROBLEM ================= */}
       <ProblemGrid locale={props.locale} />

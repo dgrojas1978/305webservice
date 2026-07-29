@@ -1,7 +1,12 @@
 {
- "status": "PREPRESS READY — QR FINAL",
- "production_exports": "HELD — URL final confirmada; faltan plantilla del fabricante y prueba NFC en dispositivo",
- "blocker": "pendiente: plantilla del fabricante y prueba NFC en iPhone/Android",
+ "status": "PRINT TEST READY",
+ "production_exports": "EMITIDAS — direct-print (sRGB) y vendor-cmyk (3 mm sangrado provisional)",
+ "print_one_first": "Imprimir UNA unidad y validarla antes del lote",
+ "still_pending": [
+  "plantilla del fabricante (reposiciona el simbolo NFC sobre la antena)",
+  "sangrado real a confirmar con el proveedor",
+  "prueba NFC en iPhone/Android antes de grabar"
+ ],
  "canonical_url_live": true,
  "copy": {
   "front": [

@@ -17,9 +17,9 @@ CR80 / ISO-IEC 7810 ID-1 · 85.60 × 53.98 × 0.76 mm · NTAG215 · 13.56 MHz ·
 NO se emiten exportaciones de producción: quedan retenidas hasta confirmar la URL
 final (`/c/305` público) y la plantilla del fabricante.
 """
-import json, subprocess
+import io, json, subprocess
 from pathlib import Path
-import cv2, qrcode, qrcode.image.svg
+import cv2, img2pdf, qrcode, qrcode.image.svg
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
@@ -27,7 +27,8 @@ BRAND = ROOT.parent
 REPO = BRAND.parent
 OUT = BRAND / "out" / "305-portal"
 PROOFS = OUT / "proofs"
-for d in (OUT, PROOFS): d.mkdir(parents=True, exist_ok=True)
+DIRECT, VENDOR = OUT / "direct-print", OUT / "vendor-cmyk"
+for d in (OUT, PROOFS, DIRECT, VENDOR): d.mkdir(parents=True, exist_ok=True)
 EDGE = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 FONTS = REPO / "node_modules" / "@fontsource"
 
@@ -210,7 +211,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{W*2+46+112}
  <div style="font-size:17px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#8fb4ff">
    305 Portal &#183; CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215</div>
  <div style="font-size:16px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#ff6b6b">
-   Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
+   Print test ready &#183; print one unit first</div>
 </div></div></body></html>"""
 
 
@@ -242,7 +243,7 @@ body{{font-family:"Inter",Arial,sans-serif;width:{LW}px;height:{LH}px;background
     (sin &#8220;ajustar a p&#225;gina&#8221;).<br>
     Verificar con una tarjeta NTAG215 real encima. Marcas grises = l&#237;nea de corte.</div>
   <div style="margin-top:{3*MM}px;font-size:{3.0*MM}px;font-weight:800;letter-spacing:0.14em;
-       text-transform:uppercase;color:#dc2626">Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
+       text-transform:uppercase;color:#dc2626">Print test ready &#183; print one unit first</div>
 </div>
 {block(front_png, "Front", 62*MM)}
 {block(back_png, "Back", 62*MM + H + 22*MM)}
@@ -280,7 +281,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{bw*2+80+140
   sin alterar el resto de la composici&#243;n.
 </div>
 <div style="margin-top:28px;font-size:25px;font-weight:800;letter-spacing:0.2em;
-     text-transform:uppercase;color:#ff6b6b">Prepress &#8212; awaiting manufacturer template &#183; not for print</div>
+     text-transform:uppercase;color:#ff6b6b">Print test ready &#183; print one unit first</div>
 </div></body></html>"""
 
 
@@ -304,6 +305,23 @@ def main():
         p = PROOFS / f"305-portal-{side}-PROOF-1011x638-sRGB.png"
         render(card_html(side, qr_uri, False), p, W, H, f"p-{side}")
         flat[side] = p
+
+    # ── PAQUETES DE IMPRESIÓN ────────────────────────────────────────────
+    # QR definitivo verificado contra producción. La plantilla del fabricante
+    # solo reposiciona el símbolo NFC; no impide imprimir. El chip NO se graba
+    # ni se bloquea aquí. Estado: PRINT TEST READY — imprimir UNA unidad.
+    for side in ("front", "back"):
+        d = DIRECT / f"305-portal-{side}-DIRECT-1011x638-sRGB.png"
+        d.write_bytes(flat[side].read_bytes())
+        print(f"  {d.name}")
+        pb = VENDOR / f"_bleed-{side}.png"
+        render(card_html(side, qr_uri, True), pb, BW, BH, f"b-{side}")
+        buf = io.BytesIO()
+        Image.open(pb).convert("RGB").convert("CMYK").save(buf, "JPEG", quality=97, dpi=(DPI, DPI))
+        pdf = VENDOR / f"305-portal-{side}-VENDOR-CMYK-3mm-bleed.pdf"
+        pdf.write_bytes(img2pdf.convert(buf.getvalue(),
+                        layout_fun=img2pdf.get_fixed_dpi_layout_fun((DPI, DPI))))
+        print(f"  {pdf.name}")
 
     render(sheet_html(flat["front"], flat["back"]),
            OUT / "305-portal-sheet.png", W*2+46+112, H+240, "sheet")
@@ -341,9 +359,10 @@ def main():
             qa[side]["no_collision"] = widest >= 24
 
     rep = {
-        "status": "PREPRESS READY — QR FINAL",
-        "production_exports": "HELD — URL final confirmada; faltan plantilla del fabricante y prueba NFC en dispositivo",
-        "blocker": "pendiente: plantilla del fabricante y prueba NFC en iPhone/Android",
+        "status": "PRINT TEST READY",
+        "production_exports": "EMITIDAS — direct-print (sRGB) y vendor-cmyk (3 mm sangrado provisional)",
+        "print_one_first": "Imprimir UNA unidad y validarla antes del lote",
+        "still_pending": ["plantilla del fabricante (reposiciona el simbolo NFC sobre la antena)", "sangrado real a confirmar con el proveedor", "prueba NFC en iPhone/Android antes de grabar"],
         "canonical_url_live": True,
         "copy": {
             "front": ["305 WEB SERVICE", "TECHNOLOGY THAT MOVES YOU FORWARD.",
