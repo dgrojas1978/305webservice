@@ -211,7 +211,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{W*2+46+112}
  <div style="font-size:17px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#8fb4ff">
    305 Portal &#183; CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215</div>
  <div style="font-size:16px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#ff6b6b">
-   Print test ready &#183; print one unit first</div>
+   CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215 &#183; 300 DPI</div>
 </div></div></body></html>"""
 
 
@@ -243,7 +243,7 @@ body{{font-family:"Inter",Arial,sans-serif;width:{LW}px;height:{LH}px;background
     (sin &#8220;ajustar a p&#225;gina&#8221;).<br>
     Verificar con una tarjeta NTAG215 real encima. Marcas grises = l&#237;nea de corte.</div>
   <div style="margin-top:{3*MM}px;font-size:{3.0*MM}px;font-weight:800;letter-spacing:0.14em;
-       text-transform:uppercase;color:#dc2626">Print test ready &#183; print one unit first</div>
+       text-transform:uppercase;color:#dc2626">CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215 &#183; 300 DPI</div>
 </div>
 {block(front_png, "Front", 62*MM)}
 {block(back_png, "Back", 62*MM + H + 22*MM)}
@@ -281,7 +281,7 @@ body{{font-family:"Inter",Arial,sans-serif;background:#0d1013;width:{bw*2+80+140
   sin alterar el resto de la composici&#243;n.
 </div>
 <div style="margin-top:28px;font-size:25px;font-weight:800;letter-spacing:0.2em;
-     text-transform:uppercase;color:#ff6b6b">Print test ready &#183; print one unit first</div>
+     text-transform:uppercase;color:#ff6b6b">CR80 85.60 &#215; 53.98 &#215; 0.76 mm &#183; NTAG215 &#183; 300 DPI</div>
 </div></body></html>"""
 
 
@@ -307,9 +307,8 @@ def main():
         flat[side] = p
 
     # ── PAQUETES DE IMPRESIÓN ────────────────────────────────────────────
-    # QR definitivo verificado contra producción. La plantilla del fabricante
-    # solo reposiciona el símbolo NFC; no impide imprimir. El chip NO se graba
-    # ni se bloquea aquí. Estado: PRINT TEST READY — imprimir UNA unidad.
+    # QR definitivo verificado contra producción. Lote autorizado por el
+    # propietario. El chip NO se graba ni se bloquea aquí.
     for side in ("front", "back"):
         d = DIRECT / f"305-portal-{side}-DIRECT-1011x638-sRGB.png"
         d.write_bytes(flat[side].read_bytes())
@@ -359,9 +358,9 @@ def main():
             qa[side]["no_collision"] = widest >= 24
 
     rep = {
-        "status": "PRINT TEST READY",
+        "status": "RELEASED FOR PRINT",
         "production_exports": "EMITIDAS — direct-print (sRGB) y vendor-cmyk (3 mm sangrado provisional)",
-        "print_one_first": "Imprimir UNA unidad y validarla antes del lote",
+        "released_by": "propietario, 29 jul 2026 — lote autorizado sin prueba unitaria previa",
         "still_pending": ["plantilla del fabricante (reposiciona el simbolo NFC sobre la antena)", "sangrado real a confirmar con el proveedor", "prueba NFC en iPhone/Android antes de grabar"],
         "canonical_url_live": True,
         "copy": {

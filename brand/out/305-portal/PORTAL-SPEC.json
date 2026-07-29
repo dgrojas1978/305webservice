@@ -1,7 +1,7 @@
 {
- "status": "PRINT TEST READY",
+ "status": "RELEASED FOR PRINT",
  "production_exports": "EMITIDAS — direct-print (sRGB) y vendor-cmyk (3 mm sangrado provisional)",
- "print_one_first": "Imprimir UNA unidad y validarla antes del lote",
+ "released_by": "propietario, 29 jul 2026 — lote autorizado sin prueba unitaria previa",
  "still_pending": [
   "plantilla del fabricante (reposiciona el simbolo NFC sobre la antena)",
   "sangrado real a confirmar con el proveedor",

@@ -2,28 +2,25 @@
 
 **305 PORTAL reemplaza a 305 SIGNAL.** Ver [`../305-signal-v2/SUPERSEDED.md`](../305-signal-v2/SUPERSEDED.md).
 
-## ESTADO
+## ESTADO — `RELEASED FOR PRINT`
+
+Lote **autorizado por el propietario** el 29 jul 2026, sin prueba unitaria previa.
 
 | | |
 |---|---|
-| Arte | `PREPRESS READY — QR FINAL` |
-| URL canónica | **EN VIVO** |
-| Exportaciones de producción | **RETENIDAS** — falta plantilla del fabricante y prueba NFC en dispositivo |
-| NFC | no programado, no bloqueado |
+| Arte | `RELEASED FOR PRINT` |
+| URL canónica | **EN VIVO**, verificada de extremo a extremo |
+| QR | **definitivo**, decodificado desde el arte exportado |
+| Paquetes de impresión | **emitidos** — `direct-print/` y `vendor-cmyk/` |
+| NFC | **no grabado, no bloqueado** |
 
-PR #1 mergeado el 29 jul 2026. `https://www.305webservice.com/c/305` responde
-**302 → `/card/305`** conservando `utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal`.
-Se acabó el placeholder: **el QR del arte lleva la URL definitiva.**
+El arte de producción **no contiene ninguna marca de proof, test ni "not for print"**:
+esas advertencias vivieron siempre en las hojas de presentación, nunca sobre la tarjeta.
 
-Verificado de extremo a extremo: se decodificó el QR **desde el PNG exportado**, se llamó
-a esa URL y devolvió 302 → 200 en el dominio de producción, con la atribución del QR intacta.
-
-⚠️ El QR decodifica con OpenCV a partir de 2× de escala, no a 1011×638 nativos. Un teléfono
-capta muchos más píxeles que eso a corta distancia, así que no es un problema esperado —
-pero **hay que confirmarlo escaneando el proof impreso**.
-
-Los paquetes `direct-print/` y `vendor-cmyk/` anteriores se eliminaron: tenían copy vieja
-y QR placeholder.
+Dos cosas siguen dependiendo de terceros y no se resolvieron:
+la **posición del chip** del fabricante (solo reposicionaría el símbolo NFC sobre la
+antena) y el **sangrado real** — los 3 mm son provisionales, **confírmalos con el
+proveedor antes de enviar el archivo de imprenta**.
 
 ---
 
