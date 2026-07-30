@@ -41,6 +41,17 @@ export default function DigitalCard(props: { profile: CardProfile }) {
 
   const t = () => CARD_COPY[lang()];
   const co = () => p().company;
+  // El panel de conversion existe dos veces por responsive. Solo una debe
+  // anunciarse a tecnologia asistiva.
+  const [isNarrow, setIsNarrow] = createSignal(true);
+  onMount(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    onCleanup(() => mq.removeEventListener("change", sync));
+  });
+
   const need = () => p().conversion.needs.find((n) => n.id === needId())!;
   const needProject = () => {
     const key = need().projectKey;
@@ -303,8 +314,14 @@ export default function DigitalCard(props: { profile: CardProfile }) {
             </p>
 
             {/* Acciones de tarjeta — SOLO móvil (en desktop convierte el panel
-                derecho). Save Contact es función esencial de la tarjeta. */}
+                derecho). START A PROJECT domina: es la conversión. Save Contact
+                queda al lado con menos peso — es cortesía, no conversión. */}
             <div class="order-1 mt-6 flex flex-wrap items-center gap-2.5 lg:hidden">
+              <button type="button" onClick={() => openSheet("project")}
+                data-track="card_cta_primary" data-card={p().id}
+                class="btn btn-primary w-full !py-3.5 text-[0.95rem] uppercase tracking-wide">
+                {t().hero.ctaPrimary}
+              </button>
               <a href={`/card/${p().id}/vcard`} rel="external" download="" data-track="save_contact" data-card={p().id}
                 class="btn btn-outline flex-1 !py-3 text-center text-[0.9rem]">
                 {t().hero.ctaSave}
@@ -330,7 +347,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
           </section>
 
           {/* Conversion Panel en móvil: después del proyecto, antes del selector */}
-          <div class="mt-9 lg:hidden">{conversionPanel()}</div>
+          <div class="mt-9 lg:hidden" aria-hidden={!isNarrow()}>{conversionPanel()}</div>
 
           {/* 2 · PROJECT CONCIERGE (el precio y el alcance viven aquí, no en el hero) */}
           <section aria-labelledby="concierge-h" class="mt-10">
@@ -487,13 +504,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               <Show when={copied()}>{t().shareCopied}</Show>
             </p>
 
-            <p class="mt-4 text-center">
-              <a href={`/card/${p().id}/vcard`} rel="external" download="" data-track="save_contact" data-card={p().id}
-                class="link-underline text-[0.78rem] font-medium text-on-navy-faint hover:text-paper">
-                {t().share.saveContact}
-              </a>
-            </p>
-
             <ul class="mt-6 divide-y divide-[rgba(247,249,252,0.08)] border-t border-[rgba(247,249,252,0.08)] pt-1">
               <For each={t().share.links}>
                 {(l) => (
@@ -519,7 +529,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
              Vende (beneficio → acción → confianza → precio). Sin QR, sin logo,
              sin capturas, sin acciones duplicadas. */}
         <aside class="hidden self-start lg:block" aria-label={t().convertPanel.eyebrow}>
-          <div class="mt-16">{conversionPanel()}</div>
+          <div class="mt-16" aria-hidden={isNarrow()}>{conversionPanel()}</div>
         </aside>
       </div>
 
