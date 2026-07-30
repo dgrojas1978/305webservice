@@ -1,5 +1,5 @@
 import { For, Show, createSignal } from "solid-js";
-import { action, createAsync, useAction, useSubmission, redirect } from "@solidjs/router";
+import { action, createAsync, useSubmission, redirect } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
   createLink, listLinks, normalizeSlug, setActive, updateTarget, validateTarget,
@@ -32,20 +32,18 @@ const loadState = async () => {
 
 const login = action(async (form: FormData) => {
   "use server";
-  const { getRequestEvent } = await import("solid-js/web");
   const password = String(form.get("password") ?? "");
   // Retraso fijo: encarece el probar contraseñas por fuerza bruta.
   await new Promise((r) => setTimeout(r, 400));
   if (!passwordMatches(password)) return { error: "Contraseña incorrecta." };
-  getRequestEvent()?.response.headers.append("Set-Cookie", issueCookie());
-  throw redirect("/admin/links");
+  // La cookie viaja EN la redirección: si se añadiera a event.response se
+  // perderia, porque redirect() construye una Response nueva.
+  throw redirect("/admin/links", { headers: { "Set-Cookie": issueCookie() } });
 }, "adminLogin");
 
 const logout = action(async () => {
   "use server";
-  const { getRequestEvent } = await import("solid-js/web");
-  getRequestEvent()?.response.headers.append("Set-Cookie", clearCookie());
-  throw redirect("/admin/links");
+  throw redirect("/admin/links", { headers: { "Set-Cookie": clearCookie() } });
 }, "adminLogout");
 
 const saveLink = action(async (form: FormData) => {
@@ -62,7 +60,8 @@ const saveLink = action(async (form: FormData) => {
     target: check.url,
     label: String(form.get("label") ?? ""),
   });
-  return res.ok ? { ok: true } : { error: res.reason };
+  if (!res.ok) return { error: res.reason };
+  throw redirect("/admin/links");
 }, "adminSaveLink");
 
 const editTarget = action(async (form: FormData) => {
@@ -73,19 +72,18 @@ const editTarget = action(async (form: FormData) => {
   const check = validateTarget(String(form.get("target") ?? ""), host);
   if (!check.ok) return { error: check.reason };
   await updateTarget(normalizeSlug(String(form.get("slug") ?? "")), check.url);
-  return { ok: true };
+  throw redirect("/admin/links");
 }, "adminEditTarget");
 
 const toggle = action(async (form: FormData) => {
   "use server";
   if (!(await requireAuth())) return { error: "Sesión expirada." };
   await setActive(normalizeSlug(String(form.get("slug") ?? "")), form.get("active") === "1");
-  return { ok: true };
+  throw redirect("/admin/links");
 }, "adminToggle");
 
 export default function AdminLinks() {
   const state = createAsync(() => loadState());
-  const doLogin = useAction(login);
   const loginSub = useSubmission(login);
   const saveSub = useSubmission(saveLink);
   const [slug, setSlug] = createSignal("");
