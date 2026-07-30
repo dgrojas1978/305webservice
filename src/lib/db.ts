@@ -17,9 +17,12 @@ async function getDb(): Promise<Db> {
     client = new MongoClient(uri);
     await client.connect();
   }
-  // MONGODB_DB permite apuntar staging a una base separada para que las
-  // pruebas nunca contaminen los leads reales de producción.
-  return client.db(process.env.MONGODB_DB || "305-web-service");
+  // El default es la base REAL del proyecto. Antes decía "305-web-service" y la
+  // base se llama "305-web-service-db": sin MONGODB_DB definida, los leads iban
+  // a una base que no existía en el cluster.
+  // MONGODB_DB sigue disponible para apuntar staging a una base separada y que
+  // las pruebas nunca contaminen los leads reales.
+  return client.db(process.env.MONGODB_DB || "305-web-service-db");
 }
 
 export async function saveLead(lead: Lead): Promise<void> {
