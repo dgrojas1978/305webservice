@@ -41,17 +41,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
 
   const t = () => CARD_COPY[lang()];
   const co = () => p().company;
-  // El panel de conversion existe dos veces por responsive. Solo una debe
-  // anunciarse a tecnologia asistiva.
-  const [isNarrow, setIsNarrow] = createSignal(true);
-  onMount(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const sync = () => setIsNarrow(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    onCleanup(() => mq.removeEventListener("change", sync));
-  });
-
   // Tres caminos, uno por grupo de capacidad de la identidad:
   // experiencias digitales / sistemas a medida / soluciones conectadas.
   const CARD_NEEDS = ["win-customers", "custom-software", "nfc-experience"];
@@ -352,7 +341,9 @@ export default function DigitalCard(props: { profile: CardProfile }) {
           </section>
 
           {/* Conversion Panel en móvil: después del proyecto, antes del selector */}
-          <div class="mt-9 lg:hidden" aria-hidden={!isNarrow()}>{conversionPanel()}</div>
+          {/* El panel de conversion se queda SOLO en escritorio. En movil el
+              dock del hero ya lleva el CTA primario y el concierge lleva el suyo
+              con la necesidad elegida: eran tres CTA iguales en dos pantallas. */}
 
           {/* 2 · PROJECT CONCIERGE (el precio y el alcance viven aquí, no en el hero) */}
           <section aria-labelledby="concierge-h" class="mt-10">
@@ -486,7 +477,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
              Vende (beneficio → acción → confianza → precio). Sin QR, sin logo,
              sin capturas, sin acciones duplicadas. */}
         <aside class="hidden self-start lg:block" aria-label={t().convertPanel.eyebrow}>
-          <div class="mt-16" aria-hidden={isNarrow()}>{conversionPanel()}</div>
+          <div class="mt-16">{conversionPanel()}</div>
         </aside>
       </div>
 
