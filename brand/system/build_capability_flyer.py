@@ -60,6 +60,7 @@ COPY = {
     "en": {
         "eyebrow": "Strategy &#183; Design &#183; Engineering",
         "hook": "Digital systems,<br>built for business.",
+        "hook_in": 0.52,
         "sub": "Websites, custom software and connected experiences designed around real business goals.",
         "proof_label": "Selected work",
         "cap_label": "What we build",
@@ -79,7 +80,8 @@ COPY = {
     },
     "es": {
         "eyebrow": "Estrategia &#183; Dise&#241;o &#183; Ingenier&#237;a",
-        "hook": "Sistemas digitales,<br>hechos para el negocio.",
+        "hook": "Sistemas digitales,<br>hechos para tu negocio.",
+        "hook_in": 0.475,
         "sub": "Sitios web, software a medida y experiencias conectadas, dise&#241;ados alrededor de objetivos reales de negocio.",
         "proof_label": "Trabajo seleccionado",
         "cap_label": "Lo que construimos",
@@ -149,7 +151,7 @@ body{{font-family:"Inter",Arial,sans-serif;width:{w}px;height:{h}px;overflow:hid
   <div style="margin-top:{0.13*IN}px;font-size:{0.125*IN}px;font-weight:600;letter-spacing:0.34em;
               text-transform:uppercase;color:rgba(246,244,239,0.46)">{c['eyebrow']}</div>
 
-  <div style="margin-top:{0.34*IN}px;font-size:{0.52*IN}px;font-weight:800;letter-spacing:-0.020em;
+  <div style="margin-top:{0.34*IN}px;font-size:{c['hook_in']*IN}px;font-weight:800;letter-spacing:-0.020em;
               line-height:1.06;text-transform:uppercase;color:{PAPER}">{c['hook']}</div>
   <div style="margin-top:{0.20*IN}px;max-width:{5.6*IN}px;font-size:{0.165*IN}px;line-height:1.48;
               color:rgba(246,244,239,0.62)">{c['sub']}</div>
