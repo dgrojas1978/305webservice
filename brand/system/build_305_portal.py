@@ -311,7 +311,7 @@ def main():
     # ── PAQUETES DE IMPRESIÓN ────────────────────────────────────────────
     # QR definitivo verificado contra producción. Lote autorizado por el
     # propietario. El chip NO se graba ni se bloquea aquí.
-    ink = {}
+    ink_report = {}
     for side in ("front", "back"):
         d = DIRECT / f"305-portal-{side}-DIRECT-1011x638-sRGB.png"
         d.write_bytes(flat[side].read_bytes())
@@ -319,7 +319,7 @@ def main():
         pb = VENDOR / f"_bleed-{side}.png"
         render(card_html(side, qr_uri, True), pb, BW, BH, f"b-{side}")
         src = Image.open(pb).convert("RGB")
-        ink[side] = press.report(src)
+        ink_report[side] = press.report(src)
         buf = io.BytesIO()
         press.cmyk_image(src).save(buf, "JPEG", quality=97, dpi=(DPI, DPI))
         pdf = VENDOR / f"305-portal-{side}-VENDOR-CMYK-3mm-bleed.pdf"
@@ -420,7 +420,7 @@ def main():
             "min_used_pt": 9.0, "all_at_or_above_floor": True},
         "press": {"flat_background": True, "gradients": False, "grain": False,
                   "frame_stroke_pt": [0.63, 0.55], "navy_target_cmyk": press.NAVY_TARGET_CMYK,
-                  "ink": ink},
+                  "ink": ink_report},
         "qa": qa,
     }
     (OUT / "PORTAL-SPEC.json").write_text(json.dumps(rep, indent=1, ensure_ascii=False), encoding="utf-8")
