@@ -34,17 +34,17 @@ const WORK = [
 const COPY = {
   en: {
     eyebrow: "Selected work",
-    heading: "Websites we've built",
-    intro: "Real, live projects — a sense of the quality and range we deliver.",
+    heading: "Selected digital work.",
+    intro: "Websites and platforms designed around distinct business goals.",
     visit: "Visit site",
-    note: "Selected custom projects. Features and pricing vary by scope. The Website Starter package below starts at $499; larger, more complex sites are quoted separately.",
+    note: "Selected custom projects. Features and pricing vary by scope.",
   },
   es: {
     eyebrow: "Trabajo seleccionado",
-    heading: "Sitios que hemos construido",
-    intro: "Proyectos reales y en vivo — una muestra de la calidad y el rango que entregamos.",
+    heading: "Trabajo digital seleccionado.",
+    intro: "Sitios y plataformas diseñados alrededor de objetivos de negocio distintos.",
     visit: "Ver sitio",
-    note: "Proyectos personalizados seleccionados. Las funciones y el precio varían según el alcance. El paquete Website Starter de abajo comienza en $499; los sitios más grandes o complejos se cotizan aparte.",
+    note: "Proyectos personalizados seleccionados. Las funciones y el precio varían según el alcance.",
   },
 } as const;
 

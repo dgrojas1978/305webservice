@@ -5,10 +5,8 @@ import JsonLd from "~/components/JsonLd";
 import Layout from "~/components/layout/Layout";
 import Container from "~/components/ui/Container";
 import { ButtonLink } from "~/components/ui/Button";
-import PackageSelector from "~/components/sections/PackageSelector";
-import {
-  WhyCustom, Industries, ProcessSteps, ProofExpect, Engagement, Faq, FinalCta, TrustStrip,
-} from "~/components/sections/HomeSections";
+import { FinalCta, TrustStrip } from "~/components/sections/HomeSections";
+import { Capabilities, Approach } from "~/components/sections/Positioning";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
 import { quoteLink } from "~/lib/links";
@@ -60,33 +58,20 @@ export default function HomePage(props: { locale: Locale }) {
         </Container>
       </section>
 
-      {/* ============ SELECTED WORK (destino de "View our work") ============ */}
+      {/* 2 · SELECTED WORK */}
       <SelectedWork locale={props.locale} />
 
-      {/* PROBLEM retirado: la seccion no esta en la estructura aprobada de 5
-          bloques y su CTA ("Tell us what's slowing you down") no pertenece al
-          sistema de CTAs de la identidad. */}
+      {/* 3 · CAPABILITIES — tres grupos, no un catalogo */}
+      <Capabilities locale={props.locale} />
 
-      {/* ================= PACKAGE SELECTOR ================= */}
-      <PackageSelector locale={props.locale} />
+      {/* 4 · APPROACH — cuatro pasos */}
+      <Approach locale={props.locale} />
 
-      {/* ================= WHY CUSTOM ================= */}
-      <WhyCustom locale={props.locale} />
-
-      {/* ================= INDUSTRIES ================= */}
-      <Industries locale={props.locale} />
-
-      {/* ================= PROCESS ================= */}
-      <ProcessSteps locale={props.locale} />
-
-      {/* ================= PROOF / EXPECT ================= */}
-      <ProofExpect locale={props.locale} />
-
-      {/* ================= ENGAGEMENT ================= */}
-      <Engagement locale={props.locale} />
-
-      {/* ================= FAQ ================= */}
-      <Faq locale={props.locale} />
+      {/* Retirados por no estar en la estructura aprobada de cinco bloques:
+          PackageSelector (4695 px, la seccion mas larga y con el precio como
+          mensaje), WhyCustom, Industries, ProcessSteps (sustituido por
+          Approach), ProofExpect, Engagement y Faq. El contenido sigue vivo en
+          content.ts y en las paginas de servicio. */}
 
       {/* ================= FINAL CTA ================= */}
       <FinalCta locale={props.locale} />

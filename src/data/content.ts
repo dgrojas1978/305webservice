@@ -197,9 +197,9 @@ const en: Dict = {
     ],
   },
   finalCta: {
-    heading: "Let's turn your technology problem into a clear next step.",
-    text: "Tell us what you're trying to improve. We'll review the need and recommend the most practical way forward.",
-    ctaPrimary: "Request a Quote", ctaSecondary: "Chat on WhatsApp",
+    heading: "Let's build what your business needs next.",
+    text: "Tell us what you want to improve. We'll recommend a practical direction and a clear next step.",
+    ctaPrimary: "Start a project", ctaSecondary: "Chat on WhatsApp",
     note: "No-obligation initial response.",
   },
   footer: {
@@ -416,9 +416,9 @@ const es: Dict = {
     ],
   },
   finalCta: {
-    heading: "Convirtamos tu problema tecnológico en un próximo paso claro.",
-    text: "Cuéntanos qué quieres mejorar. Revisamos la necesidad y recomendamos la forma más práctica de avanzar.",
-    ctaPrimary: "Solicitar cotización", ctaSecondary: "Chatear por WhatsApp",
+    heading: "Construyamos lo que tu negocio necesita ahora.",
+    text: "Cuéntanos qué quieres mejorar. Te recomendamos una dirección práctica y un próximo paso claro.",
+    ctaPrimary: "Empezar un proyecto", ctaSecondary: "Chatear por WhatsApp",
     note: "Respuesta inicial sin compromiso.",
   },
   footer: {
