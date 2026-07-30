@@ -3,7 +3,7 @@ import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { WhatsAppIcon } from "~/components/ui/Button";
 import AnalyticsListener from "~/components/AnalyticsListener";
 import LeadSheet, { submitCardLead, type SheetMode } from "~/components/card/LeadSheet";
-import { GoogleReviews, WhereWeWork } from "~/components/card/CardModules";
+import { GoogleReviews } from "~/components/card/CardModules";
 import { trackEvent } from "~/lib/analytics";
 import { waLink } from "~/lib/site";
 import {
@@ -51,6 +51,11 @@ export default function DigitalCard(props: { profile: CardProfile }) {
     mq.addEventListener("change", sync);
     onCleanup(() => mq.removeEventListener("change", sync));
   });
+
+  // Tres caminos, uno por grupo de capacidad de la identidad:
+  // experiencias digitales / sistemas a medida / soluciones conectadas.
+  const CARD_NEEDS = ["win-customers", "custom-software", "nfc-experience"];
+  const needs = () => p().conversion.needs.filter((n) => CARD_NEEDS.includes(n.id));
 
   const need = () => p().conversion.needs.find((n) => n.id === needId())!;
   const needProject = () => {
@@ -355,7 +360,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               {t().concierge.heading}
             </h2>
             <div class="mt-4 flex flex-wrap gap-2" role="tablist" aria-label={t().concierge.heading}>
-              <For each={p().conversion.needs}>
+              <For each={needs()}>
                 {(n) => (
                   <button
                     type="button"
@@ -422,66 +427,12 @@ export default function DigitalCard(props: { profile: CardProfile }) {
             </p>
           </section>
 
-          {/* 4 · SELECTED WORK (protagonista) */}
-          <section aria-labelledby="work-h" class="mt-10">
-            <div class="flex items-end justify-between gap-4">
-              <div>
-                <h2 id="work-h" class="font-editorial text-[1.4rem] font-semibold tracking-tight text-paper">{t().work.heading}</h2>
-                <p class="mt-1 text-[0.8rem] text-on-navy-faint">{t().work.sub}</p>
-              </div>
-              <div class="flex gap-2">
-                <button type="button" onClick={() => scrollWork(-1)} aria-label={t().work.prev}
-                  class="t-card flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(247,249,252,0.18)] text-on-navy hover:text-paper">
-                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button type="button" onClick={() => scrollWork(1)} aria-label={t().work.next}
-                  class="t-card flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(247,249,252,0.18)] text-on-navy hover:text-paper">
-                  <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <ul ref={workUl} class="scrollbar-none -mx-5 mt-4 flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-5 pb-1 lg:mx-0 lg:px-0" role="list">
-              <For each={p().conversion.projects}>
-                {(w) => (
-                  <li data-project={w.key} class="w-[252px] flex-shrink-0 snap-start">
-                    <a href={w.url} target="_blank" rel="noopener noreferrer"
-                      data-track="project_visit" data-project={w.key}
-                      class="glass-line t-card group block overflow-hidden rounded-2xl bg-[rgba(10,22,40,0.6)] hover:border-[rgba(32,215,197,0.35)]">
-                      <img
-                        src={`/work/${w.key}-4x3-800.webp`}
-                        srcset={`/work/${w.key}-4x3-480.webp 480w, /work/${w.key}-4x3-800.webp 800w`}
-                        sizes="252px"
-                        alt={w.alt[lang()]}
-                        width="800" height="600" loading="lazy"
-                        class="aspect-[4/3] w-full object-cover object-top"
-                      />
-                      <span class="block p-3.5">
-                        <span class="block text-[0.66rem] font-bold uppercase tracking-[0.12em] text-turquoise">{w.industry[lang()]}</span>
-                        <span class="mt-1 block text-[0.85rem] font-bold text-paper">{w.fact[lang()]}</span>
-                        <span class="mt-2 block text-[0.72rem] font-semibold text-on-navy-faint group-hover:text-turquoise">{w.domain} →</span>
-                      </span>
-                    </a>
-                  </li>
-                )}
-              </For>
-            </ul>
-            <p class="mt-2.5 text-[0.72rem] italic text-on-navy-faint">{t().work.note}</p>
-          </section>
+          {/* SELECTED WORK retirado: el reel del hero ya muestra los mismos
+              cuatro proyectos. Repetirlos abajo era una pantalla de duplicado,
+              no de prueba adicional. */}
 
           {/* 5 · TRUST: reseñas reales de Google (solo si hay Place ID + URL) */}
           <GoogleReviews profile={p()} lang={lang()} />
-
-          {/* 6 · DÓNDE TRABAJAMOS: física / zona / híbrida / multi-sucursal */}
-          <WhereWeWork profile={p()} lang={lang()} onCheckArea={() => openSheet("project")} />
-
-          {/* 7 · EXCHANGE (premium, mismo sheet) */}
-          <section class="mt-10 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[rgba(247,249,252,0.1)] px-5 py-4">
-            <p class="text-[0.8rem] leading-relaxed text-on-navy">{t().exchange.explain}</p>
-            <button type="button" onClick={() => openSheet("exchange")} class="btn btn-outline !px-4 !py-2.5 text-sm">
-              {t().exchange.cta}
-            </button>
-          </section>
 
           {/* 6 · SHARE THIS CARD — el ÚNICO QR de toda la página, al final */}
           <section aria-labelledby="share-h" class="mt-6 rounded-2xl border border-[rgba(247,249,252,0.1)] px-5 py-6">
@@ -500,6 +451,12 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               <button type="button" onClick={copyLink} class="btn btn-outline !px-4 !py-2.5 text-sm">{t().share.copy}</button>
               <button type="button" onClick={share} class="btn btn-outline !px-4 !py-2.5 text-sm">{t().share.native}</button>
             </div>
+            {/* Intercambio: pedir el contacto del visitante pertenece a este
+                momento, no a una seccion aparte. */}
+            <button type="button" onClick={() => openSheet("exchange")}
+              class="mt-2.5 btn btn-outline w-full !px-4 !py-2.5 text-sm">
+              {t().exchange.cta}
+            </button>
             <p class="mt-3 text-center text-[0.7rem] font-semibold text-turquoise" role="status" aria-live="polite">
               <Show when={copied()}>{t().shareCopied}</Show>
             </p>
