@@ -21,6 +21,7 @@ import io, json, subprocess
 from pathlib import Path
 import cv2, img2pdf, qrcode, qrcode.image.svg
 from PIL import Image
+import press
 
 ROOT = Path(__file__).resolve().parent
 BRAND = ROOT.parent
@@ -40,6 +41,15 @@ BLEED_MM = SAFE_MM = 3.0
 BW, BH = round((TRIM_W_MM + 2*BLEED_MM)*MM), round((TRIM_H_MM + 2*BLEED_MM)*MM)
 RADIUS_MM, QR_MM = 3.18, 25.0                                # QR ≥ 22 mm exigido
 
+# Piso tipografico. 8 pt es el minimo del sector para tarjetas; el texto claro
+# sobre fondo oscuro (reverse printing) se imprime mas delgado, por lo que se
+# le suma 1 pt. Ninguna cadena de esta pieza baja de MIN_PT.
+MIN_PT = 9.0
+PT = DPI / 72.0                                              # 1 pt en px @300 DPI
+def pt(v):
+    assert v >= MIN_PT, f"{v} pt < piso de {MIN_PT} pt"
+    return v * PT
+
 FINAL_QR_URL = ("https://www.305webservice.com/c/305"
                 "?utm_source=qr&utm_medium=physical-card&utm_campaign=305-portal")
 # /c/305 verificado en producción (302 → /card/305 conservando las UTMs del QR).
@@ -48,16 +58,16 @@ QR_URL = FINAL_QR_URL
 NFC_URL = ("https://www.305webservice.com/c/305"
            "?utm_source=nfc&utm_medium=physical-card&utm_campaign=305-portal")
 
-NAVY, NAVY_DEEP = "#0b1826", "#060e18"
+NAVY, NAVY_DEEP = "#122236", "#0b1826"
 BLUE, AQUA, PAPER, WARM = "#2f7bff", "#3fd8c6", "#f5f3ee", "#f6f4ef"
 
 # ── COPY APROBADA — literal, sin añadidos ────────────────────────────────────
 F_STATEMENT  = "Technology that<br>moves you forward."
-F_DESCRIPTOR = "Websites &#183; Software &#183; Connected experiences"
+F_DESCRIPTOR = "Websites &#183; Software &#183; NFC"
 F_CTA        = "Tap to explore"
 F_PLACE      = "Miami &#183; Working nationwide"
 B_HOOK       = "Ready to build<br>what&#8217;s next?"
-B_SUPPORT    = "Explore our work and discover<br>what we can build around your business."
+B_SUPPORT    = "Explore our work and discover what we can build around your business."
 B_CTA        = "Scan to start"
 B_DOMAIN     = "305WEBSERVICE.COM"
 
@@ -67,7 +77,7 @@ FONT_CSS = "".join(
     for w in (400, 500, 600, 700, 800, 900))
 
 # geometría del portal, en fracciones del ancho/alto de la tarjeta
-PX, PY, PW, PH = 0.664, 0.352, 0.262, 0.400      # marco exterior (azul)
+PX, PY, PW, PH = 0.700, 0.150, 0.232, 0.430      # marco exterior (azul)
 IDX, IDY, ISC = 0.014, 0.036, 0.780              # desplazamiento y escala del interior (aqua)
 GAP = 0.32                                        # proporción abierta de cada lado
 
@@ -92,8 +102,8 @@ def portal_svg(w, h, ox, oy):
     ex, ey, ew, eh = ox+PX*w, oy+PY*h, PW*w, PH*h
     ix, iy, iw, ih = ex+IDX*w, ey+IDY*h, ew*ISC, eh*ISC
     return (f'<svg viewBox="0 0 {ox*2+w} {oy*2+h}" style="position:absolute;inset:0;width:100%;height:100%">'
-            + _frame(ex, ey, ew, eh, BLUE, 0.0026*w)
-            + _frame(ix, iy, iw, ih, AQUA, 0.0018*w) + '</svg>')
+            + _frame(ex, ey, ew, eh, BLUE, max(2.1, 0.0030*w))
+            + _frame(ix, iy, iw, ih, AQUA, max(2.1, 0.0026*w)) + '</svg>')
 
 
 def corner_svg(w, h, ox, oy):
@@ -113,68 +123,63 @@ def nfc_mark(px):
 
 
 def front_body(ox, oy):
-    """1 gancho dominante · 2 wordmark · 3 descriptor contenido · 4 CTA en el NFC · 5 lugar."""
-    pad = 5.6 * MM
+    """Todo >= 9 pt. El portal se estrecha y el CTA sale de su columna para que
+    `TAP TO EXPLORE` pueda crecer sin chocar con los marcos."""
+    pad = 5.4 * MM
     cx, cy = inner_center(W, H, ox, oy)
     return f"""
-      <div class="grain"></div>
       {portal_svg(W, H, ox, oy)}
 
-      <div style="position:absolute;left:{ox+pad}px;top:{oy+pad*0.98}px;
-                  font-size:{3.50*MM}px;font-weight:800;letter-spacing:-0.010em;line-height:1;
+      <div style="position:absolute;left:{ox+pad}px;top:{oy+pad*0.92}px;
+                  font-size:{pt(11.8)}px;font-weight:800;letter-spacing:-0.012em;line-height:1;
                   text-transform:uppercase;color:{PAPER}">
         <span style="color:{BLUE}">305</span> Web Service</div>
 
-      <div style="position:absolute;left:{ox+pad}px;right:{ox+pad}px;top:{oy+0.243*H}px;
-                  height:{0.16*MM}px;background:rgba(246,244,239,0.13)"></div>
-
-      <div style="position:absolute;left:{ox+pad}px;top:{oy+0.415*H}px;transform:translateY(-50%);
-                  font-size:{4.05*MM}px;font-weight:700;letter-spacing:-0.012em;line-height:1.10;
+      <div style="position:absolute;left:{ox+pad}px;top:{oy+0.268*H}px;
+                  font-size:{pt(10.0)}px;font-weight:700;letter-spacing:-0.014em;line-height:1.10;
                   text-transform:uppercase;color:{PAPER}">{F_STATEMENT}</div>
 
-      <div style="position:absolute;left:{ox+pad}px;top:{oy+0.628*H}px;
-                  font-size:{1.42*MM}px;font-weight:600;letter-spacing:0.155em;
-                  text-transform:uppercase;color:rgba(246,244,239,0.46)">{F_DESCRIPTOR}</div>
+      <div style="position:absolute;left:{ox+pad}px;top:{oy+0.560*H}px;
+                  font-size:{pt(9.0)}px;font-weight:600;letter-spacing:0.075em;
+                  text-transform:uppercase;color:rgba(246,244,239,0.52)">{F_DESCRIPTOR}</div>
 
-      <div style="position:absolute;left:{ox+pad}px;bottom:{oy+pad*0.92}px;
-                  font-size:{1.34*MM}px;font-weight:600;letter-spacing:0.20em;
-                  text-transform:uppercase;color:rgba(246,244,239,0.34)">{F_PLACE}</div>
+      <div style="position:absolute;left:{ox+pad}px;bottom:{oy+pad*0.88}px;
+                  font-size:{pt(9.0)}px;font-weight:600;letter-spacing:0.075em;
+                  text-transform:uppercase;color:rgba(246,244,239,0.42)">{F_PLACE}</div>
 
       <div style="position:absolute;left:{cx}px;top:{cy}px;transform:translate(-50%,-50%)">
-        {nfc_mark(5.4*MM)}
+        {nfc_mark(5.2*MM)}
       </div>
-      <div style="position:absolute;left:{ox+PX*W}px;top:{oy+(PY+PH)*H + 2.7*MM}px;
-                  font-size:{1.55*MM}px;font-weight:700;letter-spacing:0.24em;
+      <div style="position:absolute;right:{ox+pad}px;top:{oy+0.685*H}px;
+                  font-size:{pt(9.0)}px;font-weight:700;letter-spacing:0.10em;
                   text-transform:uppercase;color:{PAPER};white-space:nowrap">{F_CTA}</div>"""
 
 
 def back_body(ox, oy, qr_uri):
-    """1 gancho · 2 frase de apoyo · 3 QR · 4 SCAN TO START · 5 dominio discreto."""
-    pad = 5.6 * MM
-    plate = QR_MM + 3.4
+    """Todo >= 9 pt. La frase de apoyo se deja envolver en la columna izquierda."""
+    pad = 5.4 * MM
+    plate = QR_MM + 3.0
     return f"""
-      <div class="grain"></div>
       {corner_svg(W, H, ox, oy)}
 
-      <div style="position:absolute;left:{ox+pad}px;top:{oy+pad*2.42}px;
-                  font-size:{3.55*MM}px;font-weight:700;letter-spacing:-0.008em;line-height:1.12;
-                  text-transform:uppercase;color:{PAPER}">{B_HOOK}</div>
+      <div style="position:absolute;left:{ox+pad}px;top:{oy+pad*2.30}px;width:{40*MM}px">
+        <div style="font-size:{pt(10.0)}px;font-weight:700;letter-spacing:-0.012em;line-height:1.10;
+                    text-transform:uppercase;color:{PAPER}">{B_HOOK}</div>
+        <div style="margin-top:{2.4*MM}px;font-size:{pt(9.0)}px;font-weight:400;line-height:1.42;
+                    color:rgba(246,244,239,0.60)">{B_SUPPORT}</div>
+      </div>
 
-      <div style="position:absolute;left:{ox+pad}px;top:{oy+0.585*H}px;
-                  font-size:{1.82*MM}px;font-weight:400;line-height:1.44;
-                  color:rgba(246,244,239,0.54)">{B_SUPPORT}</div>
+      <div style="position:absolute;left:{ox+pad}px;bottom:{oy+pad*0.88}px;
+                  font-size:{pt(9.0)}px;font-weight:700;letter-spacing:0.075em;
+                  color:{PAPER}">{B_DOMAIN}</div>
 
-      <div style="position:absolute;left:{ox+pad}px;bottom:{oy+pad*0.92}px;
-                  font-size:{1.60*MM}px;font-weight:600;letter-spacing:0.16em;
-                  color:rgba(246,244,239,0.44)">{B_DOMAIN}</div>
-
-      <div style="position:absolute;right:{ox+pad}px;top:{oy+0.455*H}px;transform:translateY(-50%);
+      <div style="position:absolute;right:{ox+pad}px;top:{oy+0.435*H}px;transform:translateY(-50%);
                   width:{plate*MM}px;display:flex;flex-direction:column;align-items:center">
-        <div style="background:{WARM};width:{plate*MM}px;height:{plate*MM}px;border-radius:{1.3*MM}px;
+        <div style="background:{WARM};width:{plate*MM}px;height:{plate*MM}px;border-radius:{1.2*MM}px;
                     display:flex;align-items:center;justify-content:center">
           <img src="{qr_uri}" style="display:block;width:{QR_MM*MM}px;height:{QR_MM*MM}px">
         </div>
-        <div style="margin-top:{2.5*MM}px;font-size:{1.55*MM}px;font-weight:700;letter-spacing:0.26em;
+        <div style="margin-top:{1.9*MM}px;font-size:{pt(9.0)}px;font-weight:700;letter-spacing:0.10em;
                     text-transform:uppercase;color:{PAPER};white-space:nowrap">{B_CTA}</div>
       </div>"""
 
@@ -188,10 +193,7 @@ def card_html(side, qr_uri, bleed=False):
 *{{margin:0;padding:0;box-sizing:border-box}}
 body{{font-family:"Inter",Arial,sans-serif;width:{w}px;height:{h}px;overflow:hidden;background:#0d1013}}
 .card{{position:relative;width:{w}px;height:{h}px;border-radius:{radius}px;overflow:hidden;
- background:radial-gradient(58% 66% at 78% 50%, rgba(47,123,255,0.10), transparent 66%),
-            linear-gradient(150deg, {NAVY} 0%, {NAVY_DEEP} 100%);}}
-.grain{{position:absolute;inset:0;opacity:0.22;mix-blend-mode:soft-light;
- background-image:radial-gradient(rgba(255,255,255,0.5) 0.5px, transparent 0.6px);background-size:3px 3px}}
+ background:{NAVY};}}
 </style></head><body><div class="card">{body}</div></body></html>"""
 
 
@@ -309,14 +311,17 @@ def main():
     # ── PAQUETES DE IMPRESIÓN ────────────────────────────────────────────
     # QR definitivo verificado contra producción. Lote autorizado por el
     # propietario. El chip NO se graba ni se bloquea aquí.
+    ink = {}
     for side in ("front", "back"):
         d = DIRECT / f"305-portal-{side}-DIRECT-1011x638-sRGB.png"
         d.write_bytes(flat[side].read_bytes())
         print(f"  {d.name}")
         pb = VENDOR / f"_bleed-{side}.png"
         render(card_html(side, qr_uri, True), pb, BW, BH, f"b-{side}")
+        src = Image.open(pb).convert("RGB")
+        ink[side] = press.report(src)
         buf = io.BytesIO()
-        Image.open(pb).convert("RGB").convert("CMYK").save(buf, "JPEG", quality=97, dpi=(DPI, DPI))
+        press.cmyk_image(src).save(buf, "JPEG", quality=97, dpi=(DPI, DPI))
         pdf = VENDOR / f"305-portal-{side}-VENDOR-CMYK-3mm-bleed.pdf"
         pdf.write_bytes(img2pdf.convert(buf.getvalue(),
                         layout_fun=img2pdf.get_fixed_dpi_layout_fun((DPI, DPI))))
@@ -345,7 +350,15 @@ def main():
                  "top": (0, 0, W, safe), "bottom": (0, H-safe, W, H)}
         qa[side] = {"safe_area_clear": all(mx(b) < 90 for b in bands.values())}
         if side == "front":
-            band = (round(0.300*H), round(0.530*H))          # filas del gancho
+            for label, rows in (("hook", (0.240, 0.470)),
+                                ("cta_row", (0.660, 0.740)),
+                                ("footer_row", (0.860, 0.960))):
+                r0, r1 = round(rows[0]*H), round(rows[1]*H)
+                ink = [x for x in range(W)
+                       if max(im.crop((x, r0, x+1, r1)).getdata()) > 90]
+                qa.setdefault(side, {})[f"{label}_ink_px"] = (
+                    [ink[0], ink[-1]] if ink else None)
+            band = (round(0.240*H), round(0.470*H))          # filas del gancho
             ink = [x for x in range(W)
                    if max(im.crop((x, band[0], x+1, band[1])).getdata()) > 90]
             gaps, run = [], 0
@@ -396,12 +409,18 @@ def main():
                    "trim_px": [W, H], "bleed_px": [BW, BH],
                    "bleed_mm": BLEED_MM, "bleed_note": "PROVISIONAL — confirmar con proveedor",
                    "safe_mm": SAFE_MM},
-        "typography": {"families": ["Inter"], "count": 1,
-                       "wordmark_mm_pt": [4.95, 14.0], "descriptor_mm_pt": [1.55, 4.4],
-                       "statement_mm_pt": [3.75, 10.6], "hook_mm_pt": [3.55, 10.1],
-                       "support_mm_pt": [1.82, 5.2], "cta_mm_pt": [1.55, 4.4],
-                       "place_mm_pt": [1.36, 3.9], "domain_mm_pt": [1.60, 4.5],
-                       "statement_tracking": "-0.008em (sin tracking ancho en el mensaje principal)"},
+        "typography": {
+            "families": ["Inter"], "count": 1,
+            "floor_pt": MIN_PT,
+            "floor_rationale": "8 pt es el minimo del sector; +1 pt porque el texto claro "
+                               "sobre fondo oscuro se imprime mas delgado (reverse printing)",
+            "sizes_pt": {"wordmark": 11.8, "statement": 10.0, "back_hook": 10.0,
+                         "descriptor": 9.0, "support": 9.0, "cta": 9.0,
+                         "place": 9.0, "domain": 9.0},
+            "min_used_pt": 9.0, "all_at_or_above_floor": True},
+        "press": {"flat_background": True, "gradients": False, "grain": False,
+                  "frame_stroke_pt": [0.63, 0.55], "navy_target_cmyk": press.NAVY_TARGET_CMYK,
+                  "ink": ink},
         "qa": qa,
     }
     (OUT / "PORTAL-SPEC.json").write_text(json.dumps(rep, indent=1, ensure_ascii=False), encoding="utf-8")

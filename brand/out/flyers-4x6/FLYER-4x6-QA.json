@@ -1,0 +1,134 @@
+{
+ "format": {
+  "trim_in": [
+   4.0,
+   6.0
+  ],
+  "trim_px": [
+   1200,
+   1800
+  ],
+  "bleed_in": 0.125,
+  "bleed_px": [
+   1276,
+   1876
+  ],
+  "safe_in": 0.1875,
+  "dpi": 300
+ },
+ "press": {
+  "flat_background": true,
+  "gradients": false,
+  "grain": false,
+  "min_rule_pt": 0.5,
+  "navy_target_cmyk": {
+   "C": 78,
+   "M": 58,
+   "Y": 38,
+   "K": 72,
+   "TAC": 246
+  },
+  "note": "fondo plano y sin grano para que funcione en vinilo, no estucado, estucado y digital sin recalcular"
+ },
+ "typography": {
+  "floor_pt": 9.0,
+  "rationale": "8 pt minimo del sector +1 pt por reverse printing",
+  "families": [
+   "Inter"
+  ]
+ },
+ "en": {
+  "sideA": {
+   "safe_area_clear": true,
+   "safe_area_detail": {
+    "left": 31,
+    "right": 31,
+    "top": 31,
+    "bottom": 31
+   },
+   "ink": {
+    "tac_mean_pct": 202.8,
+    "tac_max_pct": 240.0,
+    "tac_p99_pct": 240.0,
+    "tac_limit_pct": 240.0,
+    "over_limit_pct_of_pixels": 0.0,
+    "k_mean_pct": 63.4,
+    "k_max_pct": 90.0,
+    "gcr": 0.9
+   }
+  },
+  "qr_url": "https://www.305webservice.com/?utm_source=print&utm_medium=qr&utm_campaign=305-flyer-4x6&utm_content=en",
+  "qr_decoded_from_art": true,
+  "qr_size_in": 1.05,
+  "qr_size_mm": 26.7,
+  "sideB": {
+   "safe_area_clear": true,
+   "safe_area_detail": {
+    "left": 31,
+    "right": 31,
+    "top": 31,
+    "bottom": 31
+   },
+   "ink": {
+    "tac_mean_pct": 218.7,
+    "tac_max_pct": 228.0,
+    "tac_p99_pct": 227.9,
+    "tac_limit_pct": 240.0,
+    "over_limit_pct_of_pixels": 0.0,
+    "k_mean_pct": 68.3,
+    "k_max_pct": 70.9,
+    "gcr": 0.9
+   }
+  },
+  "qr_codes_in_piece": 1,
+  "gmail_present": false,
+  "price_present": false
+ },
+ "es": {
+  "sideA": {
+   "safe_area_clear": true,
+   "safe_area_detail": {
+    "left": 31,
+    "right": 31,
+    "top": 31,
+    "bottom": 31
+   },
+   "ink": {
+    "tac_mean_pct": 196.3,
+    "tac_max_pct": 240.0,
+    "tac_p99_pct": 240.0,
+    "tac_limit_pct": 240.0,
+    "over_limit_pct_of_pixels": 0.0,
+    "k_mean_pct": 61.0,
+    "k_max_pct": 90.0,
+    "gcr": 0.9
+   }
+  },
+  "qr_url": "https://www.305webservice.com/?utm_source=print&utm_medium=qr&utm_campaign=305-flyer-4x6&utm_content=es",
+  "qr_decoded_from_art": true,
+  "qr_size_in": 1.05,
+  "qr_size_mm": 26.7,
+  "sideB": {
+   "safe_area_clear": true,
+   "safe_area_detail": {
+    "left": 31,
+    "right": 31,
+    "top": 31,
+    "bottom": 31
+   },
+   "ink": {
+    "tac_mean_pct": 217.9,
+    "tac_max_pct": 228.0,
+    "tac_p99_pct": 227.9,
+    "tac_limit_pct": 240.0,
+    "over_limit_pct_of_pixels": 0.0,
+    "k_mean_pct": 68.1,
+    "k_max_pct": 70.9,
+    "gcr": 0.9
+   }
+  },
+  "qr_codes_in_piece": 1,
+  "gmail_present": false,
+  "price_present": false
+ }
+}
