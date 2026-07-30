@@ -7,7 +7,7 @@ import Container from "~/components/ui/Container";
 import { ButtonLink } from "~/components/ui/Button";
 import PackageSelector from "~/components/sections/PackageSelector";
 import {
-  ProblemGrid, WhyCustom, Industries, ProcessSteps, ProofExpect, Engagement, Faq, FinalCta, TrustStrip,
+  WhyCustom, Industries, ProcessSteps, ProofExpect, Engagement, Faq, FinalCta, TrustStrip,
 } from "~/components/sections/HomeSections";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
@@ -63,8 +63,9 @@ export default function HomePage(props: { locale: Locale }) {
       {/* ============ SELECTED WORK (destino de "View our work") ============ */}
       <SelectedWork locale={props.locale} />
 
-      {/* ================= PROBLEM ================= */}
-      <ProblemGrid locale={props.locale} />
+      {/* PROBLEM retirado: la seccion no esta en la estructura aprobada de 5
+          bloques y su CTA ("Tell us what's slowing you down") no pertenece al
+          sistema de CTAs de la identidad. */}
 
       {/* ================= PACKAGE SELECTOR ================= */}
       <PackageSelector locale={props.locale} />

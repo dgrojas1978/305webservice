@@ -181,7 +181,7 @@ export function ProofExpect(props: { locale: Locale }) {
 export function Engagement(props: { locale: Locale }) {
   const t = () => C[props.locale].engagement;
   return (
-    <section class="bg-paper pb-section">
+    <section class="bg-paper py-section">
       <Container>
         <SectionHeading title={t().heading} />
         <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
