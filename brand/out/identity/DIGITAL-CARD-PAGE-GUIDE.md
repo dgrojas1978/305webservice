@@ -39,7 +39,7 @@ El **orden del primer viewport es correcto** y coincide con el modelo aprobado:
 ```
 305 WEB SERVICE  ·  selector EN/ES
 MIAMI · AVAILABLE FOR PROJECTS
-H1: Technology built to move your business forward.
+H1: Technology that moves you forward.        [unificado 30 jul 2026]
 sub: Websites, custom software, NFC experiences and IT solutions—
 [un proyecto real: Light Specter Film · Cinematic brand and lead experience · View Project]
 REAL PROJECTS · ENGLISH & SPANISH · DIRECT SUPPORT
@@ -66,15 +66,10 @@ Identidad → relevancia → una prueba → acciones. **Un solo QR en toda la p�
 
 1. **`START A PROJECT` no está en el primer viewport.** El modelo aprobado dice que debe
    ser la acción más fuerte; hoy arriba solo hay `SAVE CONTACT` y `WHATSAPP`.
-2. **El mensaje de marca tiene tres versiones distintas** entre superficies:
-
-   | Superficie | Frase |
-   |---|---|
-   | Tarjeta física | `TECHNOLOGY THAT MOVES YOU FORWARD.` |
-   | Tarjeta digital (h1) | `Technology built to move your business forward.` |
-   | Hero de la web | `Technology designed around how your business works.` |
-
-   Tres frases para la misma idea. Una tiene que ganar y las otras desaparecer.
+2. ~~El mensaje de marca tiene tres versiones distintas.~~ **RESUELTO el 30 jul 2026.**
+   Decisión del propietario: la declaración única es **`TECHNOLOGY THAT MOVES YOU FORWARD.`**
+   (`Tecnología que te impulsa.` en español). Se aplicó al hero de la web, a la tarjeta
+   digital y a los dos formatos de flyer; la tarjeta física ya la usaba.
 3. **Un bloque duplicado en el DOM.** El h2 `Let's build what your business needs next.`
    aparece dos veces; la segunda con altura 0. No se ve, pero un lector de pantalla lo
    anuncia igual. Hay que confirmar si es el panel del formulario y, si lo es, ocultarlo
@@ -181,7 +176,6 @@ Por orden de impacto:
 4. Reducir la lista de 6 necesidades a los 3 grupos de capacidad.
 5. Bajar de 4.9 a ≤ 3 pantallas.
 6. Wordmark de 4 → 1.
-7. Elegir **una** frase de marca y borrar las otras dos.
 8. Revisar el bloque duplicado en el DOM y su tratamiento accesible.
 
 Nada de esto se ha ejecutado: este documento es el diagnóstico y la norma.

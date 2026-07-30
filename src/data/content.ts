@@ -90,7 +90,7 @@ const en: Dict = {
   },
   hero: {
     eyebrow: "Strategy · Design · Engineering",
-    h1: "Technology designed around how your business works.",
+    h1: "Technology that moves you forward.",
     sub: "We create high-performing websites, custom software and connected digital experiences that help businesses operate clearly, serve customers better and move forward with confidence.",
     priceLine: "",
     ctaPrimary: "Start a project",
@@ -309,7 +309,7 @@ const es: Dict = {
   },
   hero: {
     eyebrow: "Estrategia · Diseño · Ingeniería",
-    h1: "Tecnología pensada para cómo funciona tu negocio.",
+    h1: "Tecnología que te impulsa.",
     sub: "Creamos sitios web de alto rendimiento, software a medida y experiencias digitales conectadas que ayudan a las empresas a operar con claridad, atender mejor a sus clientes y avanzar con confianza.",
     priceLine: "",
     ctaPrimary: "Empezar un proyecto",

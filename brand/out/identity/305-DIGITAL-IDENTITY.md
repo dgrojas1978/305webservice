@@ -16,12 +16,16 @@ Es un socio de tecnología digital enfocado, que combina:
 STRATEGY · DESIGN · ENGINEERING
 ```
 
-**Declaración de marca**
+**Declaración de marca — única, en todas las superficies**
 
 ```
-DIGITAL SYSTEMS,
-BUILT FOR BUSINESS.
+TECHNOLOGY THAT
+MOVES YOU FORWARD.
 ```
+
+En español: **`Tecnología que te impulsa.`** Equivalente en significado, no traducción
+literal. `moves you forward` no se traduce palabra por palabra: en español eso suena
+mecánico. `impulsa` transmite lo mismo con la mitad de sílabas.
 
 **Posicionamiento de apoyo**
 
@@ -40,8 +44,8 @@ tarjetas digitales · rutas de reseñas y captación de prospectos · soluciones
 | Nivel | Texto |
 |---|---|
 | Descriptor | `STRATEGY · DESIGN · ENGINEERING` |
-| Declaración | `DIGITAL SYSTEMS, BUILT FOR BUSINESS.` |
-| Hero web | `Technology designed around how your business works.` |
+| Declaración | `TECHNOLOGY THAT MOVES YOU FORWARD.` / `Tecnología que te impulsa.` |
+| Hero web | la declaración, literal. No hay variante propia del hero |
 | Apoyo | `We create high-performing websites, custom software and connected digital experiences that help businesses operate clearly, serve customers better and move forward with confidence.` |
 | CTA primario | `START A PROJECT` |
 | CTA secundario | `VIEW OUR WORK` |
@@ -51,19 +55,15 @@ tarjetas digitales · rutas de reseñas y captación de prospectos · soluciones
 
 **Un solo CTA primario por viewport o composición.**
 
-### Excepción documentada: la tarjeta física
+### Una sola frase, sin excepciones
 
-La tarjeta NFC usa un gancho distinto, aprobado el 29 jul 2026:
+La tarjeta física, la tarjeta digital y el hero de la web dicen **exactamente** lo mismo.
+Antes había tres variantes (`Technology designed around how your business works.`,
+`Technology built to move your business forward.`, `DIGITAL SYSTEMS, BUILT FOR BUSINESS.`);
+las tres se eliminaron el 30 jul 2026.
 
-```
-TECHNOLOGY THAT
-MOVES YOU FORWARD.
-```
-con `WEBSITES · SOFTWARE · CONNECTED EXPERIENCES` y `TAP TO EXPLORE`.
-
-Motivo: en 6 cm la pieza debe **provocar**, no describir la categoría. La explicación de
-capacidades y metodología ocurre después, en la experiencia digital.
-`STRATEGY · DESIGN · ENGINEERING` sigue vigente en web y propuestas corporativas.
+`STRATEGY · DESIGN · ENGINEERING` sigue siendo el **descriptor** — acompaña a la
+declaración, no la sustituye.
 
 ---
 
@@ -84,13 +84,15 @@ repetir los mismos servicios en cada sección.
 
 | Token | Valor | Uso |
 |---|---|---|
-| Navy | `#0b1826` → `#060e18` | fondo base de toda pieza oscura |
+| Navy | `#122236` plano · objetivo CMYK **C78 M58 Y38 K72** | fondo base. Plano a propósito: los degradados bandean en vinilo |
 | Azul eléctrico | `#2f7bff` | `305` del wordmark, CTA primario, marco exterior del portal |
 | Aqua | `#3fd8c6` | acento contenido: etiquetas de sección, filetes, marco interior |
 | Paper | `#f5f3ee` | texto principal sobre navy |
 | Warm | `#f6f4ef` | placa del QR |
 
 **Tipografía: Inter, familia única.** Máximo dos familias en cualquier pieza; hoy basta una.
+**Piso de 9 pt en impresión** — 8 pt es el mínimo del sector, +1 pt porque el texto claro
+sobre fondo oscuro se imprime más delgado. Los builds fallan si alguien declara menos.
 Los mensajes principales llevan tracking **negativo**. El espaciado ancho (`0.16em`–`0.38em`)
 queda reservado a descriptores y etiquetas terciarias.
 
@@ -160,9 +162,9 @@ El descriptor en español es `ESTRATEGIA · DISEÑO · INGENIERÍA`.
 
 | Pieza | Estado |
 |---|---|
-| Tarjeta física 305 PORTAL | **PRINT TEST READY** — QR definitivo verificado contra producción; imprimir **una** unidad antes del lote |
-| Flyer de capacidades EN | listo — QR decodificado del arte, safe area limpia |
-| Flyer de capacidades ES | listo — ídem |
+| Tarjeta física 305 PORTAL | **RELEASED FOR PRINT** — QR definitivo verificado; todo el texto ≥ 9 pt; tinta con K dominante |
+| Flyer Letter EN / ES | listos — QR decodificado del arte, safe area limpia |
+| Flyer 4 × 6 EN / ES, dos caras | listos — ídem, todo ≥ 9 pt |
 | Tarjeta digital `/card/305` | **en vivo**; falta reordenar acciones y dejar un solo QR |
 | Web | hero y posicionamiento aplicados; falta consolidar la home a 5 secciones y reencuadrar las páginas de servicio |
 

@@ -434,7 +434,7 @@ export const CARD_COPY = {
     hero: {
       eyebrow: "Miami-based technology partner",
       avail: "Miami · Available for projects",
-      headline: "Technology built to move your business forward.",
+      headline: "Technology that moves you forward.",
       sub: "Websites, custom software, NFC experiences and IT solutions—built around your business.",
       proof: ["Real projects", "English & Spanish", "Direct support"],
       ctaPrimary: "Start a Project",
@@ -568,7 +568,7 @@ export const CARD_COPY = {
     hero: {
       eyebrow: "Tu socio tecnológico en Miami",
       avail: "Miami · Disponible para proyectos",
-      headline: "Tecnología hecha para impulsar tu negocio.",
+      headline: "Tecnología que te impulsa.",
       sub: "Páginas web, software a medida, experiencias NFC y soluciones IT — hechas para tu negocio.",
       proof: ["Proyectos reales", "Español e inglés", "Atención directa"],
       ctaPrimary: "Empezar un proyecto",

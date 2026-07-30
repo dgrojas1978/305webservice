@@ -59,7 +59,7 @@ WORK = [
 COPY = {
     "en": {
         "eyebrow": "Strategy &#183; Design &#183; Engineering",
-        "hook": "Digital systems,<br>built for business.",
+        "hook": "Technology that<br>moves you forward.",
         "hook_in": 0.52,
         "sub": "Websites, custom software and connected experiences designed around real business goals.",
         "proof_label": "Selected work",
@@ -80,8 +80,8 @@ COPY = {
     },
     "es": {
         "eyebrow": "Estrategia &#183; Dise&#241;o &#183; Ingenier&#237;a",
-        "hook": "Sistemas digitales,<br>hechos para tu negocio.",
-        "hook_in": 0.475,
+        "hook": "Tecnolog&#237;a<br>que te impulsa.",
+        "hook_in": 0.60,
         "sub": "Sitios web, software a medida y experiencias conectadas, dise&#241;ados alrededor de objetivos reales de negocio.",
         "proof_label": "Trabajo seleccionado",
         "cap_label": "Lo que construimos",
