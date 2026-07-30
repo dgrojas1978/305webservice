@@ -5,7 +5,7 @@ import type { Lead } from "~/types";
 
 let client: MongoClient | null = null;
 
-async function getDb(): Promise<Db> {
+export async function getDb(): Promise<Db> {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
     // Fail loudly rather than pretending the lead was stored. The contact

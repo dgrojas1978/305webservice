@@ -1,4 +1,5 @@
 import { CARD_PROFILES } from "~/data/card";
+import { bumpTaps, findLink, normalizeSlug } from "~/lib/shortlinks";
 
 /**
  * Redirección corta y estable para tarjetas físicas.
@@ -13,12 +14,13 @@ const SOURCES = new Set(["nfc", "qr", "share"]);
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const UTM_MAX = 120;
 
-export function cardRedirect(slug: string, requestUrl: string): Response {
+export async function cardRedirect(slug: string, requestUrl: string): Promise<Response> {
   const profile = CARD_PROFILES[slug];
   const url = new URL(requestUrl);
 
-  // Slug desconocido → home. Nunca un destino roto.
-  if (!profile) return Response.redirect(new URL("/", url.origin).toString(), 302);
+  // Sin perfil fijo: puede ser un enlace virtual de cliente guardado en la BD.
+  // Los perfiles en código mandan, para que /c/305 nunca dependa de la BD.
+  if (!profile) return dbRedirect(slug, url);
 
   // El destino se resuelve contra el ORIGEN de la petición: en staging apunta
   // a staging y en producción a producción, sin hardcodear ningún host.
@@ -45,5 +47,38 @@ export function cardRedirect(slug: string, requestUrl: string): Response {
     dest.searchParams.set("utm_campaign", `card-${profile.nfc.slug}`);
   }
 
+  return Response.redirect(dest.toString(), 302);
+}
+
+/**
+ * Enlace virtual de cliente. El chip NFC guarda /c/<slug> y el destino real
+ * vive en la BD, asi que se puede cambiar sin reprogramar la tarjeta.
+ *
+ * SIEMPRE 302, nunca 301: un 301 se cachea de forma permanente en el navegador
+ * y dejaria el destino congelado, que es justo lo contrario de lo que buscamos.
+ */
+async function dbRedirect(rawSlug: string, url: URL): Promise<Response> {
+  const home = new URL("/", url.origin).toString();
+  const slug = normalizeSlug(rawSlug);
+  if (!slug) return Response.redirect(home, 302);
+
+  let link;
+  try {
+    link = await findLink(slug);
+  } catch {
+    // Si la BD no responde, la tarjeta lleva a la home en vez de a un error.
+    return Response.redirect(home, 302);
+  }
+  if (!link || !link.active) return Response.redirect(home, 302);
+
+  void bumpTaps(slug);
+
+  // La atribucion que trae la peticion se conserva: un escaneo QR y un toque
+  // NFC deben poder distinguirse en la analitica del destino.
+  const dest = new URL(link.target);
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
+    const value = url.searchParams.get(key);
+    if (value) dest.searchParams.set(key, value.slice(0, 120));
+  }
   return Response.redirect(dest.toString(), 302);
 }
