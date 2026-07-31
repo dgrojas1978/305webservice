@@ -34,7 +34,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   const [sheetPreselect, setSheetPreselect] = createSignal<string | undefined>(undefined);
   const [sheetSuccess, setSheetSuccess] = createSignal(false);
   const [barVisible, setBarVisible] = createSignal(false);
-  const [reelIdx, setReelIdx] = createSignal(0);
 
   const t = () => CARD_COPY[lang()];
   const co = () => p().company;
@@ -135,14 +134,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
       qrObs.observe(qrRef);
     }
 
-    // reel del hero: crossfade suave, pausado con prefers-reduced-motion
-    let timer: ReturnType<typeof setInterval> | undefined;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!reduced.matches) {
-      timer = setInterval(() => setReelIdx((i) => (i + 1) % p().conversion.projects.length), 4200);
-    }
-
-    onCleanup(() => { heroObs?.disconnect(); workObs?.disconnect(); qrObs?.disconnect(); if (timer) clearInterval(timer); });
+    onCleanup(() => { heroObs?.disconnect(); workObs?.disconnect(); qrObs?.disconnect(); });
   });
 
   const scrollWork = (dir: 1 | -1) => {
@@ -231,60 +223,34 @@ export default function DigitalCard(props: { profile: CardProfile }) {
             </h1>
             <p class="mt-4 max-w-[34ch] text-[0.95rem] leading-relaxed text-on-navy">{t().hero.sub}</p>
 
-            {/* Prueba destacada. En móvil va DESPUÉS de las acciones (orden del
-                brief); en desktop antes. Ligeramente más estrecha que el texto. */}
-            <div class="glass relative order-2 mt-6 overflow-hidden rounded-2xl lg:order-1 lg:max-w-[540px]">
-              <div class="relative aspect-[16/9]">
+            {/* Prueba: los CUATRO proyectos a la vez.
+                Antes rotaban de uno en uno y habia que esperar —o tocar flechas—
+                para ver el trabajo. En una tarjeta que se mira dos segundos, la
+                rejilla enseña el rango completo sin pedir nada. */}
+            <div class="order-2 mt-6 lg:order-1 lg:max-w-[540px]">
+              <ul class="grid grid-cols-2 gap-2.5">
                 <For each={p().conversion.projects}>
-                  {(w, i) => (
-                    // Monta cada imagen solo cuando el reel la necesita (activa o
-                    // siguiente): la carga inicial trae 2 imágenes, no 4.
-                    <Show when={i() <= Math.min(reelIdx() + 1, p().conversion.projects.length - 1) || reelIdx() > 0}>
-                      <img
-                        src={`/work/${w.key}-960.webp`}
-                        srcset={`/work/${w.key}-640.webp 640w, /work/${w.key}-960.webp 960w`}
-                        sizes="(min-width: 640px) 560px, 92vw"
-                        alt={w.alt[lang()]}
-                        width="960" height="600"
-                        loading={i() === 0 ? "eager" : "lazy"}
-                        fetchpriority={i() === 0 ? "high" : "auto"}
-                        class="absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700"
-                        style={{ opacity: reelIdx() === i() ? 1 : 0 }}
-                      />
-                    </Show>
+                  {(w) => (
+                    <li>
+                      <a href={w.url} target="_blank" rel="noopener noreferrer"
+                        data-track="project_visit" data-project={w.key}
+                        class="group block overflow-hidden rounded-xl border border-[rgba(247,249,252,0.12)] transition-colors hover:border-[rgba(63,216,198,0.5)]">
+                        <img src={w.img} alt={`${w.domain} — ${w.fact[lang()]}`}
+                          width="800" height="500" loading="lazy" decoding="async"
+                          class="block aspect-[8/5] w-full object-cover" />
+                        <span class="block px-2.5 py-2">
+                          <span class="block truncate text-[0.7rem] font-bold uppercase tracking-[0.1em] text-paper">
+                            {w.domain}
+                          </span>
+                          <span class="mt-0.5 block text-[0.7rem] leading-snug text-on-navy-faint">
+                            {w.fact[lang()]}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
                   )}
                 </For>
-                {/* overlay editorial: nombre + una línea + View Project */}
-                <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(2,8,18,0.97)] via-[rgba(2,8,18,0.82)] to-transparent px-4 pb-3 pt-14">
-                  <p class="text-[0.72rem] font-bold uppercase tracking-[0.12em] text-paper">{p().conversion.projects[reelIdx()].domain}</p>
-                  <p class="mt-0.5 text-[0.72rem] leading-snug text-on-navy">{p().conversion.projects[reelIdx()].fact[lang()]}</p>
-                  <a href={p().conversion.projects[reelIdx()].url} target="_blank" rel="noopener noreferrer"
-                    data-track="project_visit" data-project={p().conversion.projects[reelIdx()].key}
-                    class="pointer-events-auto mt-1 inline-block text-[0.7rem] font-bold text-turquoise hover:underline">
-                    {t().hero.viewProject} →
-                  </a>
-                </div>
-              </div>
-              {/* controles discretos */}
-              <div class="flex items-center justify-between gap-3 border-t border-[rgba(247,249,252,0.1)] px-3.5 py-1.5">
-                <span class="flex gap-1.5" aria-hidden="true">
-                  <For each={p().conversion.projects}>
-                    {(_, i) => <span class={`t-card h-1 w-4 rounded-full ${reelIdx() === i() ? "bg-turquoise" : "bg-[rgba(247,249,252,0.2)]"}`} />}
-                  </For>
-                </span>
-                <span class="flex gap-1">
-                  <button type="button" aria-label={t().work.prev}
-                    onClick={() => setReelIdx((i) => (i - 1 + p().conversion.projects.length) % p().conversion.projects.length)}
-                    class="t-card flex h-7 w-7 items-center justify-center rounded-full text-on-navy-faint hover:text-paper">
-                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                  <button type="button" aria-label={t().work.next}
-                    onClick={() => setReelIdx((i) => (i + 1) % p().conversion.projects.length)}
-                    class="t-card flex h-7 w-7 items-center justify-center rounded-full text-on-navy-faint hover:text-paper">
-                    <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </button>
-                </span>
-              </div>
+              </ul>
             </div>
 
             <p class="order-3 mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-on-navy-faint lg:order-2">
