@@ -114,7 +114,10 @@ export default function AdminLinks() {
       <meta name="robots" content="noindex, nofollow" />
 
       <div class="mx-auto max-w-4xl">
-        <h1 class="text-2xl font-extrabold tracking-tight">Enlaces virtuales NFC</h1>
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h1 class="text-2xl font-extrabold tracking-tight">Enlaces virtuales NFC</h1>
+          <a href="/admin/dashboard" class="text-xs text-on-navy underline">Panel de tarjetas →</a>
+        </div>
 
         <Show when={params.ok}>
           <p role="status" class="mt-5 rounded-lg border border-[rgba(63,216,198,0.45)] bg-[rgba(63,216,198,0.08)] px-4 py-3 text-sm text-turquoise">
