@@ -3,6 +3,8 @@ import { For, Show, createSignal, onCleanup, onMount } from "solid-js";
 import { WhatsAppIcon } from "~/components/ui/Button";
 import AnalyticsListener from "~/components/AnalyticsListener";
 import LeadSheet, { submitCardLead, type SheetMode } from "~/components/card/LeadSheet";
+import PaymentSheet from "~/components/card/PaymentSheet";
+import { paymentsRenderable } from "~/lib/cardPayments";
 import { GoogleReviews } from "~/components/card/CardModules";
 import { trackEvent } from "~/lib/analytics";
 import { waLink } from "~/lib/site";
@@ -34,6 +36,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   const [sheetPreselect, setSheetPreselect] = createSignal<string | undefined>(undefined);
   const [sheetSuccess, setSheetSuccess] = createSignal(false);
   const [barVisible, setBarVisible] = createSignal(false);
+  const [payOpen, setPayOpen] = createSignal(false);
 
   const t = () => CARD_COPY[lang()];
   const co = () => p().company;
@@ -247,6 +250,15 @@ export default function DigitalCard(props: { profile: CardProfile }) {
                   class="btn btn-outline !py-3 text-center text-[0.85rem]">
                   {t().hero.quick.share}
                 </button>
+                {/* Pagar entra en el grupo de acciones que YA existe, no crea uno
+                    nuevo: la invariante es un solo grupo por viewport. Y no
+                    aparece si el negocio no tiene datos de cobro reales. */}
+                <Show when={paymentsRenderable(p().payments)}>
+                  <button type="button" onClick={() => setPayOpen(true)}
+                    class="btn btn-outline !py-3 text-center text-[0.85rem]">
+                    {t().payments.open}
+                  </button>
+                </Show>
               </div>
               <p class="mt-2 text-center text-[0.7rem] font-semibold text-turquoise"
                 role="status" aria-live="polite">
@@ -376,6 +388,13 @@ export default function DigitalCard(props: { profile: CardProfile }) {
         preselect={sheetPreselect()}
         success={sheetSuccess()}
         onClose={() => { setSheetMode(null); setSheetSuccess(false); }}
+      />
+
+      <PaymentSheet
+        profile={p()}
+        locale={lang()}
+        open={payOpen()}
+        onClose={() => setPayOpen(false)}
       />
     </div>
   );

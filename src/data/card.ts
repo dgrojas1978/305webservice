@@ -21,6 +21,7 @@ import type {
   CardLocationConfig,
   VCardMediaConfig,
 } from "~/lib/cardModules";
+import type { CardPaymentsConfig } from "~/lib/cardPayments";
 
 export type CardLocale = "en" | "es";
 
@@ -154,6 +155,8 @@ export interface CardProfile {
   reviews?: BusinessReviewConfig;
   location?: CardLocationConfig;
   vcardMedia?: VCardMediaConfig;
+  /** Cómo cobra el negocio. Sin datos reales no se renderiza. */
+  payments?: CardPaymentsConfig;
   brand: CardBrand;
   company: CardCompany;
   person?: CardPerson;
@@ -432,6 +435,14 @@ export const CARD_305: CardProfile = {
       },
     ],
   },
+  /**
+   * Cobros DESACTIVADOS: no tengo los datos reales de Zelle/Venmo/Cash App/
+   * PayPal de 305, y aquí no se inventa un número al que la gente manda dinero.
+   * Para activarlo: `enabled: true` + el nombre EXACTO inscrito en Zelle + el
+   * teléfono o correo inscrito, y opcionalmente la imagen del QR que genere el
+   * banco (esa no se puede fabricar desde aquí).
+   */
+  payments: { enabled: false },
   nfc: {
     slug: "305",
     canonicalPath: "/card/305",
@@ -534,6 +545,25 @@ export const CARD_COPY = {
     exchange: {
       cta: "Share Your Contact",
       explain: "Send your details securely so 305 can follow up.",
+    },
+    payments: {
+      heading: "Payment",
+      open: "Pay",
+      sheetTitle: "How to pay",
+      close: "Close",
+      recipient: "Send only to",
+      /** Lo único que impide que el dinero acabe en otra cuenta. */
+      verify: "Before sending, confirm your bank shows the recipient name:",
+      irreversible: "A transfer to an enrolled recipient usually cannot be cancelled. Only pay people and businesses you know.",
+      copy: "Copy",
+      copied: "Copied",
+      saveContact: "Save contact",
+      showQr: "Show QR",
+      hideQr: "Hide QR",
+      qrHelp: "Scan from another device. If you're on the phone you'll pay with, copy the number instead.",
+      qrIssued: "QR issued by the recipient's bank.",
+      openApp: "Open",
+      zelleHow: "Zelle works inside your own bank's app.",
     },
     share: {
       heading: "Share this card",
@@ -668,6 +698,24 @@ export const CARD_COPY = {
     exchange: {
       cta: "Compartir mis datos",
       explain: "Envía tus datos de forma segura para que 305 te dé seguimiento.",
+    },
+    payments: {
+      heading: "Pago",
+      open: "Pagar",
+      sheetTitle: "Cómo pagar",
+      close: "Cerrar",
+      recipient: "Envía solo a",
+      verify: "Antes de enviar, confirma que tu banco muestra este nombre:",
+      irreversible: "Una transferencia a un destinatario inscrito normalmente no se puede cancelar. Paga solo a personas y negocios que conozcas.",
+      copy: "Copiar",
+      copied: "Copiado",
+      saveContact: "Guardar contacto",
+      showQr: "Ver QR",
+      hideQr: "Ocultar QR",
+      qrHelp: "Escanéalo desde otro dispositivo. Si estás en el teléfono con el que vas a pagar, copia el número.",
+      qrIssued: "QR emitido por el banco del destinatario.",
+      openApp: "Abrir",
+      zelleHow: "Zelle funciona dentro de la app de tu propio banco.",
     },
     share: {
       heading: "Compartir esta tarjeta",
