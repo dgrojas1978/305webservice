@@ -5,7 +5,7 @@ import AnalyticsListener from "~/components/AnalyticsListener";
 import LeadSheet, { submitCardLead, type SheetMode } from "~/components/card/LeadSheet";
 import { GoogleReviews } from "~/components/card/CardModules";
 import { trackEvent } from "~/lib/analytics";
-import { waLink } from "~/lib/site";
+import { FACEBOOK_URL, waLink } from "~/lib/site";
 import {
   CARD_COPY,
   cardHref,
@@ -366,7 +366,19 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               <Show when={copied()}>{t().shareCopied}</Show>
             </p>
 
-            <ul class="mt-6 divide-y divide-[rgba(247,249,252,0.08)] border-t border-[rgba(247,249,252,0.08)] pt-1">
+            {/* Redes: SOLO las que existen. 305 no tiene Instagram ni LinkedIn
+                activos, asi que no se pintan iconos muertos. */}
+            <p class="mt-6 flex items-center justify-center">
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
+                data-track="social_click" data-network="facebook" aria-label="Facebook"
+                class="t-card flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(247,249,252,0.14)] text-on-navy hover:border-[rgba(63,216,198,0.5)] hover:text-paper">
+                <svg viewBox="0 0 24 24" class="h-4.5 w-4.5" fill="currentColor" aria-hidden="true">
+                  <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z" />
+                </svg>
+              </a>
+            </p>
+
+            <ul class="mt-5 divide-y divide-[rgba(247,249,252,0.08)] border-t border-[rgba(247,249,252,0.08)] pt-1">
               <For each={t().share.links}>
                 {(l) => (
                   <li>

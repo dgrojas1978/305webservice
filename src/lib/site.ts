@@ -20,6 +20,9 @@ export const PHONE_DISPLAY = "(305) 833-2984";
 export const PHONE_TEL = "+13058332984";
 export const WEB_DISPLAY = "305WEBSERVICE.COM";
 
+/** Redes verificadas. Solo se listan las que existen de verdad. */
+export const FACEBOOK_URL = "https://www.facebook.com/305webservice";
+
 /** wa.me link with an optional prefilled message. */
 export function waLink(message?: string): string {
   const base = `https://wa.me/${WHATSAPP_NUMBER}`;
