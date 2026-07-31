@@ -110,25 +110,12 @@ export default function PaymentSheet(props: {
                   </p>
                   <p class="mt-1 select-all break-all text-lg font-bold tabular-nums">{dest()}</p>
 
-                  {/* Botón primero: la tarjeta se ve en el teléfono del cliente,
-                      así que escanear el QR ahí no sirve. El enlace es el MISMO
-                      que el código lleva dentro. */}
-                  <Show when={zelleUrlSafe(z().zelleUrl)}>
-                    {(url) => (
-                      <>
-                        <a href={url()} target="_blank" rel="noopener noreferrer"
-                          onClick={() => trackEvent("payment_open_app", { card: props.profile.id, method: "zelle" })}
-                          class="btn btn-primary mt-4 flex w-full items-center justify-center !py-3 text-sm">
-                          {t().payWithZelle}
-                        </a>
-                        <p class="mt-1.5 text-[0.7rem] text-on-navy-faint">{t().payWithZelleHelp}</p>
-                      </>
-                    )}
-                  </Show>
-
+                  {/* Copiar manda. Medido contra la pagina real de Zelle: solo
+                      lista bancos y NO enseña el destinatario, asi que el enlace
+                      no ahorra teclear el numero — copiarlo si. */}
                   <div class="mt-4 flex flex-wrap gap-2">
                     <button type="button" onClick={() => copy(zelleCopyValue(z()), "zelle")}
-                      class="btn btn-outline !px-5 !py-2.5 text-sm">
+                      class="btn btn-primary !px-5 !py-2.5 text-sm">
                       {copied() === "zelle" ? t().copied : t().copy}
                     </button>
                     <a href={`/card/${props.profile.id}/vcard`} rel="external" download=""
@@ -143,6 +130,21 @@ export default function PaymentSheet(props: {
                       </button>
                     </Show>
                   </div>
+
+                  {/* Secundario: ayuda a quien no sabe que Zelle vive dentro de
+                      su banco, pero no rellena nada. */}
+                  <Show when={zelleUrlSafe(z().zelleUrl)}>
+                    {(url) => (
+                      <>
+                        <a href={url()} target="_blank" rel="noopener noreferrer"
+                          onClick={() => trackEvent("payment_open_app", { card: props.profile.id, method: "zelle" })}
+                          class="btn btn-outline mt-3 flex w-full items-center justify-center !py-2.5 text-sm">
+                          {t().payWithZelle}
+                        </a>
+                        <p class="mt-1.5 text-[0.7rem] text-on-navy-faint">{t().payWithZelleHelp}</p>
+                      </>
+                    )}
+                  </Show>
 
                   <Show when={qrOpen() && z().qrImage}>
                     <div class="mt-4 rounded-xl bg-paper p-4">
