@@ -10,7 +10,6 @@ import {
   CARD_COPY,
   cardHref,
   type CardLocale,
-  type CardNeed,
   type CardProfile,
 } from "~/data/card";
 
@@ -31,7 +30,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
 
   const [lang, setLang] = createSignal<CardLocale>("en");
   const [copied, setCopied] = createSignal(false);
-  const [needId, setNeedId] = createSignal("win-customers");
   const [sheetMode, setSheetMode] = createSignal<SheetMode>(null);
   const [sheetPreselect, setSheetPreselect] = createSignal<string | undefined>(undefined);
   const [sheetSuccess, setSheetSuccess] = createSignal(false);
@@ -45,12 +43,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   const CARD_NEEDS = ["win-customers", "custom-software", "nfc-experience"];
   const needs = () => p().conversion.needs.filter((n) => CARD_NEEDS.includes(n.id));
 
-  const need = () => p().conversion.needs.find((n) => n.id === needId())!;
-  const needProject = () => {
-    const key = need().projectKey;
-    return key ? p().conversion.projects.find((w) => w.key === key) : undefined;
-  };
-  const serviceFor = (n: CardNeed) => p().conversion.services.find((s) => s.id === n.serviceId)!;
   const cardUrl = () => `${co().website}${p().nfc.canonicalPath}`;
 
   let heroRef: HTMLElement | undefined;
@@ -347,77 +339,31 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               dock del hero ya lleva el CTA primario y el concierge lleva el suyo
               con la necesidad elegida: eran tres CTA iguales en dos pantallas. */}
 
-          {/* 2 · PROJECT CONCIERGE (el precio y el alcance viven aquí, no en el hero) */}
-          <section aria-labelledby="concierge-h" class="mt-10">
-            <h2 id="concierge-h" class="font-editorial text-[1.4rem] font-semibold tracking-tight text-paper">
+          {/* 2 · LO QUE CONSTRUIMOS — lista simple.
+              Antes era un selector de pestañas con panel de recomendación: para
+              elegir habia que tocar, leer y volver a tocar. En una tarjeta que
+              se abre de pie y con una mano, la lista se lee de un vistazo. */}
+          <section aria-labelledby="build-h" class="mt-10">
+            <h2 id="build-h" class="font-editorial text-[1.4rem] font-semibold tracking-tight text-paper">
               {t().concierge.heading}
             </h2>
-            <div class="mt-4 flex flex-wrap gap-2" role="tablist" aria-label={t().concierge.heading}>
+            <ul class="mt-5 divide-y divide-[rgba(247,249,252,0.1)] border-y border-[rgba(247,249,252,0.1)]">
               <For each={needs()}>
                 {(n) => (
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={needId() === n.id}
-                    aria-controls="concierge-panel"
-                    onClick={() => { setNeedId(n.id); trackEvent("concierge_select", { need: n.id }); }}
-                    class={`t-card min-h-[44px] rounded-full border px-3.5 py-2 text-[0.78rem] font-bold ${
-                      needId() === n.id
-                        ? "border-blue bg-[rgba(20,108,255,0.16)] text-paper"
-                        : "border-[rgba(247,249,252,0.16)] text-on-navy hover:text-paper"
-                    }`}
-                  >
-                    {n.label[lang()]}
-                  </button>
+                  <li class="flex gap-3.5 py-4">
+                    <span class="mt-2 h-px w-5 flex-none bg-turquoise" aria-hidden="true" />
+                    <div class="min-w-0">
+                      <p class="text-[0.95rem] font-bold leading-snug text-paper">
+                        {n.label[lang()]}
+                      </p>
+                      <p class="mt-1 text-[0.82rem] leading-relaxed text-on-navy">
+                        {n.outcome[lang()]}
+                      </p>
+                    </div>
+                  </li>
                 )}
               </For>
-            </div>
-
-            <div id="concierge-panel" role="tabpanel" class="glass mt-4 rounded-2xl p-5">
-              <p class="text-[0.95rem] font-semibold leading-relaxed text-paper">{need().recommendation[lang()]}</p>
-              <p class="mt-2.5 text-[0.85rem] leading-relaxed text-on-navy">{need().outcome[lang()]}</p>
-
-              <Show when={needProject()}>
-                {(w) => (
-                  <a href={w().url} target="_blank" rel="noopener noreferrer"
-                    data-track="project_visit" data-project={w().key}
-                    class="t-card mt-4 flex items-center gap-3 rounded-xl border border-[rgba(247,249,252,0.12)] p-2.5 hover:border-[rgba(32,215,197,0.4)]">
-                    <img src={`/work/${w().key}-4x3-480.webp`} alt="" width="480" height="360" loading="lazy"
-                      class="h-14 w-[74px] flex-shrink-0 rounded-lg object-cover object-top" />
-                    <span class="min-w-0">
-                      <span class="block text-[0.62rem] font-bold uppercase tracking-[0.12em] text-turquoise">{t().concierge.proofLabel}</span>
-                      <span class="block truncate text-[0.8rem] font-bold text-paper">{w().domain}</span>
-                      <span class="block truncate text-[0.72rem] text-on-navy-faint">{w().fact[lang()]}</span>
-                    </span>
-                  </a>
-                )}
-              </Show>
-              <Show when={need().proofNote}>
-                <p class="mt-4 rounded-xl border border-[rgba(32,215,197,0.25)] px-3.5 py-2.5 text-[0.8rem] font-medium leading-relaxed text-turquoise">
-                  {need().proofNote![lang()]}
-                </p>
-              </Show>
-
-              <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
-                <Show when={need().price} fallback={<span class="text-[0.75rem] font-semibold uppercase tracking-wide text-on-navy-faint">{serviceFor(need()).price[lang()]}</span>}>
-                  <span class="font-editorial text-lg font-semibold text-paper">{need().price![lang()]}</span>
-                </Show>
-                <button type="button" onClick={() => openSheet("project", serviceFor(need()).formService)}
-                  class="btn btn-primary !px-5 !py-2.5 text-sm">
-                  {t().concierge.cta}
-                </button>
-              </div>
-            </div>
-
-            {/* precio y alcance: reubicados fuera del primer viewport */}
-            <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.68rem] font-bold uppercase tracking-[0.12em] text-on-navy-faint">
-              <For each={t().ribbon}>
-                {(item, i) => (<>
-                  <Show when={i() > 0}><span class="h-1 w-1 rounded-full bg-blue" aria-hidden="true" /></Show>
-                  <span>{item}</span>
-                </>)}
-              </For>
-            </p>
+            </ul>
           </section>
 
           {/* SELECTED WORK retirado: el reel del hero ya muestra los mismos
