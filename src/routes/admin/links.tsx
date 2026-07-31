@@ -1,5 +1,5 @@
 import { For, Show, createSignal } from "solid-js";
-import { action, createAsync, useSubmission, redirect } from "@solidjs/router";
+import { action, createAsync, useSearchParams, useSubmission, redirect } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
   createLink, listLinks, normalizeSlug, setActive, updateTarget, validateTarget,
@@ -15,6 +15,11 @@ import {
  *
  * `noindex` ademas para que el panel no aparezca en buscadores.
  */
+
+/** Vuelve al panel con el mensaje en la URL, legible sin JavaScript. */
+function fail(reason: string): string {
+  return `/admin/links?e=${encodeURIComponent(reason)}`;
+}
 
 async function requireAuth() {
   "use server";
@@ -35,7 +40,7 @@ const login = action(async (form: FormData) => {
   const password = String(form.get("password") ?? "");
   // Retraso fijo: encarece el probar contraseñas por fuerza bruta.
   await new Promise((r) => setTimeout(r, 400));
-  if (!passwordMatches(password)) return { error: "Contraseña incorrecta." };
+  if (!passwordMatches(password)) throw redirect(fail("Contraseña incorrecta."));
   // La cookie viaja EN la redirección: si se añadiera a event.response se
   // perderia, porque redirect() construye una Response nueva.
   throw redirect("/admin/links", { headers: { "Set-Cookie": issueCookie() } });
@@ -48,36 +53,36 @@ const logout = action(async () => {
 
 const saveLink = action(async (form: FormData) => {
   "use server";
-  if (!(await requireAuth())) return { error: "Sesión expirada." };
+  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
   const { getRequestEvent } = await import("solid-js/web");
   const host = new URL(getRequestEvent()!.request.url).host;
 
   const check = validateTarget(String(form.get("target") ?? ""), host);
-  if (!check.ok) return { error: check.reason };
+  if (!check.ok) throw redirect(fail(check.reason));
 
   const res = await createLink({
     slug: String(form.get("slug") ?? ""),
     target: check.url,
     label: String(form.get("label") ?? ""),
   });
-  if (!res.ok) return { error: res.reason };
+  if (!res.ok) throw redirect(fail(res.reason));
   throw redirect("/admin/links");
 }, "adminSaveLink");
 
 const editTarget = action(async (form: FormData) => {
   "use server";
-  if (!(await requireAuth())) return { error: "Sesión expirada." };
+  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
   const { getRequestEvent } = await import("solid-js/web");
   const host = new URL(getRequestEvent()!.request.url).host;
   const check = validateTarget(String(form.get("target") ?? ""), host);
-  if (!check.ok) return { error: check.reason };
+  if (!check.ok) throw redirect(fail(check.reason));
   await updateTarget(normalizeSlug(String(form.get("slug") ?? "")), check.url);
   throw redirect("/admin/links");
 }, "adminEditTarget");
 
 const toggle = action(async (form: FormData) => {
   "use server";
-  if (!(await requireAuth())) return { error: "Sesión expirada." };
+  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
   await setActive(normalizeSlug(String(form.get("slug") ?? "")), form.get("active") === "1");
   throw redirect("/admin/links");
 }, "adminToggle");
@@ -86,6 +91,7 @@ export default function AdminLinks() {
   const state = createAsync(() => loadState());
   const loginSub = useSubmission(login);
   const saveSub = useSubmission(saveLink);
+  const [params] = useSearchParams();
   const [slug, setSlug] = createSignal("");
 
   return (
@@ -95,6 +101,12 @@ export default function AdminLinks() {
 
       <div class="mx-auto max-w-4xl">
         <h1 class="text-2xl font-extrabold tracking-tight">Enlaces virtuales NFC</h1>
+
+        <Show when={params.e}>
+          <p role="alert" class="mt-5 rounded-lg border border-[rgba(255,107,107,0.45)] bg-[rgba(255,107,107,0.08)] px-4 py-3 text-sm text-[#ffb3b3]">
+            {String(params.e)}
+          </p>
+        </Show>
 
         <Show when={state()?.enabled === false}>
           <p class="mt-6 rounded-lg border border-[rgba(255,107,107,0.4)] p-4 text-sm text-on-navy">
@@ -108,9 +120,6 @@ export default function AdminLinks() {
             <label class="block text-sm font-semibold" for="pw">Contraseña</label>
             <input id="pw" name="password" type="password" required autocomplete="current-password"
               class="mt-2 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2.5" />
-            <Show when={loginSub.result?.error}>
-              <p class="mt-2 text-sm text-[#ff8f8f]">{loginSub.result?.error}</p>
-            </Show>
             <button type="submit" disabled={loginSub.pending}
               class="btn btn-primary mt-4 w-full !py-3">
               {loginSub.pending ? "Comprobando…" : "Entrar"}
@@ -149,9 +158,6 @@ export default function AdminLinks() {
             <button type="submit" disabled={saveSub.pending} class="btn btn-primary self-start sm:mt-6">
               {saveSub.pending ? "Guardando…" : "Crear"}
             </button>
-            <Show when={saveSub.result?.error}>
-              <p class="text-sm text-[#ff8f8f] sm:col-span-3">{saveSub.result?.error}</p>
-            </Show>
           </form>
 
           {/* Listado */}
