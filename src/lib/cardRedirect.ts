@@ -1,5 +1,6 @@
 import { CARD_PROFILES } from "~/data/card";
 import { bumpTaps, findLink, normalizeSlug } from "~/lib/shortlinks";
+import { buildTapEvent, logTap } from "~/lib/tapLog";
 
 /**
  * Redirección corta y estable para tarjetas físicas.
@@ -14,13 +15,15 @@ const SOURCES = new Set(["nfc", "qr", "share"]);
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 const UTM_MAX = 120;
 
-export async function cardRedirect(slug: string, requestUrl: string): Promise<Response> {
+export async function cardRedirect(
+  slug: string, requestUrl: string, headers?: Headers,
+): Promise<Response> {
   const profile = CARD_PROFILES[slug];
   const url = new URL(requestUrl);
 
   // Sin perfil fijo: puede ser un enlace virtual de cliente guardado en la BD.
   // Los perfiles en código mandan, para que /c/305 nunca dependa de la BD.
-  if (!profile) return dbRedirect(slug, url);
+  if (!profile) return dbRedirect(slug, url, headers);
 
   // El destino se resuelve contra el ORIGEN de la petición: en staging apunta
   // a staging y en producción a producción, sin hardcodear ningún host.
@@ -47,6 +50,9 @@ export async function cardRedirect(slug: string, requestUrl: string): Promise<Re
     dest.searchParams.set("utm_campaign", `card-${profile.nfc.slug}`);
   }
 
+  if (headers) {
+    void logTap(buildTapEvent(profile.nfc.slug, "profile", dest.toString(), url, headers));
+  }
   return Response.redirect(dest.toString(), 302);
 }
 
@@ -57,7 +63,9 @@ export async function cardRedirect(slug: string, requestUrl: string): Promise<Re
  * SIEMPRE 302, nunca 301: un 301 se cachea de forma permanente en el navegador
  * y dejaria el destino congelado, que es justo lo contrario de lo que buscamos.
  */
-async function dbRedirect(rawSlug: string, url: URL): Promise<Response> {
+async function dbRedirect(
+  rawSlug: string, url: URL, headers?: Headers,
+): Promise<Response> {
   const home = new URL("/", url.origin).toString();
   const slug = normalizeSlug(rawSlug);
   if (!slug) return Response.redirect(home, 302);
@@ -72,6 +80,7 @@ async function dbRedirect(rawSlug: string, url: URL): Promise<Response> {
   if (!link || !link.active) return Response.redirect(home, 302);
 
   void bumpTaps(slug);
+  if (headers) void logTap(buildTapEvent(slug, "link", link.target, url, headers));
 
   // La atribucion que trae la peticion se conserva: un escaneo QR y un toque
   // NFC deben poder distinguirse en la analitica del destino.

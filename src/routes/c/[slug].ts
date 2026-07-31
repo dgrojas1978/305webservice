@@ -6,5 +6,5 @@ import { cardRedirect } from "~/lib/cardRedirect";
  * Es la única que debe grabarse en un chip NFC o imprimirse en un QR final.
  */
 export async function GET({ params, request }: APIEvent) {
-  return cardRedirect(params.slug, request.url);
+  return cardRedirect(params.slug, request.url, request.headers);
 }

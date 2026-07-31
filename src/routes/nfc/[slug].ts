@@ -3,5 +3,5 @@ import { cardRedirect } from "~/lib/cardRedirect";
 
 /** Alias equivalente de /c/<slug> (ya documentado en material previo). */
 export async function GET({ params, request }: APIEvent) {
-  return cardRedirect(params.slug, request.url);
+  return cardRedirect(params.slug, request.url, request.headers);
 }
