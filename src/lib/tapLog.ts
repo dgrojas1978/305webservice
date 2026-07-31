@@ -35,6 +35,11 @@ export interface TapEvent {
   region: string | null;
   city: string | null;
   timezone: string | null;
+  /** Identificador anonimo del navegador. NO identifica a una persona: solo
+   *  permite separar "100 toques" de "68 dispositivos distintos". */
+  visitorId: string | null;
+  /** Primera vez que este navegador toca CUALQUIER tarjeta nuestra. */
+  firstVisit: boolean;
   userAgent: string | null;
   referer: string | null;
   /** Atribución del enlace: distingue toque NFC de escaneo QR. */
@@ -52,6 +57,7 @@ function clip(v: string | null, max: number): string | null {
 export function buildTapEvent(
   slug: string, kind: TapEvent["kind"], target: string, url: URL, headers: Headers,
   attribution?: { business?: string; owner?: string; cardId?: string; context?: string },
+  visitor?: { id: string; isNew: boolean },
 ): TapEvent {
   const utm: Record<string, string> = {};
   for (const k of UTM_KEYS) {
@@ -70,6 +76,8 @@ export function buildTapEvent(
     owner: attribution?.owner || null,
     cardId: attribution?.cardId || null,
     context: attribution?.context || null,
+    visitorId: visitor?.id ?? null,
+    firstVisit: visitor?.isNew ?? false,
     ip: (fwd ? fwd.split(",")[0]?.trim() : null) || h("x-real-ip"),
     country: h("x-vercel-ip-country"),
     region: h("x-vercel-ip-country-region"),
@@ -103,4 +111,26 @@ export async function recentTaps(slug: string, limit = 20): Promise<TapEvent[]> 
   } catch {
     return [];
   }
+}
+
+const VISITOR_COOKIE = "305_v";
+const VISITOR_MAX_AGE = 60 * 60 * 24 * 365; // 1 año
+
+/**
+ * Identificador anonimo de navegador. No lleva ningun dato personal: es un
+ * numero aleatorio. Sirve para distinguir visitantes nuevos de recurrentes,
+ * algo que la IP NO permite — en una red movil media ciudad comparte IP.
+ */
+export function resolveVisitor(headers: Headers): { id: string; isNew: boolean } {
+  const raw = headers.get("cookie") ?? "";
+  const existing = raw.split(";").map((c) => c.trim())
+    .find((c) => c.startsWith(`${VISITOR_COOKIE}=`))?.slice(VISITOR_COOKIE.length + 1);
+  if (existing && /^[a-zA-Z0-9_-]{10,64}$/.test(existing)) {
+    return { id: existing, isNew: false };
+  }
+  return { id: crypto.randomUUID().replace(/-/g, "").slice(0, 24), isNew: true };
+}
+
+export function visitorCookie(id: string): string {
+  return `${VISITOR_COOKIE}=${id}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${VISITOR_MAX_AGE}`;
 }

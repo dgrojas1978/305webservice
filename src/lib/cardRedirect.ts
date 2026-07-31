@@ -1,6 +1,13 @@
 import { CARD_PROFILES } from "~/data/card";
 import { bumpTaps, findLink, normalizeSlug } from "~/lib/shortlinks";
-import { buildTapEvent, logTap } from "~/lib/tapLog";
+import { buildTapEvent, logTap, resolveVisitor, visitorCookie } from "~/lib/tapLog";
+
+/** 302 con cookie. Response.redirect no admite cabeceras adicionales. */
+function seeOther(location: string, setCookie?: string): Response {
+  const headers = new Headers({ Location: location });
+  if (setCookie) headers.append("Set-Cookie", setCookie);
+  return new Response(null, { status: 302, headers });
+}
 
 /**
  * Redirección corta y estable para tarjetas físicas.
@@ -50,10 +57,11 @@ export async function cardRedirect(
     dest.searchParams.set("utm_campaign", `card-${profile.nfc.slug}`);
   }
 
-  if (headers) {
-    void logTap(buildTapEvent(profile.nfc.slug, "profile", dest.toString(), url, headers));
-  }
-  return Response.redirect(dest.toString(), 302);
+  if (!headers) return Response.redirect(dest.toString(), 302);
+  const visitor = resolveVisitor(headers);
+  void logTap(buildTapEvent(
+    profile.nfc.slug, "profile", dest.toString(), url, headers, undefined, visitor));
+  return seeOther(dest.toString(), visitor.isNew ? visitorCookie(visitor.id) : undefined);
 }
 
 /**
@@ -80,11 +88,12 @@ async function dbRedirect(
   if (!link || !link.active) return Response.redirect(home, 302);
 
   void bumpTaps(slug);
-  if (headers) {
+  const visitor = headers ? resolveVisitor(headers) : undefined;
+  if (headers && visitor) {
     void logTap(buildTapEvent(slug, "link", link.target, url, headers, {
       business: link.business, owner: link.owner,
       cardId: link.cardId, context: link.context,
-    }));
+    }, visitor));
   }
 
   // La atribucion que trae la peticion se conserva: un escaneo QR y un toque
@@ -94,5 +103,7 @@ async function dbRedirect(
     const value = url.searchParams.get(key);
     if (value) dest.searchParams.set(key, value.slice(0, 120));
   }
-  return Response.redirect(dest.toString(), 302);
+  return visitor
+    ? seeOther(dest.toString(), visitor.isNew ? visitorCookie(visitor.id) : undefined)
+    : Response.redirect(dest.toString(), 302);
 }
