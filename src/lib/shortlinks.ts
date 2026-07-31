@@ -147,13 +147,13 @@ function checkAttribution(input: Partial<Attribution>): AttrCheck {
   if (!owner) {
     return { ok: false, reason: "Falta el dueño de la tarjeta. Sin él no se puede saber qué vendedor genera qué." };
   }
+  const cardId = (input.cardId ?? "").trim().slice(0, 40);
+  if (!cardId) {
+    return { ok: false, reason: "Falta el ID de tarjeta. Sin él no se puede saber qué unidad física rinde: dos tarjetas del mismo dueño serían indistinguibles. Vale el UID del chip." };
+  }
   return {
     ok: true,
-    value: {
-      business, owner,
-      cardId: (input.cardId ?? "").trim().slice(0, 40),
-      context: (input.context ?? "").trim().slice(0, 40),
-    },
+    value: { business, owner, cardId, context: (input.context ?? "").trim().slice(0, 40) },
   };
 }
 
@@ -198,12 +198,20 @@ export async function updateLink(
   const set: Record<string, unknown> = { ...attr.value, updatedAt: new Date() };
   if (targetChanged) set.target = input.target;
 
-  await c.updateOne(
-    { slug },
+  // El filtro exige que el destino siga siendo el que acabamos de leer. Dos
+  // envíos a la vez —un doble clic— leen los dos el mismo destino anterior; el
+  // primero lo cambia y el segundo ya no encuentra nada que encaje, así que no
+  // escribe ni añade una segunda entrada al historial. Paso lo contrario:
+  // tabacalera acabó con dos entradas idénticas separadas por 2 milisegundos.
+  const res = await c.updateOne(
+    { slug, target: current.target },
     targetChanged
       ? { $set: set, $push: { history: { target: current.target, changedAt: new Date() } } }
       : { $set: set },
   );
+  if (!res.matchedCount) {
+    return { ok: false, reason: "Se guardó dos veces a la vez y la segunda se descartó. Recarga y comprueba cómo quedó." };
+  }
   return { ok: true, target: targetChanged, attribution: changed };
 }
 

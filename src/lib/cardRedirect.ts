@@ -59,11 +59,21 @@ export async function cardRedirect(
 
   if (!headers) return Response.redirect(dest.toString(), 302);
   const visitor = resolveVisitor(headers);
+
+  // Atribucion del perfil. Antes se pasaba `undefined` y los toques de nuestras
+  // propias tarjetas eran los unicos que no se podian asignar a nadie.
+  // `?card=<UID>` identifica la unidad fisica concreta, porque varios chips
+  // comparten esta misma URL.
+  const attribution = {
+    ...profile.nfc.attribution,
+    cardId: (url.searchParams.get("card") ?? profile.nfc.attribution.cardId).slice(0, 40),
+  };
+
   // Se ESPERA a que se escriba. Con `void`, Vercel congelaba la funcion al
   // devolver la redireccion y el toque se perdia. `logTap` trae su propio techo
   // de tiempo, asi que esto no puede colgar una tarjeta que alguien sostiene.
   await logTap(buildTapEvent(
-    profile.nfc.slug, "profile", dest.toString(), url, headers, undefined, visitor));
+    profile.nfc.slug, "profile", dest.toString(), url, headers, attribution, visitor));
   return seeOther(dest.toString(), visitor.isNew ? visitorCookie(visitor.id) : undefined);
 }
 

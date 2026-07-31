@@ -212,7 +212,7 @@ export default function AdminLinks() {
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                 <input name="owner" required placeholder="Dueño de la tarjeta *"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                <input name="cardId" placeholder="ID de tarjeta"
+                <input name="cardId" required placeholder="ID de tarjeta *"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                 <input name="context" placeholder="Contexto (feria, camioneta…)"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
@@ -279,7 +279,7 @@ export default function AdminLinks() {
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                       <input name="owner" required value={l.owner ?? ""} placeholder="Dueño *"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                      <input name="cardId" value={l.cardId ?? ""} placeholder="ID de tarjeta"
+                      <input name="cardId" required value={l.cardId ?? ""} placeholder="ID de tarjeta *"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                       <input name="context" value={l.context ?? ""} placeholder="Contexto"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />

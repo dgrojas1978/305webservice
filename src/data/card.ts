@@ -125,6 +125,24 @@ export interface CardNfc {
   canonicalPath: string;
   /** Estado documentado (no se bloquea la tarjeta física sin aprobación). */
   status: "draft" | "testing" | "live";
+  /**
+   * Atribución del perfil, congelada en cada toque igual que la de los enlaces
+   * de la BD.
+   *
+   * Sin esto, los toques de los perfiles fijos en código —entre ellos `/c/305`,
+   * la URL impresa en NUESTRAS tarjetas— se guardaban sin negocio, sin dueño y
+   * sin tarjeta: eran los únicos que no se podían asignar a nadie.
+   *
+   * `cardId` es el valor por defecto. Como un mismo perfil puede vivir en
+   * varias unidades físicas, cada chip puede traer el suyo con `?card=<id>` y
+   * ese gana.
+   */
+  attribution: {
+    business: string;
+    owner: string;
+    cardId: string;
+    context: string;
+  };
 }
 
 export interface CardProfile {
@@ -418,6 +436,14 @@ export const CARD_305: CardProfile = {
     slug: "305",
     canonicalPath: "/card/305",
     status: "draft", // no bloquear tarjetas físicas hasta aprobar el destino
+    attribution: {
+      business: "305 Web Service",
+      owner: "Daniel Gonzalez",
+      // Vacío a propósito: hay más de una unidad física con esta URL. Cada chip
+      // trae el suyo en `?card=<UID>`; poner uno fijo aquí las mezclaría todas.
+      cardId: "",
+      context: "",
+    },
   },
 };
 
