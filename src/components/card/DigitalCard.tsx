@@ -5,7 +5,7 @@ import AnalyticsListener from "~/components/AnalyticsListener";
 import LeadSheet, { submitCardLead, type SheetMode } from "~/components/card/LeadSheet";
 import { GoogleReviews } from "~/components/card/CardModules";
 import { trackEvent } from "~/lib/analytics";
-import { FACEBOOK_URL, waLink } from "~/lib/site";
+import { waLink } from "~/lib/site";
 import {
   CARD_COPY,
   cardHref,
@@ -295,10 +295,10 @@ export default function DigitalCard(props: { profile: CardProfile }) {
           <GoogleReviews profile={p()} lang={lang()} />
 
           {/* 6 · SHARE THIS CARD — el ÚNICO QR de toda la página, al final */}
-          <section aria-labelledby="share-h" class="mt-6 rounded-2xl border border-[rgba(247,249,252,0.1)] px-5 py-6">
+          <section aria-labelledby="share-h" class="mt-8 rounded-2xl border border-[rgba(247,249,252,0.1)] px-5 py-7">
             <h2 id="share-h" class="text-[0.9rem] font-bold text-paper">{t().share.heading}</h2>
 
-            <div class="mt-5 flex flex-col items-center">
+            <div class="mt-6 flex flex-col items-center">
               {/* módulo del QR ≥ 180px visuales (contenedor 208 − 24 de quiet zone) */}
               <div ref={qrRef} class="w-[208px] rounded-xl bg-white p-3">
                 <img src={`/card/qr-${p().id}.svg`} alt={t().share.qrText}
@@ -307,32 +307,27 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               <p class="mt-3 text-[0.8rem] font-semibold text-on-navy">{t().share.qrText}</p>
             </div>
 
-            <div class="mt-5">
-              <button type="button" onClick={copyLink} class="btn btn-outline !px-4 !py-2.5 text-sm">{t().share.copy}</button>
+            {/* Los dos botones al mismo ancho y con el mismo peso: antes uno
+                iba suelto a la izquierda y el otro a ancho completo, y el
+                bloque se leia desalineado. */}
+            <div class="mt-6 grid gap-2.5">
+              <button type="button" onClick={copyLink}
+                class="btn btn-outline w-full !px-4 !py-3 text-sm">
+                {t().share.copy}
+              </button>
+              {/* Pedir el contacto del visitante pertenece a este momento, no a
+                  una seccion aparte. */}
+              <button type="button" onClick={() => openSheet("exchange")}
+                class="btn btn-outline w-full !px-4 !py-3 text-sm">
+                {t().exchange.cta}
+              </button>
             </div>
-            {/* Intercambio: pedir el contacto del visitante pertenece a este
-                momento, no a una seccion aparte. */}
-            <button type="button" onClick={() => openSheet("exchange")}
-              class="mt-2.5 btn btn-outline w-full !px-4 !py-2.5 text-sm">
-              {t().exchange.cta}
-            </button>
-            <p class="mt-3 text-center text-[0.7rem] font-semibold text-turquoise" role="status" aria-live="polite">
+            <p class="mt-2.5 min-h-[1rem] text-center text-[0.7rem] font-semibold text-turquoise"
+              role="status" aria-live="polite">
               <Show when={copied()}>{t().shareCopied}</Show>
             </p>
 
-            {/* Redes: SOLO las que existen. 305 no tiene Instagram ni LinkedIn
-                activos, asi que no se pintan iconos muertos. */}
-            <p class="mt-6 flex items-center justify-center">
-              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer"
-                data-track="social_click" data-network="facebook" aria-label="Facebook"
-                class="t-card flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(247,249,252,0.14)] text-on-navy hover:border-[rgba(63,216,198,0.5)] hover:text-paper">
-                <svg viewBox="0 0 24 24" class="h-4.5 w-4.5" fill="currentColor" aria-hidden="true">
-                  <path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2c0-.6.4-1 1-1z" />
-                </svg>
-              </a>
-            </p>
-
-            <ul class="mt-5 divide-y divide-[rgba(247,249,252,0.08)] border-t border-[rgba(247,249,252,0.08)] pt-1">
+            <ul class="mt-6 divide-y divide-[rgba(247,249,252,0.08)] border-t border-[rgba(247,249,252,0.08)] pt-1">
               <For each={t().share.links}>
                 {(l) => (
                   <li>
