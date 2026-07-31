@@ -21,6 +21,10 @@ function fail(reason: string): string {
   return `/admin/links?e=${encodeURIComponent(reason)}`;
 }
 
+function done(message: string): string {
+  return `/admin/links?ok=${encodeURIComponent(message)}`;
+}
+
 async function requireAuth() {
   "use server";
   const { getRequestEvent } = await import("solid-js/web");
@@ -67,7 +71,7 @@ const saveLink = action(async (form: FormData) => {
   });
   if (!res.ok) throw redirect(fail(res.reason));
   revalidate(loadState.key);
-  throw redirect("/admin/links");
+  throw redirect(done(`Enlace /c/${normalizeSlug(String(form.get("slug") ?? ""))} creado.`));
 }, "adminSaveLink");
 
 const editTarget = action(async (form: FormData) => {
@@ -77,17 +81,20 @@ const editTarget = action(async (form: FormData) => {
   const host = new URL(getRequestEvent()!.request.url).host;
   const check = validateTarget(String(form.get("target") ?? ""), host);
   if (!check.ok) throw redirect(fail(check.reason));
-  await updateTarget(normalizeSlug(String(form.get("slug") ?? "")), check.url);
+  const slug = normalizeSlug(String(form.get("slug") ?? ""));
+  await updateTarget(slug, check.url);
   revalidate(loadState.key);
-  throw redirect("/admin/links");
+  throw redirect(done(`Destino de /c/${slug} actualizado.`));
 }, "adminEditTarget");
 
 const toggle = action(async (form: FormData) => {
   "use server";
   if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
-  await setActive(normalizeSlug(String(form.get("slug") ?? "")), form.get("active") === "1");
+  const slug = normalizeSlug(String(form.get("slug") ?? ""));
+  const active = form.get("active") === "1";
+  await setActive(slug, active);
   revalidate(loadState.key);
-  throw redirect("/admin/links");
+  throw redirect(done(`/c/${slug} ${active ? "activado" : "desactivado"}.`));
 }, "adminToggle");
 
 export default function AdminLinks() {
@@ -104,6 +111,12 @@ export default function AdminLinks() {
 
       <div class="mx-auto max-w-4xl">
         <h1 class="text-2xl font-extrabold tracking-tight">Enlaces virtuales NFC</h1>
+
+        <Show when={params.ok}>
+          <p role="status" class="mt-5 rounded-lg border border-[rgba(63,216,198,0.45)] bg-[rgba(63,216,198,0.08)] px-4 py-3 text-sm text-turquoise">
+            {String(params.ok)}
+          </p>
+        </Show>
 
         <Show when={params.e}>
           <p role="alert" class="mt-5 rounded-lg border border-[rgba(255,107,107,0.45)] bg-[rgba(255,107,107,0.08)] px-4 py-3 text-sm text-[#ffb3b3]">
@@ -179,11 +192,15 @@ export default function AdminLinks() {
                   <Show when={l.label}>
                     <p class="mt-1 text-sm text-on-navy">{l.label}</p>
                   </Show>
-                  <form action={editTarget} method="post" class="mt-3 flex flex-wrap gap-2">
+                  <form action={editTarget} method="post" class="mt-3">
+                    <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint"
+                      for={`t-${l.slug}`}>Destino — editable</label>
+                  <div class="mt-1.5 flex flex-wrap gap-2">
                     <input type="hidden" name="slug" value={l.slug} />
-                    <input name="target" type="url" required value={l.target}
+                    <input id={`t-${l.slug}`} name="target" type="url" required value={l.target}
                       class="min-w-0 flex-1 rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                     <button type="submit" class="btn btn-outline !px-4 !py-2 text-sm">Guardar destino</button>
+                  </div>
                   </form>
                   <form action={toggle} method="post" class="mt-2">
                     <input type="hidden" name="slug" value={l.slug} />
