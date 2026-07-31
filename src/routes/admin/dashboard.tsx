@@ -1,4 +1,5 @@
 import { For, Show } from "solid-js";
+import { clientOnly } from "@solidjs/start";
 import { A, action, cache, createAsync, redirect, useSearchParams, useSubmission } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
@@ -16,6 +17,13 @@ import {
  * número. Un panel que inventa una tasa con tres eventos hace tomar decisiones
  * peores que no tener panel.
  */
+
+/**
+ * Leaflet solo en el navegador: toca `window` al arrancar y el render del
+ * servidor reventaría. `clientOnly` además lo saca del paquete inicial, así que
+ * el panel no paga el mapa hasta que hay algo que dibujar.
+ */
+const TapMap = clientOnly(() => import("~/components/admin/TapMap"));
 
 function fail(reason: string): string {
   return `/admin/dashboard?e=${encodeURIComponent(reason)}`;
@@ -488,6 +496,29 @@ export default function AdminDashboard() {
 
                   <Panel title="Eventos en la tarjeta" note={`${data().totals.events} eventos en el rango.`}>
                     <BarList rows={data().events} empty="Sin eventos en este rango." />
+                  </Panel>
+                </div>
+
+                {/* Mapa. Un círculo es una CIUDAD, nunca una persona. */}
+                <div class="mt-4">
+                  <Panel title="Dónde se tocan las tarjetas"
+                    note="Cada círculo es una ciudad y su tamaño dice cuántos toques. La posición viene de la IP: NO señala dónde estaba una persona.">
+                    <Show
+                      when={data().points.length}
+                      fallback={
+                        <Empty>
+                          {data().totals.taps
+                            ? "Ningún toque de este rango trae coordenadas. Se empezaron a guardar hoy, y los toques anteriores no se pueden rellenar hacia atrás: el mapa se irá llenando con los toques nuevos."
+                            : "Sin toques en este rango."}
+                        </Empty>
+                      }>
+                      <TapMap points={data().points} />
+                      <p class="mt-2 text-[0.7rem] text-on-navy-faint">
+                        El mapa dibuja {data().geoCoverage} de {data().totals.taps} toques del rango
+                        — solo los que traen coordenadas. Los mosaicos los sirve OpenStreetMap, así
+                        que este panel (y solo este) pide imágenes a un servidor externo.
+                      </p>
+                    </Show>
                   </Panel>
                 </div>
 
