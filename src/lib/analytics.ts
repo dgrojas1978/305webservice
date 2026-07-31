@@ -19,6 +19,19 @@ export function trackEvent(event: string, props: TrackProps = {}): void {
     if (typeof w.gtag === "function") w.gtag("event", event, props);
     else if (typeof w.plausible === "function") w.plausible(event, { props });
     else if (Array.isArray(w.dataLayer)) w.dataLayer.push({ event, ...props });
+
+    // Registro propio. sendBeacon sobrevive a que el usuario salga de la pagina
+    // en el mismo gesto —abrir WhatsApp, llamar—, que es justo cuando ocurren
+    // los eventos que mas interesan. keepalive es el respaldo.
+    const payload = JSON.stringify({ event, props, path: location.pathname });
+    const sent = typeof navigator.sendBeacon === "function"
+      && navigator.sendBeacon("/api/track", new Blob([payload], { type: "application/json" }));
+    if (!sent) {
+      void fetch("/api/track", {
+        method: "POST", body: payload, keepalive: true,
+        headers: { "content-type": "application/json" },
+      }).catch(() => {});
+    }
   } catch {
     /* la analítica nunca debe romper la UI */
   }
