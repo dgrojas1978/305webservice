@@ -148,36 +148,54 @@ function checkAttribution(input: Partial<Attribution>): AttrCheck {
   };
 }
 
-/**
- * Cambia la atribución de un enlace. Solo afecta a los toques FUTUROS: los ya
- * registrados guardaron su copia y no se tocan, que es justo lo que evita que
- * las cifras de un vendedor cambien solas al editar un enlace.
- */
-export async function updateAttribution(
-  rawSlug: string, input: Partial<Attribution>,
-): Promise<{ ok: true } | { ok: false; reason: string }> {
-  const check = checkAttribution(input);
-  if (!check.ok) return check;
-  const slug = normalizeSlug(rawSlug);
-  const res = await (await col()).updateOne(
-    { slug }, { $set: { ...check.value, updatedAt: new Date() } },
-  );
-  if (!res.matchedCount) return { ok: false, reason: `"${slug}" no existe.` };
-  return { ok: true };
-}
 
-/** Cambia el destino guardando el anterior en el historial. */
-export async function updateTarget(slug: string, target: string): Promise<void> {
+export type SaveResult =
+  | { ok: false; reason: string }
+  | { ok: true; target: boolean; attribution: string[] };
+
+/**
+ * Guarda TODO lo editable de un enlace de una vez: destino y atribución.
+ *
+ * Antes eran dos formularios con dos botones casi idénticos, y era fácil pulsar
+ * el que no era: guardabas el destino encima de sí mismo creyendo que estabas
+ * rellenando el negocio y el dueño.
+ *
+ * Solo se escribe lo que de verdad cambió, y el historial solo crece cuando el
+ * destino cambia de verdad. Apuntar un cambio que no existió acaba enseñándole
+ * a un cliente que su tarjeta se movió cuando nadie la movió.
+ */
+export async function updateLink(
+  rawSlug: string, input: Partial<Attribution> & { target: string },
+): Promise<SaveResult> {
+  const slug = normalizeSlug(rawSlug);
   const c = await col();
   const current = await c.findOne({ slug });
-  if (!current) return;
+  if (!current) return { ok: false, reason: `"${slug}" no existe.` };
+
+  const attr = checkAttribution(input);
+  if (!attr.ok) return attr;
+
+  const targetChanged = current.target !== input.target;
+  const changed: string[] = [];
+  const LABELS: Record<keyof Attribution, string> = {
+    business: "negocio", owner: "dueño", cardId: "ID de tarjeta", context: "contexto",
+  };
+  for (const key of Object.keys(LABELS) as (keyof Attribution)[]) {
+    if ((current[key] ?? "") !== attr.value[key]) changed.push(LABELS[key]);
+  }
+
+  if (!targetChanged && !changed.length) return { ok: true, target: false, attribution: [] };
+
+  const set: Record<string, unknown> = { ...attr.value, updatedAt: new Date() };
+  if (targetChanged) set.target = input.target;
+
   await c.updateOne(
     { slug },
-    {
-      $set: { target, updatedAt: new Date() },
-      $push: { history: { target: current.target, changedAt: new Date() } },
-    },
+    targetChanged
+      ? { $set: set, $push: { history: { target: current.target, changedAt: new Date() } } }
+      : { $set: set },
   );
+  return { ok: true, target: targetChanged, attribution: changed };
 }
 
 export async function setActive(slug: string, active: boolean): Promise<void> {

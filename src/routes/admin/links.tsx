@@ -2,8 +2,8 @@ import { For, Show, createSignal } from "solid-js";
 import { action, cache, createAsync, revalidate, useSearchParams, useSubmission, redirect } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
-  createLink, listLinks, normalizeSlug, setActive, updateAttribution, updateTarget,
-  validateTarget, type ShortLink,
+  createLink, listLinks, normalizeSlug, setActive, updateLink, validateTarget,
+  type ShortLink,
 } from "~/lib/shortlinks";
 
 /**
@@ -78,38 +78,45 @@ const saveLink = action(async (form: FormData) => {
   throw redirect(done(`Enlace /c/${normalizeSlug(String(form.get("slug") ?? ""))} creado.`));
 }, "adminSaveLink");
 
-const editTarget = action(async (form: FormData) => {
+/**
+ * Guarda TODO lo editable de un enlace: destino y atribución, de una vez.
+ *
+ * El mensaje dice exactamente qué se guardó y qué no. Un «actualizado» genérico
+ * cuando no cambió nada es lo que hizo creer que la atribución estaba guardada
+ * cuando lo único que se habia tocado era el destino.
+ */
+const saveChanges = action(async (form: FormData) => {
   "use server";
-  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
+  if (!(await requireAuth())) throw redirect(fail("Sesión expirada. Vuelve a entrar y repite el guardado."));
   const { getRequestEvent } = await import("solid-js/web");
   const host = new URL(getRequestEvent()!.request.url).host;
-  const check = validateTarget(String(form.get("target") ?? ""), host);
-  if (!check.ok) throw redirect(fail(check.reason));
   const slug = normalizeSlug(String(form.get("slug") ?? ""));
-  await updateTarget(slug, check.url);
-  revalidate(loadState.key);
-  throw redirect(done(`Destino de /c/${slug} actualizado.`));
-}, "adminEditTarget");
 
-/**
- * Rellena la atribución de un enlace ya creado. Sin esto, los seis primeros
- * enlaces —creados cuando los campos eran opcionales— no tenían forma de
- * arreglarse salvo borrarlos y volver a crearlos.
- */
-const editAttribution = action(async (form: FormData) => {
-  "use server";
-  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
-  const slug = normalizeSlug(String(form.get("slug") ?? ""));
-  const res = await updateAttribution(slug, {
+  const check = validateTarget(String(form.get("target") ?? ""), host);
+  if (!check.ok) throw redirect(fail(`/c/${slug}: ${check.reason}`));
+
+  const res = await updateLink(slug, {
+    target: check.url,
     business: String(form.get("business") ?? ""),
     owner: String(form.get("owner") ?? ""),
     cardId: String(form.get("cardId") ?? ""),
     context: String(form.get("context") ?? ""),
   });
-  if (!res.ok) throw redirect(fail(res.reason));
+  if (!res.ok) throw redirect(fail(`/c/${slug}: ${res.reason}`));
+
   revalidate(loadState.key);
-  throw redirect(done(`Atribución de /c/${slug} guardada. Cuenta desde el próximo toque.`));
-}, "adminEditAttribution");
+
+  if (!res.target && !res.attribution.length) {
+    throw redirect(done(`/c/${slug}: no había nada que cambiar, todo estaba ya guardado así.`));
+  }
+  const parts: string[] = [];
+  if (res.target) parts.push("destino");
+  if (res.attribution.length) parts.push(res.attribution.join(", "));
+  throw redirect(done(
+    `/c/${slug}: guardado ${parts.join(" y ")}.` +
+    (res.attribution.length ? " La atribución cuenta desde el próximo toque." : ""),
+  ));
+}, "adminSaveChanges");
 
 const toggle = action(async (form: FormData) => {
   "use server";
@@ -246,48 +253,45 @@ export default function AdminLinks() {
                     </p>
                   </Show>
 
-                  {/* Atribucion editable. Solo cuenta desde el proximo toque:
-                      los ya registrados guardaron su copia y no se reescriben. */}
-                  <form action={editAttribution} method="post" class="mt-3">
+                  {/* UN solo formulario y UN solo boton: destino y atribucion
+                      se guardan juntos. Dos botones parecidos hacian pulsar el
+                      que no era y creer que se habia guardado la atribucion. */}
+                  <form action={saveChanges} method="post" class="mt-3">
                     <input type="hidden" name="slug" value={l.slug} />
-                    <Show
-                      when={l.business && l.owner}
-                      fallback={
-                        <p role="alert" class="mb-2 rounded-lg border border-[rgba(255,193,7,0.45)] bg-[rgba(255,193,7,0.08)] px-3 py-2 text-[0.7rem] text-[#ffd98a]">
-                          Sin negocio ni dueño. Cada toque que entre así queda sin
-                          asignar <strong>para siempre</strong>. Rellénalo ya.
-                        </p>
-                      }>
-                      <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint">
-                        Atribución — editable
-                      </label>
+
+                    <Show when={!(l.business && l.owner)}>
+                      <p role="alert" class="mb-3 rounded-lg border border-[rgba(255,193,7,0.45)] bg-[rgba(255,193,7,0.08)] px-3 py-2 text-[0.7rem] text-[#ffd98a]">
+                        Sin negocio ni dueño. Cada toque que entre así queda sin
+                        asignar <strong>para siempre</strong>. Rellénalo ya.
+                      </p>
                     </Show>
+
+                    <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint"
+                      for={`t-${l.slug}`}>Destino</label>
+                    <input id={`t-${l.slug}`} name="target" type="url" required value={l.target}
+                      class="mt-1.5 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+
+                    <label class="mt-3 block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint">
+                      Atribución
+                    </label>
                     <div class="mt-1.5 grid grid-cols-2 gap-2">
-                      <input name="business" required value={l.business} placeholder="Negocio *"
+                      <input name="business" required value={l.business ?? ""} placeholder="Negocio *"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                      <input name="owner" required value={l.owner} placeholder="Dueño *"
+                      <input name="owner" required value={l.owner ?? ""} placeholder="Dueño *"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                      <input name="cardId" value={l.cardId} placeholder="ID de tarjeta"
+                      <input name="cardId" value={l.cardId ?? ""} placeholder="ID de tarjeta"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                      <input name="context" value={l.context} placeholder="Contexto"
+                      <input name="context" value={l.context ?? ""} placeholder="Contexto"
                         class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                     </div>
-                    <button type="submit" class="btn btn-outline mt-2 !px-4 !py-2 text-sm">
-                      Guardar atribución
+
+                    <button type="submit" class="btn btn-primary mt-3 !px-5 !py-2 text-sm">
+                      Guardar cambios
                     </button>
-                    <p class="mt-1 text-[0.7rem] text-on-navy-faint">
-                      Cuenta desde el próximo toque. Los ya registrados no se reescriben.
+                    <p class="mt-1.5 text-[0.7rem] text-on-navy-faint">
+                      Guarda destino y atribución a la vez. La atribución cuenta desde el
+                      próximo toque: los ya registrados guardaron su copia y no se reescriben.
                     </p>
-                  </form>
-                  <form action={editTarget} method="post" class="mt-3">
-                    <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint"
-                      for={`t-${l.slug}`}>Destino — editable</label>
-                  <div class="mt-1.5 flex flex-wrap gap-2">
-                    <input type="hidden" name="slug" value={l.slug} />
-                    <input id={`t-${l.slug}`} name="target" type="url" required value={l.target}
-                      class="min-w-0 flex-1 rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                    <button type="submit" class="btn btn-outline !px-4 !py-2 text-sm">Guardar destino</button>
-                  </div>
                   </form>
                   <form action={toggle} method="post" class="mt-2">
                     <input type="hidden" name="slug" value={l.slug} />
