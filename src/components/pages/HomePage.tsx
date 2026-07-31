@@ -28,7 +28,8 @@ export default function HomePage(props: { locale: Locale }) {
       <JsonLd data={faqSchema(t().faq.items)} />
 
       {/* ================= HERO ================= */}
-      <section data-surface="navy" class="relative overflow-hidden bg-navy pb-16 pt-28 md:pb-24 md:pt-36">
+      <section data-surface="navy"
+        class="relative flex min-h-[100svh] items-center overflow-hidden bg-navy pb-20 pt-28 md:pb-28 md:pt-36">
         <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <span aria-hidden="true" class="monument absolute -right-[0.12em] top-[0.1em] text-[clamp(11rem,26vw,24rem)]" style={{ color: "rgba(20,108,255,0.16)" }}>305</span>
         </div>

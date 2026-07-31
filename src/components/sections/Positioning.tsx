@@ -15,8 +15,10 @@ import type { Locale } from "~/lib/i18n";
 /** «What we build.» — tres grupos, nunca una lista de servicios. */
 export function Capabilities(props: { locale: Locale }) {
   const t = () => C[props.locale].capabilities;
+  // pb-section sin pt: viene despues de Selected Work, que ya es bg-paper y
+  // aporta su propio padding inferior. Con los dos se abria un hueco de 192 px.
   return (
-    <section id="capabilities" class="bg-paper py-section">
+    <section id="capabilities" class="bg-paper pb-section">
       <Container>
         <SectionHeading title={t().heading} />
         <div class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">

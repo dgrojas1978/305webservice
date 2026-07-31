@@ -269,7 +269,6 @@ export function FinalCta(props: { locale: Locale }) {
         <div class="mt-14 flex flex-col gap-3 border-t border-[rgba(247,249,252,0.14)] pt-8 sm:flex-row sm:items-center sm:gap-10">
           <a href={`tel:${PHONE_TEL}`} class="link-underline text-lg font-bold text-paper">{PHONE_DISPLAY}</a>
           <a href={`mailto:${CONTACT_EMAIL}`} class="link-underline text-lg font-medium text-on-navy">{CONTACT_EMAIL}</a>
-          <A href={PATHS.privacy[props.locale]} class="micro-caps text-on-navy-faint hover:text-paper">{t().finalCta.note}</A>
         </div>
       </Container>
     </section>
