@@ -22,6 +22,12 @@ export interface TapEvent {
   at: Date;
   /** Perfil fijo en código o enlace de cliente en la BD. */
   kind: "profile" | "link";
+  /** Atribución CONGELADA en el momento del toque. Si mañana la tarjeta cambia
+   *  de dueño, los taps antiguos siguen contando para quien la tenía entonces. */
+  business: string | null;
+  owner: string | null;
+  cardId: string | null;
+  context: string | null;
   /** IP de origen tal cual la reporta el proxy. Dato personal. */
   ip: string | null;
   /** Ubicación aproximada derivada de la IP por el edge. Nunca GPS. */
@@ -45,6 +51,7 @@ function clip(v: string | null, max: number): string | null {
 /** Construye el evento a partir de la petición. No toca la base. */
 export function buildTapEvent(
   slug: string, kind: TapEvent["kind"], target: string, url: URL, headers: Headers,
+  attribution?: { business?: string; owner?: string; cardId?: string; context?: string },
 ): TapEvent {
   const utm: Record<string, string> = {};
   for (const k of UTM_KEYS) {
@@ -59,6 +66,10 @@ export function buildTapEvent(
     slug,
     at: new Date(),
     kind,
+    business: attribution?.business || null,
+    owner: attribution?.owner || null,
+    cardId: attribution?.cardId || null,
+    context: attribution?.context || null,
     ip: (fwd ? fwd.split(",")[0]?.trim() : null) || h("x-real-ip"),
     country: h("x-vercel-ip-country"),
     region: h("x-vercel-ip-country-region"),

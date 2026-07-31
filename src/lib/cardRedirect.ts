@@ -80,7 +80,12 @@ async function dbRedirect(
   if (!link || !link.active) return Response.redirect(home, 302);
 
   void bumpTaps(slug);
-  if (headers) void logTap(buildTapEvent(slug, "link", link.target, url, headers));
+  if (headers) {
+    void logTap(buildTapEvent(slug, "link", link.target, url, headers, {
+      business: link.business, owner: link.owner,
+      cardId: link.cardId, context: link.context,
+    }));
+  }
 
   // La atribucion que trae la peticion se conserva: un escaneo QR y un toque
   // NFC deben poder distinguirse en la analitica del destino.

@@ -68,6 +68,10 @@ const saveLink = action(async (form: FormData) => {
     slug: String(form.get("slug") ?? ""),
     target: check.url,
     label: String(form.get("label") ?? ""),
+    business: String(form.get("business") ?? ""),
+    owner: String(form.get("owner") ?? ""),
+    cardId: String(form.get("cardId") ?? ""),
+    context: String(form.get("context") ?? ""),
   });
   if (!res.ok) throw redirect(fail(res.reason));
   revalidate(loadState.key);
@@ -170,6 +174,18 @@ export default function AdminLinks() {
                 class="mt-1.5 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2" />
               <input name="label" placeholder="Etiqueta interna (opcional)"
                 class="mt-2 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+              {/* Atribucion: sin esto no se puede saber que vendedor o que
+                  ubicacion genero cada toque. Se congela en cada tap. */}
+              <div class="mt-2 grid grid-cols-2 gap-2">
+                <input name="business" placeholder="Negocio"
+                  class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                <input name="owner" placeholder="Dueño de la tarjeta"
+                  class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                <input name="cardId" placeholder="ID de tarjeta"
+                  class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                <input name="context" placeholder="Contexto (feria, camioneta…)"
+                  class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+              </div>
             </div>
             <button type="submit" disabled={saveSub.pending} class="btn btn-primary self-start sm:mt-6">
               {saveSub.pending ? "Guardando…" : "Crear"}
@@ -191,6 +207,14 @@ export default function AdminLinks() {
                   </div>
                   <Show when={l.label}>
                     <p class="mt-1 text-sm text-on-navy">{l.label}</p>
+                  </Show>
+                  <Show when={l.business || l.owner || l.cardId || l.context}>
+                    <p class="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-[0.7rem] text-on-navy-faint">
+                      <Show when={l.business}><span>{l.business}</span></Show>
+                      <Show when={l.owner}><span>· {l.owner}</span></Show>
+                      <Show when={l.cardId}><span>· <code>{l.cardId}</code></span></Show>
+                      <Show when={l.context}><span>· {l.context}</span></Show>
+                    </p>
                   </Show>
                   <form action={editTarget} method="post" class="mt-3">
                     <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint"

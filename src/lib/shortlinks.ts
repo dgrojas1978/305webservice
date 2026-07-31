@@ -11,6 +11,14 @@ export interface ShortLink {
   slug: string;
   target: string;
   label: string;
+  /** A quien pertenece la tarjeta. Sin esto no hay atribucion posible. */
+  business: string;
+  /** Vendedor o persona duena de la tarjeta fisica. */
+  owner: string;
+  /** Identificador de la unidad fisica: RW-CARLOS-018. */
+  cardId: string;
+  /** Donde vive la tarjeta: feria, camioneta, recepcion, vendedor, evento. */
+  context: string;
   active: boolean;
   taps: number;
   createdAt: Date;
@@ -76,6 +84,7 @@ export async function bumpTaps(slug: string): Promise<void> {
 
 export async function createLink(input: {
   slug: string; target: string; label: string;
+  business?: string; owner?: string; cardId?: string; context?: string;
 }): Promise<{ ok: true } | { ok: false; reason: string }> {
   const slug = normalizeSlug(input.slug);
   if (!slug) return { ok: false, reason: "El nombre corto no puede quedar vacío." };
@@ -87,6 +96,10 @@ export async function createLink(input: {
   const now = new Date();
   await c.insertOne({
     slug, target: input.target, label: input.label.trim().slice(0, 120),
+    business: (input.business ?? "").trim().slice(0, 80),
+    owner: (input.owner ?? "").trim().slice(0, 80),
+    cardId: (input.cardId ?? "").trim().slice(0, 40),
+    context: (input.context ?? "").trim().slice(0, 40),
     active: true, taps: 0, createdAt: now, updatedAt: now, history: [],
   });
   return { ok: true };
