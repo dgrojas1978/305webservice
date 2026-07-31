@@ -435,14 +435,31 @@ export const CARD_305: CardProfile = {
       },
     ],
   },
-  /**
-   * Cobros DESACTIVADOS: no tengo los datos reales de Zelle/Venmo/Cash App/
-   * PayPal de 305, y aquí no se inventa un número al que la gente manda dinero.
-   * Para activarlo: `enabled: true` + el nombre EXACTO inscrito en Zelle + el
-   * teléfono o correo inscrito, y opcionalmente la imagen del QR que genere el
-   * banco (esa no se puede fabricar desde aquí).
-   */
-  payments: { enabled: false },
+  payments: {
+    enabled: true,
+    zelle: {
+      enabled: true,
+      /**
+       * Tal cual lo muestra el banco, EN MAYÚSCULAS incluidas. Es el texto que
+       * el cliente tiene que reconocer en su propia app antes de enviar; si
+       * aquí se "arregla" a Daniel González Rojas, deja de coincidir y el
+       * cotejo —lo único que impide que el dinero acabe en otra cuenta— pierde
+       * su sentido.
+       */
+      recipientName: "DANIEL GONZALEZ ROJAS",
+      phone: "305-833-2984",
+      /**
+       * QR emitido por el banco, recortado de su pantalla y con zona de
+       * silencio añadida. NO está generado aquí: decodifica a
+       * `enroll.zellepay.com/qr-codes?data=…` con el token 3058332984, el mismo
+       * teléfono de arriba, y el recorte decodifica idéntico al original.
+       */
+      qrImage: "/card/zelle-qr-305.png",
+      /** Lo que ese QR lleva dentro. Un botón evita tener que escanearlo. */
+      zelleUrl: "https://enroll.zellepay.com/qr-codes?data=eyJuYW1lIjoiREFOSUVMIiwidG9rZW4iOiIzMDU4MzMyOTg0In0=",
+    },
+    // Venmo, Cash App y PayPal sin datos: no se renderizan.
+  },
   nfc: {
     slug: "305",
     canonicalPath: "/card/305",
@@ -558,9 +575,11 @@ export const CARD_COPY = {
       copy: "Copy",
       copied: "Copied",
       saveContact: "Save contact",
-      showQr: "Show QR",
+      payWithZelle: "Pay with Zelle",
+      payWithZelleHelp: "Opens Zelle's official page with these details. Same destination as the QR — no second device needed.",
+      showQr: "Show QR for another device",
       hideQr: "Hide QR",
-      qrHelp: "Scan from another device. If you're on the phone you'll pay with, copy the number instead.",
+      qrHelp: "For scanning from a different phone. On this one, use the button or copy the number.",
       qrIssued: "QR issued by the recipient's bank.",
       openApp: "Open",
       zelleHow: "Zelle works inside your own bank's app.",
@@ -710,9 +729,11 @@ export const CARD_COPY = {
       copy: "Copiar",
       copied: "Copiado",
       saveContact: "Guardar contacto",
-      showQr: "Ver QR",
+      payWithZelle: "Pagar con Zelle",
+      payWithZelleHelp: "Abre la página oficial de Zelle con estos datos. Es el mismo destino que el QR, sin necesitar otro aparato.",
+      showQr: "Ver QR para otro dispositivo",
       hideQr: "Ocultar QR",
-      qrHelp: "Escanéalo desde otro dispositivo. Si estás en el teléfono con el que vas a pagar, copia el número.",
+      qrHelp: "Para escanear desde otro teléfono. En este, usa el botón o copia el número.",
       qrIssued: "QR emitido por el banco del destinatario.",
       openApp: "Abrir",
       zelleHow: "Zelle funciona dentro de la app de tu propio banco.",

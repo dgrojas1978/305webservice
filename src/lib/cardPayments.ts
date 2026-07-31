@@ -39,8 +39,20 @@ export interface ZellePayment {
    *
    * NO se genera aquí: un QR de Zelle válido lo emite el banco y lleva datos
    * suyos dentro. Inventarlo produciría un código que no cobra nada.
+   *
+   * Queda como respaldo para quien vea la tarjeta en un ordenador y quiera
+   * escanear con el móvil. En el teléfono no sirve de nada: nadie apunta la
+   * cámara a su propia pantalla.
    */
   qrImage?: string;
+  /**
+   * La URL que ese QR lleva dentro, sacada de decodificarlo.
+   *
+   * Es lo que convierte el QR en un botón: la tarjeta se ve en el teléfono del
+   * cliente, así que abrir el enlace es lo mismo que escanear el código pero
+   * sin necesitar un segundo aparato.
+   */
+  zelleUrl?: string;
   /** Nota del negocio: "cobro al terminar el servicio", etc. */
   note?: string;
   noteEs?: string;
@@ -88,6 +100,44 @@ export function paymentLink(provider: Exclude<PaymentProvider, "zelle">, handle?
     case "cashapp": return `https://cash.app/$${safe}`;
     case "paypal": return `https://paypal.me/${safe}`;
   }
+}
+
+/**
+ * Solo se acepta el enlace si vive en el dominio de Zelle.
+ *
+ * Este botón manda a alguien a pagar. Un enlace pegado mal —o puesto con mala
+ * fe— lo llevaría a una página de phishing con la marca de 305 encima.
+ */
+export function zelleUrlSafe(raw?: string): string | null {
+  const v = clean(raw);
+  if (!v) return null;
+  try {
+    const u = new URL(v);
+    if (u.protocol !== "https:") return null;
+    const host = u.hostname.toLowerCase();
+    if (host !== "zellepay.com" && !host.endsWith(".zellepay.com")) return null;
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
+/** Lo que se ENSEÑA: legible, y tal como aparece en el banco del dueño. */
+export function zelleDestination(z?: ZellePayment): string {
+  return clean(z?.phone) || clean(z?.email);
+}
+
+/**
+ * Lo que se COPIA. Para un teléfono, solo dígitos.
+ *
+ * En pantalla los guiones ayudan a leerlo, pero algunas apps de banco rechazan
+ * un número pegado con formato — y toda esta función existe justo para que
+ * nadie tenga que teclearlo a mano. Un correo se copia tal cual.
+ */
+export function zelleCopyValue(z?: ZellePayment): string {
+  const phone = clean(z?.phone);
+  if (phone) return phone.replace(/\D/g, "");
+  return clean(z?.email);
 }
 
 /** Zelle solo es utilizable si hay nombre Y una forma de contacto inscrita. */

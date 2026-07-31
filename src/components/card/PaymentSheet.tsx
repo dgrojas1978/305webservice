@@ -3,7 +3,8 @@ import { isServer } from "solid-js/web";
 import { trackEvent } from "~/lib/analytics";
 import { CARD_COPY, type CardLocale, type CardProfile } from "~/data/card";
 import {
-  handleRenderable, paymentLink, zelleRenderable,
+  handleRenderable, paymentLink, zelleCopyValue, zelleDestination, zelleRenderable,
+  zelleUrlSafe,
 } from "~/lib/cardPayments";
 
 /**
@@ -95,7 +96,7 @@ export default function PaymentSheet(props: {
           <Show when={zelleRenderable(pay()?.zelle)}>
             {(() => {
               const z = () => pay()!.zelle!;
-              const dest = () => (z().phone || z().email || "").trim();
+              const dest = () => zelleDestination(z());
               return (
                 <section class="mt-6 rounded-2xl border border-[rgba(247,249,252,0.16)] p-5">
                   <p class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-turquoise">Zelle</p>
@@ -109,9 +110,25 @@ export default function PaymentSheet(props: {
                   </p>
                   <p class="mt-1 select-all break-all text-lg font-bold tabular-nums">{dest()}</p>
 
+                  {/* Botón primero: la tarjeta se ve en el teléfono del cliente,
+                      así que escanear el QR ahí no sirve. El enlace es el MISMO
+                      que el código lleva dentro. */}
+                  <Show when={zelleUrlSafe(z().zelleUrl)}>
+                    {(url) => (
+                      <>
+                        <a href={url()} target="_blank" rel="noopener noreferrer"
+                          onClick={() => trackEvent("payment_open_app", { card: props.profile.id, method: "zelle" })}
+                          class="btn btn-primary mt-4 flex w-full items-center justify-center !py-3 text-sm">
+                          {t().payWithZelle}
+                        </a>
+                        <p class="mt-1.5 text-[0.7rem] text-on-navy-faint">{t().payWithZelleHelp}</p>
+                      </>
+                    )}
+                  </Show>
+
                   <div class="mt-4 flex flex-wrap gap-2">
-                    <button type="button" onClick={() => copy(dest(), "zelle")}
-                      class="btn btn-primary !px-5 !py-2.5 text-sm">
+                    <button type="button" onClick={() => copy(zelleCopyValue(z()), "zelle")}
+                      class="btn btn-outline !px-5 !py-2.5 text-sm">
                       {copied() === "zelle" ? t().copied : t().copy}
                     </button>
                     <a href={`/card/${props.profile.id}/vcard`} rel="external" download=""
