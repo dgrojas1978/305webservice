@@ -59,7 +59,10 @@ export async function cardRedirect(
 
   if (!headers) return Response.redirect(dest.toString(), 302);
   const visitor = resolveVisitor(headers);
-  void logTap(buildTapEvent(
+  // Se ESPERA a que se escriba. Con `void`, Vercel congelaba la funcion al
+  // devolver la redireccion y el toque se perdia. `logTap` trae su propio techo
+  // de tiempo, asi que esto no puede colgar una tarjeta que alguien sostiene.
+  await logTap(buildTapEvent(
     profile.nfc.slug, "profile", dest.toString(), url, headers, undefined, visitor));
   return seeOther(dest.toString(), visitor.isNew ? visitorCookie(visitor.id) : undefined);
 }
@@ -87,14 +90,17 @@ async function dbRedirect(
   }
   if (!link || !link.active) return Response.redirect(home, 302);
 
-  void bumpTaps(slug);
   const visitor = headers ? resolveVisitor(headers) : undefined;
-  if (headers && visitor) {
-    void logTap(buildTapEvent(slug, "link", link.target, url, headers, {
-      business: link.business, owner: link.owner,
-      cardId: link.cardId, context: link.context,
-    }, visitor));
-  }
+  // Las dos escrituras a la vez y esperadas, cada una con su techo de tiempo.
+  await Promise.all([
+    bumpTaps(slug),
+    headers && visitor
+      ? logTap(buildTapEvent(slug, "link", link.target, url, headers, {
+          business: link.business, owner: link.owner,
+          cardId: link.cardId, context: link.context,
+        }, visitor))
+      : Promise.resolve(),
+  ]);
 
   // La atribucion que trae la peticion se conserva: un escaneo QR y un toque
   // NFC deben poder distinguirse en la analitica del destino.

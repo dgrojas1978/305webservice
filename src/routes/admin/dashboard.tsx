@@ -298,14 +298,15 @@ export default function AdminDashboard() {
                 <Show when={data().linkCountersTotal !== data().totals.taps}>
                   <p class="mt-4 rounded-lg border border-[rgba(247,249,252,0.14)] px-4 py-3 text-xs leading-relaxed text-on-navy">
                     El panel de enlaces suma <strong>{data().linkCountersTotal}</strong> toques y aquí
-                    aparecen <strong>{data().totals.taps}</strong>. No es un fallo, son dos cosas
-                    distintas. Aquel es un contador <strong>de siempre</strong>, que solo sabe sumar
-                    uno; este es el registro <strong>detallado</strong>
-                    {data().from ? " y del rango elegido" : ""}, y arrancó el{" "}
-                    {fmtDate(data().loggingSince)}. Los toques anteriores a esa fecha se contaron,
-                    pero de ellos no se guardó ni ciudad, ni hora, ni dispositivo: ese detalle no se
-                    puede recuperar. La tabla «Toques por enlace» enseña las dos cifras enlace a
-                    enlace.
+                    aparecen <strong>{data().totals.taps}</strong>. Aquel es un contador{" "}
+                    <strong>de siempre</strong>, que solo sabe sumar uno; este es el registro{" "}
+                    <strong>detallado</strong>{data().from ? " y del rango elegido" : ""}, que
+                    arrancó el {fmtDate(data().loggingSince)}. Pero parte de la diferencia SÍ fue un
+                    fallo: hasta el 31 de julio el toque se guardaba sin esperar a que la escritura
+                    terminara, y en Vercel la función se apaga al devolver la redirección, así que
+                    muchos toques nunca llegaron a escribirse. Ya se espera. Los toques perdidos
+                    antes de ese arreglo no se pueden recuperar. La tabla «Toques por enlace» enseña
+                    las dos cifras enlace a enlace.
                   </p>
                 </Show>
 

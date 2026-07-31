@@ -84,10 +84,19 @@ export async function listLinks(): Promise<ShortLink[]> {
     .sort({ updatedAt: -1 }).limit(500).toArray();
 }
 
-/** Contador de toques. No debe bloquear ni romper la redirección si falla. */
+/**
+ * Contador de toques. Se espera, con techo de tiempo, por la misma razón que el
+ * registro detallado: llamarlo con `void` en Vercel pierde la escritura cuando
+ * la función se congela al devolver la redirección.
+ */
+const BUMP_BUDGET_MS = 1500;
+
 export async function bumpTaps(slug: string): Promise<void> {
   try {
-    await (await col()).updateOne({ slug }, { $inc: { taps: 1 } });
+    await Promise.race([
+      (await col()).updateOne({ slug }, { $inc: { taps: 1 } }),
+      new Promise((resolve) => setTimeout(resolve, BUMP_BUDGET_MS)),
+    ]);
   } catch {
     /* la analítica nunca puede impedir que la tarjeta funcione */
   }
