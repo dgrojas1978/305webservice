@@ -1,5 +1,5 @@
 import { For, Show, createSignal } from "solid-js";
-import { action, createAsync, useSearchParams, useSubmission, redirect } from "@solidjs/router";
+import { action, cache, createAsync, revalidate, useSearchParams, useSubmission, redirect } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
   createLink, listLinks, normalizeSlug, setActive, updateTarget, validateTarget,
@@ -28,12 +28,12 @@ async function requireAuth() {
   return isAuthed(ev?.request.headers.get("cookie") ?? null);
 }
 
-const loadState = async () => {
+const loadState = cache(async () => {
   "use server";
   if (!adminEnabled()) return { enabled: false, authed: false, links: [] as ShortLink[] };
   if (!(await requireAuth())) return { enabled: true, authed: false, links: [] as ShortLink[] };
   return { enabled: true, authed: true, links: await listLinks() };
-};
+}, "adminLinksState");
 
 const login = action(async (form: FormData) => {
   "use server";
@@ -66,6 +66,7 @@ const saveLink = action(async (form: FormData) => {
     label: String(form.get("label") ?? ""),
   });
   if (!res.ok) throw redirect(fail(res.reason));
+  revalidate(loadState.key);
   throw redirect("/admin/links");
 }, "adminSaveLink");
 
@@ -77,6 +78,7 @@ const editTarget = action(async (form: FormData) => {
   const check = validateTarget(String(form.get("target") ?? ""), host);
   if (!check.ok) throw redirect(fail(check.reason));
   await updateTarget(normalizeSlug(String(form.get("slug") ?? "")), check.url);
+  revalidate(loadState.key);
   throw redirect("/admin/links");
 }, "adminEditTarget");
 
@@ -84,6 +86,7 @@ const toggle = action(async (form: FormData) => {
   "use server";
   if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
   await setActive(normalizeSlug(String(form.get("slug") ?? "")), form.get("active") === "1");
+  revalidate(loadState.key);
   throw redirect("/admin/links");
 }, "adminToggle");
 
