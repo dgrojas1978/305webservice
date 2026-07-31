@@ -37,7 +37,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   const [sheetSuccess, setSheetSuccess] = createSignal(false);
   const [barVisible, setBarVisible] = createSignal(false);
   const [reelIdx, setReelIdx] = createSignal(0);
-  const [moreOpen, setMoreOpen] = createSignal(false);
 
   const t = () => CARD_COPY[lang()];
   const co = () => p().company;
@@ -158,8 +157,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
     workUl?.scrollBy({ left: dir * workUl.clientWidth * 0.85, behavior: "smooth" });
   };
 
-  const quickLink =
-    "t-card inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[rgba(247,249,252,0.18)] px-3.5 py-2 text-[0.72rem] font-bold uppercase tracking-wide text-on-navy hover:text-paper";
 
   /**
    * Conversion Panel — el único bloque de venta del primer viewport desktop.
@@ -310,33 +307,38 @@ export default function DigitalCard(props: { profile: CardProfile }) {
             {/* Acciones de tarjeta — SOLO móvil (en desktop convierte el panel
                 derecho). START A PROJECT domina: es la conversión. Save Contact
                 queda al lado con menos peso — es cortesía, no conversión. */}
-            <div class="order-1 mt-6 flex flex-wrap items-center gap-2.5 lg:hidden">
+            {/* Las CINCO acciones visibles de golpe, sin nada colapsado: el
+                visitante no deberia tener que descubrir como llamarte. */}
+            <div class="order-1 mt-6 lg:hidden">
               <button type="button" onClick={() => openSheet("project")}
                 data-track="card_cta_primary" data-card={p().id}
                 class="btn btn-primary w-full !py-3.5 text-[0.95rem] uppercase tracking-wide">
                 {t().hero.ctaPrimary}
               </button>
-              <a href={`/card/${p().id}/vcard`} rel="external" download="" data-track="save_contact" data-card={p().id}
-                class="btn btn-outline flex-1 !py-3 text-center text-[0.9rem]">
-                {t().hero.ctaSave}
-              </a>
-              <a href={waLink(t().waMessage)} target="_blank" rel="noopener noreferrer"
-                data-track="whatsapp_click" data-card={p().id} class={quickLink}>
-                <WhatsAppIcon class="h-3.5 w-3.5 text-green" /> {t().hero.quick.whatsapp}
-              </a>
-              <button type="button" onClick={() => setMoreOpen((v) => !v)} aria-expanded={moreOpen()}
-                aria-controls="hero-more" class={quickLink}>
-                {t().more}
-              </button>
-              <div id="hero-more" class="flex w-full items-center gap-2" style={{ display: moreOpen() ? "flex" : "none" }}>
-                <a href={`tel:${co().phoneTel}`} data-track="call_click" data-card={p().id} class={quickLink}>
+              <div class="mt-2.5 grid grid-cols-2 gap-2.5">
+                <a href={`/card/${p().id}/vcard`} rel="external" download=""
+                  data-track="save_contact" data-card={p().id}
+                  class="btn btn-outline !py-3 text-center text-[0.85rem]">
+                  {t().hero.ctaSave}
+                </a>
+                <a href={waLink(t().waMessage)} target="_blank" rel="noopener noreferrer"
+                  data-track="whatsapp_click" data-card={p().id}
+                  class="btn btn-outline !py-3 text-center text-[0.85rem]">
+                  {t().hero.quick.whatsapp}
+                </a>
+                <a href={`tel:${co().phoneTel}`} data-track="call_click" data-card={p().id}
+                  class="btn btn-outline !py-3 text-center text-[0.85rem]">
                   {t().hero.quick.call}
                 </a>
-                <button type="button" onClick={share} class={quickLink}>{t().hero.quick.share}</button>
-                <span class="text-[0.7rem] font-semibold text-turquoise" role="status" aria-live="polite">
-                  <Show when={copied()}>{t().shareCopied}</Show>
-                </span>
+                <button type="button" onClick={share}
+                  class="btn btn-outline !py-3 text-center text-[0.85rem]">
+                  {t().hero.quick.share}
+                </button>
               </div>
+              <p class="mt-2 text-center text-[0.7rem] font-semibold text-turquoise"
+                role="status" aria-live="polite">
+                <Show when={copied()}>{t().shareCopied}</Show>
+              </p>
             </div>
           </section>
 
