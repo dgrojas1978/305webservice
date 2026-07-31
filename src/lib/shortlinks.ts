@@ -69,8 +69,19 @@ export async function findLink(slug: string): Promise<ShortLink | null> {
   return (await col()).findOne({ slug: normalizeSlug(slug) });
 }
 
+/**
+ * Listado para el panel.
+ *
+ * `_id` FUERA de la proyección. Estos documentos viajan del servidor al
+ * navegador, y un ObjectId no se puede serializar: el proceso reventaba después
+ * de haber enviado el HTML, así que la página se veía bien y por debajo la
+ * petición moría y la hidratación no llegaba nunca. Un fallo silencioso, del
+ * peor tipo. El panel no usa `_id` para nada: la clave es el slug.
+ */
 export async function listLinks(): Promise<ShortLink[]> {
-  return (await col()).find({}).sort({ updatedAt: -1 }).limit(500).toArray();
+  return (await col())
+    .find({}, { projection: { _id: 0 } })
+    .sort({ updatedAt: -1 }).limit(500).toArray();
 }
 
 /** Contador de toques. No debe bloquear ni romper la redirección si falla. */
@@ -93,15 +104,65 @@ export async function createLink(input: {
   const c = await col();
   if (await c.findOne({ slug })) return { ok: false, reason: `"${slug}" ya existe.` };
 
+  // Negocio y dueño son OBLIGATORIOS. La atribución se congela en cada toque,
+  // así que un enlace creado sin ellos genera toques que no se pueden asignar a
+  // nadie NUNCA: no es que falte enseñarlos, es que el dato no se guarda y no
+  // hay forma de reconstruirlo después. Pasó con los seis primeros enlaces.
+  const attr = checkAttribution(input);
+  if (!attr.ok) return attr;
+
   const now = new Date();
   await c.insertOne({
     slug, target: input.target, label: input.label.trim().slice(0, 120),
-    business: (input.business ?? "").trim().slice(0, 80),
-    owner: (input.owner ?? "").trim().slice(0, 80),
-    cardId: (input.cardId ?? "").trim().slice(0, 40),
-    context: (input.context ?? "").trim().slice(0, 40),
+    ...attr.value,
     active: true, taps: 0, createdAt: now, updatedAt: now, history: [],
   });
+  return { ok: true };
+}
+
+export interface Attribution {
+  business: string;
+  owner: string;
+  cardId: string;
+  context: string;
+}
+
+type AttrCheck = { ok: true; value: Attribution } | { ok: false; reason: string };
+
+function checkAttribution(input: Partial<Attribution>): AttrCheck {
+  const business = (input.business ?? "").trim().slice(0, 80);
+  const owner = (input.owner ?? "").trim().slice(0, 80);
+  if (!business) {
+    return { ok: false, reason: "Falta el negocio. Sin él, los toques de esta tarjeta no se podrán asignar a nadie, y eso no tiene arreglo después." };
+  }
+  if (!owner) {
+    return { ok: false, reason: "Falta el dueño de la tarjeta. Sin él no se puede saber qué vendedor genera qué." };
+  }
+  return {
+    ok: true,
+    value: {
+      business, owner,
+      cardId: (input.cardId ?? "").trim().slice(0, 40),
+      context: (input.context ?? "").trim().slice(0, 40),
+    },
+  };
+}
+
+/**
+ * Cambia la atribución de un enlace. Solo afecta a los toques FUTUROS: los ya
+ * registrados guardaron su copia y no se tocan, que es justo lo que evita que
+ * las cifras de un vendedor cambien solas al editar un enlace.
+ */
+export async function updateAttribution(
+  rawSlug: string, input: Partial<Attribution>,
+): Promise<{ ok: true } | { ok: false; reason: string }> {
+  const check = checkAttribution(input);
+  if (!check.ok) return check;
+  const slug = normalizeSlug(rawSlug);
+  const res = await (await col()).updateOne(
+    { slug }, { $set: { ...check.value, updatedAt: new Date() } },
+  );
+  if (!res.matchedCount) return { ok: false, reason: `"${slug}" no existe.` };
   return { ok: true };
 }
 

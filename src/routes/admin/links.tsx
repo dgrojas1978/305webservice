@@ -2,8 +2,8 @@ import { For, Show, createSignal } from "solid-js";
 import { action, cache, createAsync, revalidate, useSearchParams, useSubmission, redirect } from "@solidjs/router";
 import { adminEnabled, clearCookie, isAuthed, issueCookie, passwordMatches } from "~/lib/adminAuth";
 import {
-  createLink, listLinks, normalizeSlug, setActive, updateTarget, validateTarget,
-  type ShortLink,
+  createLink, listLinks, normalizeSlug, setActive, updateAttribution, updateTarget,
+  validateTarget, type ShortLink,
 } from "~/lib/shortlinks";
 
 /**
@@ -91,6 +91,26 @@ const editTarget = action(async (form: FormData) => {
   throw redirect(done(`Destino de /c/${slug} actualizado.`));
 }, "adminEditTarget");
 
+/**
+ * Rellena la atribución de un enlace ya creado. Sin esto, los seis primeros
+ * enlaces —creados cuando los campos eran opcionales— no tenían forma de
+ * arreglarse salvo borrarlos y volver a crearlos.
+ */
+const editAttribution = action(async (form: FormData) => {
+  "use server";
+  if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
+  const slug = normalizeSlug(String(form.get("slug") ?? ""));
+  const res = await updateAttribution(slug, {
+    business: String(form.get("business") ?? ""),
+    owner: String(form.get("owner") ?? ""),
+    cardId: String(form.get("cardId") ?? ""),
+    context: String(form.get("context") ?? ""),
+  });
+  if (!res.ok) throw redirect(fail(res.reason));
+  revalidate(loadState.key);
+  throw redirect(done(`Atribución de /c/${slug} guardada. Cuenta desde el próximo toque.`));
+}, "adminEditAttribution");
+
 const toggle = action(async (form: FormData) => {
   "use server";
   if (!(await requireAuth())) throw redirect(fail("Sesión expirada."));
@@ -177,18 +197,24 @@ export default function AdminLinks() {
                 class="mt-1.5 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2" />
               <input name="label" placeholder="Etiqueta interna (opcional)"
                 class="mt-2 w-full rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-              {/* Atribucion: sin esto no se puede saber que vendedor o que
-                  ubicacion genero cada toque. Se congela en cada tap. */}
+              {/* Atribucion OBLIGATORIA. Se congela en cada tap: un enlace sin
+                  negocio ni dueño genera toques que no se pueden asignar a nadie
+                  nunca, y eso no se arregla despues. */}
               <div class="mt-2 grid grid-cols-2 gap-2">
-                <input name="business" placeholder="Negocio"
+                <input name="business" required placeholder="Negocio *"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
-                <input name="owner" placeholder="Dueño de la tarjeta"
+                <input name="owner" required placeholder="Dueño de la tarjeta *"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                 <input name="cardId" placeholder="ID de tarjeta"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
                 <input name="context" placeholder="Contexto (feria, camioneta…)"
                   class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
               </div>
+              <p class="mt-1.5 text-[0.7rem] text-on-navy-faint">
+                * Obligatorios. Cada toque guarda su copia, así que un enlace sin
+                negocio ni dueño genera toques que no se pueden asignar a nadie
+                nunca — no hay forma de arreglarlo más tarde.
+              </p>
             </div>
             <button type="submit" disabled={saveSub.pending} class="btn btn-primary self-start sm:mt-6">
               {saveSub.pending ? "Guardando…" : "Crear"}
@@ -219,6 +245,40 @@ export default function AdminLinks() {
                       <Show when={l.context}><span>· {l.context}</span></Show>
                     </p>
                   </Show>
+
+                  {/* Atribucion editable. Solo cuenta desde el proximo toque:
+                      los ya registrados guardaron su copia y no se reescriben. */}
+                  <form action={editAttribution} method="post" class="mt-3">
+                    <input type="hidden" name="slug" value={l.slug} />
+                    <Show
+                      when={l.business && l.owner}
+                      fallback={
+                        <p role="alert" class="mb-2 rounded-lg border border-[rgba(255,193,7,0.45)] bg-[rgba(255,193,7,0.08)] px-3 py-2 text-[0.7rem] text-[#ffd98a]">
+                          Sin negocio ni dueño. Cada toque que entre así queda sin
+                          asignar <strong>para siempre</strong>. Rellénalo ya.
+                        </p>
+                      }>
+                      <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint">
+                        Atribución — editable
+                      </label>
+                    </Show>
+                    <div class="mt-1.5 grid grid-cols-2 gap-2">
+                      <input name="business" required value={l.business} placeholder="Negocio *"
+                        class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                      <input name="owner" required value={l.owner} placeholder="Dueño *"
+                        class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                      <input name="cardId" value={l.cardId} placeholder="ID de tarjeta"
+                        class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                      <input name="context" value={l.context} placeholder="Contexto"
+                        class="rounded-lg border border-[rgba(247,249,252,0.2)] bg-transparent px-3 py-2 text-sm" />
+                    </div>
+                    <button type="submit" class="btn btn-outline mt-2 !px-4 !py-2 text-sm">
+                      Guardar atribución
+                    </button>
+                    <p class="mt-1 text-[0.7rem] text-on-navy-faint">
+                      Cuenta desde el próximo toque. Los ya registrados no se reescriben.
+                    </p>
+                  </form>
                   <form action={editTarget} method="post" class="mt-3">
                     <label class="block text-[0.7rem] font-semibold uppercase tracking-wide text-on-navy-faint"
                       for={`t-${l.slug}`}>Destino — editable</label>
