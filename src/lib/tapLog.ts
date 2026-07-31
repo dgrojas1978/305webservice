@@ -95,8 +95,32 @@ export function buildTapEvent(
  * Cualquier fallo se traga a propósito — la analítica jamás puede impedir que
  * una tarjeta que alguien tiene en la mano funcione.
  */
+/** Retencion declarada en la politica de privacidad: 12 meses. */
+export const RETENTION_DAYS = 365;
+
+let indexReady = false;
+
+/**
+ * Indice TTL: Mongo borra cada evento a los 12 meses por si solo.
+ *
+ * La retencion se APLICA, no se promete. Un texto legal que dice "12 meses"
+ * mientras la base guarda todo para siempre es una declaracion falsa.
+ * Se crea una vez por proceso y nunca bloquea el registro.
+ */
+async function ensureRetention(): Promise<void> {
+  if (indexReady) return;
+  indexReady = true;
+  try {
+    await (await getDb()).collection("taps")
+      .createIndex({ at: 1 }, { expireAfterSeconds: RETENTION_DAYS * 24 * 60 * 60 });
+  } catch {
+    /* si falla, se reintenta en el proximo arranque */
+  }
+}
+
 export async function logTap(event: TapEvent): Promise<void> {
   try {
+    void ensureRetention();
     await (await getDb()).collection<TapEvent>("taps").insertOne(event);
   } catch {
     /* silencio deliberado */
