@@ -152,7 +152,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
     return (
       <div class="rounded-[26px] border border-[rgba(247,249,252,0.09)] bg-[#0a1728] px-9 py-10 shadow-[0_30px_80px_-40px_rgba(2,8,18,0.9)]">
         <p class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-turquoise">{cp().eyebrow}</p>
-        <h2 class="font-editorial mt-4 text-[1.32rem] font-semibold leading-[1.15] tracking-tight text-paper">
+        <h2 class="mt-4 text-[1.3rem] font-extrabold leading-[1.14] tracking-[-0.015em] text-paper">
           {cp().heading}
         </h2>
         <p class="mt-3 text-[0.85rem] leading-relaxed text-on-navy">{cp().sub}</p>
@@ -181,9 +181,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
         </a>
 
         <p class="mt-6 text-[0.7rem] font-semibold leading-relaxed text-on-navy-faint">{cp().trust}</p>
-        <p class="mt-3 border-t border-[rgba(247,249,252,0.08)] pt-3 text-[0.72rem] leading-relaxed text-on-navy-faint">
-          {cp().price}
-        </p>
       </div>
     );
   };
@@ -218,7 +215,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               {t().hero.avail}
             </p>
 
-            <h1 class="font-editorial mt-5 text-[1.95rem] font-semibold leading-[1.06] tracking-tight text-paper">
+            <h1 class="mt-5 text-[2.05rem] font-extrabold leading-[1.04] tracking-[-0.02em] text-paper">
               {t().hero.headline}
             </h1>
             <p class="mt-4 max-w-[34ch] text-[0.95rem] leading-relaxed text-on-navy">{t().hero.sub}</p>
@@ -310,7 +307,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               elegir habia que tocar, leer y volver a tocar. En una tarjeta que
               se abre de pie y con una mano, la lista se lee de un vistazo. */}
           <section aria-labelledby="build-h" class="mt-10">
-            <h2 id="build-h" class="font-editorial text-[1.4rem] font-semibold tracking-tight text-paper">
+            <h2 id="build-h" class="text-[1.32rem] font-extrabold tracking-[-0.015em] text-paper">
               {t().concierge.heading}
             </h2>
             <ul class="mt-5 divide-y divide-[rgba(247,249,252,0.1)] border-y border-[rgba(247,249,252,0.1)]">
