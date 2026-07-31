@@ -35,11 +35,13 @@ export default function HomePage(props: { locale: Locale }) {
         </div>
         <Container class="relative z-10">
           <div class="max-w-3xl">
-            <p class="micro-caps text-turquoise">{t().hero.eyebrow}</p>
-            <h1 class="mt-6 text-[clamp(2.2rem,5.2vw,4.2rem)] font-black leading-[1.03] tracking-tight text-paper">
+            <p class="hero-rise micro-caps text-turquoise">{t().hero.eyebrow}</p>
+            <h1 class="hero-rise mt-7 text-[clamp(2.5rem,6.4vw,5.25rem)] font-extrabold leading-[0.98] tracking-[-0.035em] text-balance text-paper"
+              style={{ "--rise": "70ms" }}>
               {t().hero.h1}
             </h1>
-            <p class="mt-6 max-w-2xl text-body-lg leading-relaxed text-on-navy">{t().hero.sub}</p>
+            <p class="hero-rise mt-7 max-w-[46ch] text-body-lg leading-relaxed text-on-navy"
+              style={{ "--rise": "140ms" }}>{t().hero.sub}</p>
 
             {/* El precio dejó de ser el mensaje maestro: vive en la página del
                 paquete starter. Si algún locale lo deja vacío, no se pinta. */}
@@ -48,11 +50,11 @@ export default function HomePage(props: { locale: Locale }) {
                 <span class="badge badge-onnavy !text-[0.8rem]">{t().hero.priceLine}</span>
               </div>
             </Show>
-            <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+            <div class="hero-rise mt-10 flex flex-col gap-4 sm:flex-row" style={{ "--rise": "210ms" }}>
               <ButtonLink href={quoteLink(props.locale)} track="hero_cta_primary">{t().hero.ctaPrimary}</ButtonLink>
               <ButtonLink href="#selected-work" variant="outline">{t().hero.ctaSecondary}</ButtonLink>
             </div>
-            <div class="mt-9">
+            <div class="hero-rise mt-10" style={{ "--rise": "280ms" }}>
               <TrustStrip locale={props.locale} />
             </div>
           </div>

@@ -451,3 +451,27 @@
     }
   }
 }
+
+
+/* ── Entrada del hero ───────────────────────────────────────────────────────
+   Tipografia cinetica en su version util: un fundido con un desplazamiento
+   minimo, escalonado por linea. La investigacion de 2026 es explicita en que
+   para un sitio de negocio lo sutil gana a lo espectacular — no hace falta un
+   espectaculo de palabras a pantalla completa.
+
+   Se anima transform y opacity, las dos unicas propiedades que el navegador
+   compone sin recalcular layout: cero jank incluso en un movil modesto. */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+.hero-rise {
+  animation: hero-rise 620ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: var(--rise, 0ms);
+}
+
+/* Quien pide menos movimiento ve el hero completo desde el primer frame. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise { animation: none; opacity: 1; transform: none; }
+}
