@@ -142,58 +142,16 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   };
 
 
-  /**
-   * Conversion Panel — el único bloque de venta del primer viewport desktop.
-   * Se instancia en la columna derecha (desktop) o tras el proyecto (móvil);
-   * solo uno es visible a la vez.
-   */
-  const conversionPanel = () => {
-    const cp = () => t().convertPanel;
-    return (
-      <div class="rounded-[26px] border border-[rgba(247,249,252,0.09)] bg-[#0a1728] px-9 py-10 shadow-[0_30px_80px_-40px_rgba(2,8,18,0.9)]">
-        <p class="text-[0.62rem] font-bold uppercase tracking-[0.18em] text-turquoise">{cp().eyebrow}</p>
-        <h2 class="mt-4 text-[1.3rem] font-extrabold leading-[1.14] tracking-[-0.015em] text-paper">
-          {cp().heading}
-        </h2>
-        <p class="mt-3 text-[0.85rem] leading-relaxed text-on-navy">{cp().sub}</p>
-
-        <ul class="mt-6 space-y-3">
-          <For each={cp().outcomes}>
-            {(o) => (
-              <li class="flex items-start gap-2.5 text-[0.85rem] font-medium leading-snug text-paper">
-                <svg viewBox="0 0 16 16" class="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-turquoise" fill="none" aria-hidden="true">
-                  <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                {o}
-              </li>
-            )}
-          </For>
-        </ul>
-
-        <button type="button" onClick={() => openSheet("project")}
-          class="btn btn-primary mt-7 w-full !py-3.5 uppercase tracking-wide">
-          {t().hero.ctaPrimary}
-        </button>
-        <a href={waLink(t().waMessage)} target="_blank" rel="noopener noreferrer"
-          data-track="whatsapp_click" data-card={p().id}
-          class="btn btn-outline mt-2.5 w-full !py-3.5 text-center uppercase tracking-wide">
-          <WhatsAppIcon class="h-4 w-4 text-green" /> {t().convert.ctaWhatsApp}
-        </a>
-
-        <p class="mt-6 text-[0.7rem] font-semibold leading-relaxed text-on-navy-faint">{cp().trust}</p>
-      </div>
-    );
-  };
-
+  
   return (
     <div class="relative min-h-screen bg-[#050d1a] text-paper" data-surface="navy">
       <AnalyticsListener />
       {/* Profundidad: iluminación radial a página completa, sin formas reconocibles. */}
       <div class="ambient pointer-events-none fixed inset-x-0 top-0 h-[70vh]" aria-hidden="true" />
 
-      <div class="relative z-10 lg:mx-auto lg:grid lg:max-w-[1040px] lg:grid-cols-[minmax(0,640px)_360px] lg:justify-center lg:gap-10 lg:px-8">
+      <div class="relative z-10">
         {/* ============ columna principal ============ */}
-        <div class="relative mx-auto w-full max-w-md px-5 pb-28 sm:max-w-lg lg:max-w-none lg:px-0 lg:pb-16">
+        <div class="relative mx-auto w-full max-w-md px-5 pb-28 sm:max-w-lg lg:pb-20">
 
           {/* 1 · HERO (una pantalla) — una identidad, una promesa, una prueba,
                un grupo de acciones. Sin monograma extra ni número de fondo. */}
@@ -224,7 +182,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
                 Antes rotaban de uno en uno y habia que esperar —o tocar flechas—
                 para ver el trabajo. En una tarjeta que se mira dos segundos, la
                 rejilla enseña el rango completo sin pedir nada. */}
-            <div class="order-2 mt-6 lg:order-1 lg:max-w-[540px]">
+            <div class="order-2 mt-6">
               <ul class="grid grid-cols-2 gap-2.5">
                 <For each={p().conversion.projects}>
                   {(w) => (
@@ -250,7 +208,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               </ul>
             </div>
 
-            <p class="order-3 mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-on-navy-faint lg:order-2">
+            <p class="order-3 mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-on-navy-faint">
               <For each={t().hero.proof}>
                 {(item, i) => (<>
                   <Show when={i() > 0}><span class="h-1 w-1 rounded-full bg-turquoise" aria-hidden="true" /></Show>
@@ -264,7 +222,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
                 queda al lado con menos peso — es cortesía, no conversión. */}
             {/* Las CINCO acciones visibles de golpe, sin nada colapsado: el
                 visitante no deberia tener que descubrir como llamarte. */}
-            <div class="order-1 mt-6 lg:hidden">
+            <div class="order-1 mt-6">
               <button type="button" onClick={() => openSheet("project")}
                 data-track="card_cta_primary" data-card={p().id}
                 class="btn btn-primary w-full !py-3.5 text-[0.95rem] uppercase tracking-wide">
@@ -349,9 +307,8 @@ export default function DigitalCard(props: { profile: CardProfile }) {
               <p class="mt-3 text-[0.8rem] font-semibold text-on-navy">{t().share.qrText}</p>
             </div>
 
-            <div class="mt-5 grid grid-cols-2 gap-2.5">
+            <div class="mt-5">
               <button type="button" onClick={copyLink} class="btn btn-outline !px-4 !py-2.5 text-sm">{t().share.copy}</button>
-              <button type="button" onClick={share} class="btn btn-outline !px-4 !py-2.5 text-sm">{t().share.native}</button>
             </div>
             {/* Intercambio: pedir el contacto del visitante pertenece a este
                 momento, no a una seccion aparte. */}
@@ -396,12 +353,6 @@ export default function DigitalCard(props: { profile: CardProfile }) {
           </footer>
         </div>
 
-        {/* ============ columna derecha desktop: CONVERSION PANEL ============
-             Vende (beneficio → acción → confianza → precio). Sin QR, sin logo,
-             sin capturas, sin acciones duplicadas. */}
-        <aside class="hidden self-start lg:block" aria-label={t().convertPanel.eyebrow}>
-          <div class="mt-16">{conversionPanel()}</div>
-        </aside>
       </div>
 
       {/* 8 · BARRA DE ACCIÓN MÓVIL (sticky, safe-area, oculta con sheet abierto) */}
