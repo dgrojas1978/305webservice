@@ -76,6 +76,27 @@ export interface PlaceRow {
   n: number;
 }
 
+/** Ciudad con coordenadas, para el mapa. Un punto es una CIUDAD, no una persona. */
+export interface MapPoint extends PlaceRow {
+  lat: number;
+  lon: number;
+}
+
+/** Una línea del registro cronológico. Sin IP: no se enseña jamás. */
+export interface TapRow {
+  at: string;
+  slug: string;
+  kind: string;
+  city: string | null;
+  region: string | null;
+  country: string | null;
+  device: string;
+  source: string | null;
+  firstVisit: boolean;
+  business: string | null;
+  owner: string | null;
+}
+
 export interface DashboardData {
   range: RangeKey;
   /** ISO — nunca objetos Date ni ObjectId: no sobreviven la serialización. */
@@ -94,6 +115,12 @@ export interface DashboardData {
   };
   events: Metric[];
   places: PlaceRow[];
+  /** Ciudades con coordenadas. Vacío mientras no haya toques que las traigan. */
+  points: MapPoint[];
+  /** Toques del rango que traen coordenadas. El mapa NO cubre el resto. */
+  geoCoverage: number;
+  /** Registro cronológico: fecha y hora de cada toque, el más reciente arriba. */
+  recent: TapRow[];
   attribution: AttributionRow[];
   bySlug: Metric[];
   /** 24 posiciones, hora local de Miami. */
@@ -156,22 +183,40 @@ function ownTargetRe(host: string): RegExp {
   return new RegExp(`^https?://(www\\.)?${bare}/`, "i");
 }
 
-const UA = { $ifNull: ["$userAgent", ""] };
-const re = (pattern: string) => ({ $regexMatch: { input: UA, regex: pattern, options: "i" } });
+/**
+ * Cuatro reglas. No hace falta una librería para esto.
+ *
+ * Una sola lista para los dos sitios donde se clasifica —Mongo agrega, y el
+ * registro cronológico lo hace en JavaScript—: si se duplicara, un día dirían
+ * cosas distintas del mismo navegador.
+ */
+const DEVICE_RULES: { label: string; pattern: string }[] = [
+  { label: "Tableta", pattern: "iPad|Tablet" },
+  { label: "iPhone", pattern: "iPhone|iPod" },
+  { label: "Android", pattern: "Android" },
+  { label: "Escritorio", pattern: "Windows NT|Macintosh|X11|Linux" },
+];
 
-/** Cuatro expresiones regulares. No hace falta una librería para esto. */
+const UA = { $ifNull: ["$userAgent", ""] };
+
 const DEVICE = {
   $switch: {
     branches: [
       { case: { $eq: [UA, ""] }, then: "Desconocido" },
-      { case: re("iPad|Tablet"), then: "Tableta" },
-      { case: re("iPhone|iPod"), then: "iPhone" },
-      { case: re("Android"), then: "Android" },
-      { case: re("Windows NT|Macintosh|X11|Linux"), then: "Escritorio" },
+      ...DEVICE_RULES.map((r) => ({
+        case: { $regexMatch: { input: UA, regex: r.pattern, options: "i" } },
+        then: r.label,
+      })),
     ],
     default: "Otro",
   },
 };
+
+function deviceOf(ua: string | null | undefined): string {
+  if (!ua) return "Desconocido";
+  for (const r of DEVICE_RULES) if (new RegExp(r.pattern, "i").test(ua)) return r.label;
+  return "Otro";
+}
 
 function count(rows: { n: number }[] | undefined): number {
   return rows?.[0]?.n ?? 0;
@@ -228,6 +273,18 @@ export async function loadDashboard(
     taps.distinct("business", { business: { $nin: [null, ""] } }) as Promise<string[]>,
   ]);
 
+  // Fuera del $facet a propósito: dentro, el $sort no puede apoyarse en índice y
+  // con volumen real ordenaría en memoria. Aquí usa el índice sobre `at`.
+  const [recentDocs, firstDoc] = await Promise.all([
+    taps.find(tapMatch, {
+      projection: {
+        _id: 0, at: 1, slug: 1, kind: 1, city: 1, region: 1, country: 1,
+        userAgent: 1, utm: 1, firstVisit: 1, business: 1, owner: 1,
+      },
+    }).sort({ at: -1 }).limit(40).toArray(),
+    taps.find(tapMatch, { projection: { _id: 0, at: 1 } }).sort({ at: 1 }).limit(1).toArray(),
+  ]);
+
   const contactSet = new Set(contactIds);
   const cardViewSet = new Set(cardViewIds);
   const projectSet = new Set(projectIds);
@@ -247,6 +304,21 @@ export async function loadDashboard(
           { $group: { _id: { city: "$city", region: "$region", country: "$country" }, n: { $sum: 1 } } },
           { $sort: { n: -1 } }, { $limit: 25 },
         ],
+        // Un punto por CIUDAD, nunca por toque: la precisión del dato es la
+        // ciudad, así que dibujar un punto por persona fingiría lo que no hay.
+        points: [
+          { $match: { latitude: { $type: "number" }, longitude: { $type: "number" } } },
+          {
+            $group: {
+              _id: { city: "$city", region: "$region", country: "$country" },
+              n: { $sum: 1 },
+              lat: { $avg: "$latitude" },
+              lon: { $avg: "$longitude" },
+            },
+          },
+          { $sort: { n: -1 } }, { $limit: 200 },
+        ],
+        geoCoverage: [{ $match: { latitude: { $type: "number" } } }, { $count: "n" }],
         attribution: [
           {
             $group: {
@@ -271,7 +343,6 @@ export async function loadDashboard(
           { $group: { _id: { $ifNull: ["$utm.utm_source", null] }, n: { $sum: 1 } } },
           { $sort: { n: -1 } }, { $limit: 15 },
         ],
-        first: [{ $sort: { at: 1 } }, { $limit: 1 }, { $project: { _id: 0, at: 1 } }],
       },
     },
   ]).toArray();
@@ -279,6 +350,11 @@ export async function loadDashboard(
   const f = (facet ?? {}) as {
     total?: { n: number }[]; visitors?: { n: number }[]; measurable?: { n: number }[];
     places?: { _id: { city: string | null; region: string | null; country: string | null }; n: number }[];
+    points?: {
+      _id: { city: string | null; region: string | null; country: string | null };
+      n: number; lat: number; lon: number;
+    }[];
+    geoCoverage?: { n: number }[];
     attribution?: {
       _id: { business: string | null; owner: string | null; cardId: string | null; context: string | null };
       n: number; visitors: (string | null)[]; contacts: number;
@@ -289,7 +365,6 @@ export async function loadDashboard(
     freshness?: { _id: boolean; n: number }[];
     devices?: { _id: string; n: number }[];
     sources?: { _id: string | null; n: number }[];
-    first?: { at: Date }[];
   };
 
   const hours = Array<number>(24).fill(0);
@@ -324,6 +399,21 @@ export async function loadDashboard(
     },
     events: (eventsByName ?? []).map((e) => ({ label: e._id, n: e.n })),
     places: (f.places ?? []).map((p) => ({ ...p._id, n: p.n })),
+    points: (f.points ?? []).map((p) => ({ ...p._id, n: p.n, lat: p.lat, lon: p.lon })),
+    geoCoverage: count(f.geoCoverage),
+    recent: recentDocs.map((t) => ({
+      at: new Date(t.at as Date).toISOString(),
+      slug: String(t.slug ?? ""),
+      kind: String(t.kind ?? ""),
+      city: (t.city as string) ?? null,
+      region: (t.region as string) ?? null,
+      country: (t.country as string) ?? null,
+      device: deviceOf(t.userAgent as string | null),
+      source: ((t.utm as Record<string, string>) ?? {}).utm_source ?? null,
+      firstVisit: Boolean(t.firstVisit),
+      business: (t.business as string) ?? null,
+      owner: (t.owner as string) ?? null,
+    })),
     attribution: (f.attribution ?? []).map((a) => ({
       ...a._id,
       taps: a.n,
@@ -338,7 +428,7 @@ export async function loadDashboard(
     sources: (f.sources ?? []).map((s) => ({ label: s._id ?? "", n: s.n })),
     linkCounters: linkDocs.map((l) => ({ slug: l.slug, taps: l.taps ?? 0 })),
     linkCountersTotal: linkDocs.reduce((a, l) => a + (l.taps ?? 0), 0),
-    loggingSince: f.first?.[0]?.at ? new Date(f.first[0].at).toISOString() : null,
+    loggingSince: firstDoc[0]?.at ? new Date(firstDoc[0].at as Date).toISOString() : null,
     truncated,
   };
 }

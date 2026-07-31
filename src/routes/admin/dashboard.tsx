@@ -70,6 +70,14 @@ function fmtDate(iso: string | null): string {
   return iso ? new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "—";
 }
 
+/** Fecha y hora en la hora de Miami. En UTC, un toque de la tarde sale de noche. */
+function fmtDateTime(iso: string): string {
+  return new Date(iso).toLocaleString("es-ES", {
+    timeZone: "America/New_York",
+    day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: false,
+  });
+}
+
 function Empty(props: { children: string }) {
   return <p class="text-sm text-on-navy-faint">{props.children}</p>;
 }
@@ -182,6 +190,21 @@ export default function AdminDashboard() {
             const data = () => d()!;
             const small = () => data().totals.taps < MIN_RATE_BASE;
 
+            /** Une el detalle del rango con el contador histórico de cada enlace. */
+            const slugRows = () => {
+              const hist = new Map(data().linkCounters.map((l) => [l.slug, l.taps]));
+              const rows = data().bySlug.map((s) => ({
+                slug: s.label, detail: s.n, hist: hist.get(s.label) ?? null,
+              }));
+              const seen = new Set(rows.map((r) => r.slug));
+              // Enlaces que el contador conoce y el detalle no: son justo los que
+              // provocan la pregunta «¿por qué aquí dice 3 y allí 7?».
+              for (const l of data().linkCounters) {
+                if (!seen.has(l.slug) && l.taps > 0) rows.push({ slug: l.slug, detail: 0, hist: l.taps });
+              }
+              return rows.sort((a, b) => (b.hist ?? b.detail) - (a.hist ?? a.detail));
+            };
+
             return (
               <>
                 <form action={logout} method="post" class="mt-2">
@@ -261,13 +284,20 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* Reconciliación de los dos contadores de toques */}
-                <Show when={data().range === "all" && data().linkCountersTotal !== data().totals.taps}>
-                  <p class="mt-4 rounded-lg border border-[rgba(247,249,252,0.14)] px-4 py-3 text-xs text-on-navy">
+                {/* Reconciliación de los dos contadores. Se enseña SIEMPRE que no
+                    cuadren: esconderla en la vista de todo el histórico dejaba el
+                    panel pareciendo roto al lado del de enlaces. */}
+                <Show when={data().linkCountersTotal !== data().totals.taps}>
+                  <p class="mt-4 rounded-lg border border-[rgba(247,249,252,0.14)] px-4 py-3 text-xs leading-relaxed text-on-navy">
                     El panel de enlaces suma <strong>{data().linkCountersTotal}</strong> toques y aquí
-                    aparecen <strong>{data().totals.taps}</strong>. No es un fallo: el contador de cada
-                    enlace arrancó antes que el registro detallado, así que cuenta toques de los que no
-                    se guardó nada más. Para todo lo que hay debajo manda el registro detallado.
+                    aparecen <strong>{data().totals.taps}</strong>. No es un fallo, son dos cosas
+                    distintas. Aquel es un contador <strong>de siempre</strong>, que solo sabe sumar
+                    uno; este es el registro <strong>detallado</strong>
+                    {data().from ? " y del rango elegido" : ""}, y arrancó el{" "}
+                    {fmtDate(data().loggingSince)}. Los toques anteriores a esa fecha se contaron,
+                    pero de ellos no se guardó ni ciudad, ni hora, ni dispositivo: ese detalle no se
+                    puede recuperar. La tabla «Toques por enlace» enseña las dos cifras enlace a
+                    enlace.
                   </p>
                 </Show>
 
@@ -421,12 +451,92 @@ export default function AdminDashboard() {
                       empty="Sin toques en este rango." />
                   </Panel>
 
-                  <Panel title="Toques por enlace">
-                    <BarList rows={data().bySlug} empty="Sin toques en este rango." />
+                  <Panel title="Toques por enlace"
+                    note="Dos cifras distintas a propósito: el detalle solo existe desde que se registra, el contador viene de antes.">
+                    <Show when={slugRows().length} fallback={<Empty>Todavía no hay enlaces con toques.</Empty>}>
+                      <div class="overflow-x-auto">
+                        <table class="w-full min-w-[22rem] text-sm">
+                          <thead class="text-[0.7rem] uppercase tracking-wide text-on-navy-faint">
+                            <tr>
+                              <th class="py-1 text-left">Enlace</th>
+                              <th class="py-1 text-right">
+                                {data().from ? "En este rango" : "Con detalle"}
+                              </th>
+                              <th class="py-1 text-right">Contador de siempre</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <For each={slugRows()}>
+                              {(r) => (
+                                <tr class="border-t border-[rgba(247,249,252,0.1)]">
+                                  <td class="py-2"><code>/c/{r.slug}</code></td>
+                                  <td class="py-2 text-right tabular-nums">{r.detail}</td>
+                                  <td class="py-2 text-right tabular-nums text-on-navy-faint">
+                                    {r.hist === null ? "—" : r.hist}
+                                  </td>
+                                </tr>
+                              )}
+                            </For>
+                          </tbody>
+                        </table>
+                      </div>
+                      <p class="mt-3 text-[0.7rem] text-on-navy-faint">
+                        «—» es un perfil fijo en código, que no pasa por el contador de enlaces.
+                      </p>
+                    </Show>
                   </Panel>
 
                   <Panel title="Eventos en la tarjeta" note={`${data().totals.events} eventos en el rango.`}>
                     <BarList rows={data().events} empty="Sin eventos en este rango." />
+                  </Panel>
+                </div>
+
+                {/* Toque a toque: fecha, hora y de dónde. */}
+                <div class="mt-4">
+                  <Panel title="Últimos toques"
+                    note="Hora de Miami. Los 40 más recientes del rango. La ubicación es aproximada y la IP no se muestra.">
+                    <Show when={data().recent.length} fallback={<Empty>Sin toques en este rango.</Empty>}>
+                      <div class="overflow-x-auto">
+                        <table class="w-full min-w-[40rem] text-sm">
+                          <thead class="text-[0.7rem] uppercase tracking-wide text-on-navy-faint">
+                            <tr>
+                              <th class="py-1 text-left">Fecha y hora</th>
+                              <th class="py-1 text-left">Enlace</th>
+                              <th class="py-1 text-left">Dónde (aprox.)</th>
+                              <th class="py-1 text-left">Dispositivo</th>
+                              <th class="py-1 text-left">Origen</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <For each={data().recent}>
+                              {(t) => (
+                                <tr class="border-t border-[rgba(247,249,252,0.1)]">
+                                  <td class="py-2 tabular-nums">{fmtDateTime(t.at)}</td>
+                                  <td class="py-2">
+                                    <code>/c/{t.slug}</code>
+                                    <Show when={t.business || t.owner}>
+                                      <span class="block text-[0.7rem] text-on-navy-faint">
+                                        {[t.business, t.owner].filter(Boolean).join(" · ")}
+                                      </span>
+                                    </Show>
+                                  </td>
+                                  <td class="py-2 text-on-navy">
+                                    {[t.city, t.region, t.country].filter(Boolean).join(", ") || "sin ubicación"}
+                                  </td>
+                                  <td class="py-2 text-on-navy">{t.device}</td>
+                                  <td class="py-2 text-on-navy">
+                                    {t.source || (t.kind === "profile" ? "nfc" : "directo")}
+                                    <Show when={t.firstVisit}>
+                                      <span class="ml-1.5 text-[0.7rem] text-turquoise">nuevo</span>
+                                    </Show>
+                                  </td>
+                                </tr>
+                              )}
+                            </For>
+                          </tbody>
+                        </table>
+                      </div>
+                    </Show>
                   </Panel>
                 </div>
 

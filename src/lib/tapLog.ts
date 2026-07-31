@@ -35,6 +35,14 @@ export interface TapEvent {
   region: string | null;
   city: string | null;
   timezone: string | null;
+  /**
+   * Las mismas coordenadas que el edge deriva de la IP, en número. NO es GPS:
+   * es el centro aproximado de la ciudad que ya se guarda como texto, así que
+   * no añade precisión sobre `city` — solo permite dibujarla en un mapa.
+   * Un punto en un mapa NO señala dónde estaba una persona.
+   */
+  latitude: number | null;
+  longitude: number | null;
   /** Identificador anonimo del navegador. NO identifica a una persona: solo
    *  permite separar "100 toques" de "68 dispositivos distintos". */
   visitorId: string | null;
@@ -65,6 +73,12 @@ export function buildTapEvent(
     if (v) utm[k] = v.slice(0, 120);
   }
   const h = (name: string) => clip(headers.get(name), 120);
+  // Vercel manda la latitud y la longitud de la MISMA búsqueda por IP que ya da
+  // la ciudad. Si la cabecera no llega, queda en null: nunca se inventa un punto.
+  const num = (name: string) => {
+    const v = Number(headers.get(name));
+    return Number.isFinite(v) ? v : null;
+  };
   // x-forwarded-for puede traer una cadena de proxies: el cliente es el primero.
   const fwd = headers.get("x-forwarded-for");
   const city = h("x-vercel-ip-city");
@@ -83,6 +97,8 @@ export function buildTapEvent(
     region: h("x-vercel-ip-country-region"),
     city: city ? decodeURIComponent(city) : null,
     timezone: h("x-vercel-ip-timezone"),
+    latitude: num("x-vercel-ip-latitude"),
+    longitude: num("x-vercel-ip-longitude"),
     userAgent: clip(headers.get("user-agent"), 300),
     referer: clip(headers.get("referer"), 300),
     utm,
