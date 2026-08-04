@@ -585,7 +585,7 @@ export const CARD_CNBRANDINGS: CardProfile = {
     accentDeep: "#a81b21",
     availability: {
       en: "South Florida · Custom Apparel & Brand Solutions",
-      es: "Sur de Florida · Ropa personalizada y soluciones de marca",
+      es: "Sur de la Florida · Ropa personalizada y soluciones de marca",
     },
     taglineA: { en: "Make your brand", es: "Haga que su marca" },
     taglineB: { en: "impossible to miss.", es: "sea imposible de ignorar." },
@@ -609,20 +609,26 @@ export const CARD_CNBRANDINGS: CardProfile = {
         es: "Un emblema del Sheriff bordándose en el bastidor en CN Brandings",
       },
     },
-    /** Macros del mismo bordado real: puntadas de cerca. */
+    /**
+     * Los dos crops del hero muestran técnicas y productos DISTINTOS a la
+     * imagen grande (bordado en bastidor): un estampado multicolor y una gorra
+     * de marca comercial bordada. Así el primer viewport no parece un
+     * especialista en placas policiales — demuestra bordado + estampado +
+     * headwear, todo trabajo real.
+     */
     heroCrops: [
       {
-        src: "/card/cn/hero-detail-stitch.jpg",
+        src: "/card/cn/hero-detail-print.jpg",
         alt: {
-          en: "Close-up of embroidery stitching on an agency emblem",
-          es: "Primer plano de las puntadas de un emblema bordado",
+          en: "Multi-color printed design on a heather t-shirt",
+          es: "Diseño estampado multicolor sobre una camiseta jaspeada",
         },
       },
       {
-        src: "/card/cn/hero-detail-brim.jpg",
+        src: "/card/cn/hero-detail-cap.jpg",
         alt: {
-          en: "Close-up of an embroidered police badge in the hoop",
-          es: "Primer plano de una placa policial bordada en el bastidor",
+          en: "Embroidered brand cap on the embroidery machine, thread cones behind",
+          es: "Gorra de marca bordada sobre la máquina de bordar, con conos de hilo detrás",
         },
       },
     ],
@@ -672,7 +678,7 @@ export const CARD_CNBRANDINGS: CardProfile = {
         title: { en: "Custom apparel", es: "Ropa personalizada" },
         body: {
           en: "T-shirts, polos, woven shirts, fleece, headwear and uniforms selected around the people, event and brand.",
-          es: "Camisetas, polos, camisas, abrigo, gorras y uniformes elegidos según las personas, el evento y la marca.",
+          es: "Camisetas, polos, camisas, sudaderas, prendas de abrigo, gorras y uniformes seleccionados según las necesidades del equipo, el evento y la marca.",
         },
         src: "/card/cn/cap-apparel.jpg",
         alt: {
@@ -704,31 +710,31 @@ export const CARD_CNBRANDINGS: CardProfile = {
     ],
     steps: [
       {
-        title: { en: "Choose", es: "Elige" },
+        title: { en: "Choose", es: "Elija" },
         body: {
           en: "Select the apparel or product.",
           es: "Seleccione la prenda o el producto.",
         },
       },
       {
-        title: { en: "Customize", es: "Personaliza" },
+        title: { en: "Customize", es: "Personalice" },
         body: {
           en: "Provide the artwork, colors and requirements.",
-          es: "Entregue el arte, los colores y los requisitos.",
+          es: "Comparta el diseño, los colores y los requisitos.",
         },
       },
       {
-        title: { en: "Approve", es: "Aprueba" },
+        title: { en: "Approve", es: "Apruebe" },
         body: {
           en: "Review placement and the production proof.",
           es: "Revise la ubicación y la prueba de producción.",
         },
       },
       {
-        title: { en: "Produce", es: "Produce" },
+        title: { en: "Produce", es: "Producimos" },
         body: {
           en: "The approved order moves into production.",
-          es: "El pedido aprobado entra en producción.",
+          es: "El pedido aprobado pasa a producción.",
         },
       },
     ],
