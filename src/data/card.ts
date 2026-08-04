@@ -754,8 +754,8 @@ export const CARD_CNBRANDINGS: CardProfile = {
       },
       src: "/card/cn/shop.jpg",
       alt: {
-        en: "Embroidered cap on the embroidery machine at the CN Brandings shop, thread cones behind",
-        es: "Gorra bordada sobre la máquina de bordar en el taller de CN Brandings, con conos de hilo detrás",
+        en: "A finished cap with an embroidered brand logo, thread cones in the shop behind",
+        es: "Una gorra terminada con el logo de marca bordado, con conos de hilo del taller detrás",
       },
     },
     instagram: "https://www.instagram.com/cnbrandings/",
