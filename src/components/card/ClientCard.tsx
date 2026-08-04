@@ -166,8 +166,13 @@ export default function ClientCard(props: { profile: CardProfile }) {
         .cnc-capb .tx{padding:14px 16px}
         .cnc-capb h3{margin:0;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
         .cnc-capb p{margin:6px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.5}
-        .cnc-capb.nophoto{grid-template-columns:1fr}
-        .cnc-capb.nophoto .tx{border-left:6px solid var(--accent)}
+        /* Sin foto honesta de este servicio → placa de marca deliberada, no una
+           tarjeta rota. Jerarquía por peso tipográfico, nunca por opacity. */
+        .cnc-capb.nophoto{grid-template-columns:1fr;background:var(--accent);border-color:var(--accent);
+          display:flex;align-items:center}
+        .cnc-capb.nophoto .tx{padding:20px 18px}
+        .cnc-capb.nophoto h3{color:#fff}
+        .cnc-capb.nophoto p{color:#fff;font-weight:500}
 
         /* Proceso */
         .cnc-steps{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin:20px 0 0}
@@ -228,9 +233,11 @@ export default function ClientCard(props: { profile: CardProfile }) {
           .cnc-work{grid-template-columns:repeat(4,1fr);gap:18px}
           .cnc-work figure:nth-child(2){transform:translateY(22px)}
           .cnc-work figure:nth-child(4){transform:translateY(22px)}
-          .cnc-caps{display:grid;grid-template-columns:repeat(3,1fr)}
-          .cnc-capb{grid-template-columns:1fr;grid-template-rows:150px auto}
-          .cnc-capb img{width:100%;height:150px}
+          .cnc-caps{display:grid;grid-template-columns:repeat(3,1fr);align-items:stretch}
+          /* 200px y centrado: a 150px las placas bordadas salían decapitadas. */
+          .cnc-capb{grid-template-columns:1fr;grid-template-rows:200px auto}
+          .cnc-capb img{width:100%;height:200px;object-position:center}
+          .cnc-capb.nophoto{grid-template-rows:none}
           .cnc-steps{grid-template-columns:repeat(4,1fr)}
           .cnc-cats{grid-template-columns:repeat(3,1fr)}
           .cnc-cred{display:grid;grid-template-columns:55fr 45fr}
