@@ -132,6 +132,12 @@ export interface CardNfc {
   /** Estado documentado (no se bloquea la tarjeta física sin aprobación). */
   status: "draft" | "testing" | "live";
   /**
+   * Excluir de buscadores. Se usa cuando la tarjeta ya está publicada para que
+   * el cliente la revise pero AÚN NO tiene su aprobación: sigue accesible por
+   * enlace directo, pero no se indexa. Se quita al aprobar.
+   */
+  noindex?: boolean;
+  /**
    * Atribución del perfil, congelada en cada toque igual que la de los enlaces
    * de la BD.
    *
@@ -206,6 +212,53 @@ export interface ClientCardConfig {
   shareUrl: string;
 }
 
+
+/**
+ * Configuracion de una tarjeta PERSONAL con marca propia.
+ *
+ * `DigitalCard` es el concierge de 305 y `ClientCard` vende un pedido de
+ * producto. Ninguno sirve para una persona cuya tarjeta tiene DOS caras -ella
+ * y su tienda-, asi que existe este tercer renderer (`PersonCard`).
+ * Todo lo de aqui es dato verificado: si un campo no consta, no se pinta.
+ */
+export interface PersonCardConfig {
+  /** Acento de marca. En Mabel es el dorado REAL de EL CLOSET. */
+  accent: string;
+  accentDeep: string;
+  portrait: { src: string; alt: Record<CardLocale, string> };
+  /** Frase de impacto, en dos lineas. */
+  hookA: Record<CardLocale, string>;
+  hookB: Record<CardLocale, string>;
+  support: Record<CardLocale, string>;
+  /** Accion dominante (la tienda) y accion secundaria (lo profesional). */
+  primaryLabel: Record<CardLocale, string>;
+  primaryHref: string;
+  secondaryLabel: Record<CardLocale, string>;
+  secondaryHref: string;
+  /** La otra cara de la tarjeta: el negocio de la persona. */
+  shop: {
+    eyebrow: Record<CardLocale, string>;
+    name: string;
+    sub: string;
+    kind: Record<CardLocale, string>;
+    line: Record<CardLocale, string>;
+    handle: string;
+    href: string;
+    /** Logo real del negocio; sin archivo, manda el lockup tipografico. */
+    markUrl?: string;
+    markAlt?: Record<CardLocale, string>;
+    looksTitle: Record<CardLocale, string>;
+    looks: { src: string; alt: Record<CardLocale, string> }[];
+  };
+  productionsEyebrow: Record<CardLocale, string>;
+  productions: { title: string; meta: Record<CardLocale, string>; role: Record<CardLocale, string> }[];
+  pillars: Record<CardLocale, string>;
+  noteEyebrow: Record<CardLocale, string>;
+  note: Record<CardLocale, string>;
+  /** URL canonica para el QR y copiar enlace. */
+  shareUrl: string;
+}
+
 export interface CardProfile {
   id: string;
   kind: "company" | "person";
@@ -224,6 +277,8 @@ export interface CardProfile {
   conversion?: CardConversion;
   /** Presente solo en tarjetas de cliente: activa el renderer `ClientCard`. */
   client?: ClientCardConfig;
+  /** Presente solo en tarjetas personales: activa el renderer `PersonCard`. */
+  personCard?: PersonCardConfig;
   nfc: CardNfc;
 }
 
@@ -774,10 +829,129 @@ export const CARD_CNBRANDINGS: CardProfile = {
   },
 };
 
+
+/* ---------------- perfil «Mabel Toledo» (persona) ---------------- */
+
+/**
+ * Productora ejecutiva y empresaria (Miami). La tarjeta tiene dos caras:
+ * ella y EL CLOSET, su tienda de ropa.
+ *
+ * Verificado: creditos de Farandula (2023) y Mirame Asi; LinkedIn publico;
+ * Instagram @elcloset226 con su categoria y su biografia literal.
+ * NO se afirma antiguedad, volumen, envios, ubicacion fisica ni catalogo de la
+ * tienda -tiene 12 publicaciones-; tampoco telefono ni correo, porque no hay
+ * canal directo confirmado: «Message» va a su LinkedIn.
+ */
+export const CARD_MABEL: CardProfile = {
+  id: "mabel-toledo",
+  kind: "person",
+  mode: "creator",
+  brand: {
+    wordmarkAccent: "Mabel",
+    wordmarkRest: "Toledo",
+    logoUrl: "/card/mabel/portrait.jpg",
+  },
+  person: {
+    name: "Mabel Toledo",
+    role: { en: "Executive Producer \u00b7 Entrepreneur", es: "Productora ejecutiva \u00b7 Empresaria" },
+    portraitUrl: "/card/mabel/portrait.jpg",
+    statement: { en: "Vision, brought to life.", es: "Visi\u00f3n que cobra vida." },
+  },
+  company: {
+    name: "Mabel Toledo",
+    descriptor: { en: "Executive Producer \u00b7 Entrepreneur", es: "Productora ejecutiva \u00b7 Empresaria" },
+    positioning: {
+      en: "Executive producer and entrepreneur in Miami \u2014 film, media and EL CLOSET Shop.",
+      es: "Productora ejecutiva y empresaria en Miami \u2014 cine, medios y EL CLOSET Shop.",
+    },
+    location: { en: "Miami, Florida", es: "Miami, Florida" },
+    website: SITE_URL + "/card/mabel-toledo",
+    websiteDisplay: "305webservice.com/card/mabel-toledo",
+  },
+  vcardMedia: { kind: "person", logoUrl: "/card/mabel/portrait.jpg", embedImage: true },
+  personCard: {
+    accent: "#D4AF37",
+    accentDeep: "#B8942C",
+    portrait: {
+      src: "/card/mabel/portrait.jpg",
+      alt: { en: "Portrait of Mabel Toledo", es: "Retrato de Mabel Toledo" },
+    },
+    hookA: { en: "Vision,", es: "Visi\u00f3n que" },
+    hookB: { en: "brought to life.", es: "cobra vida." },
+    support: {
+      en: "Turning vision into productions, partnerships and opportunity.",
+      es: "Convirtiendo visi\u00f3n en producciones, alianzas y oportunidades.",
+    },
+    primaryLabel: { en: "Shop EL CLOSET", es: "Ver EL CLOSET" },
+    primaryHref: "https://www.instagram.com/elcloset226/",
+    secondaryLabel: { en: "Discuss an opportunity", es: "Conversemos sobre una oportunidad" },
+    secondaryHref: "https://www.linkedin.com/in/mabel-toledo-43080a16",
+    shop: {
+      eyebrow: { en: "The shop", es: "La tienda" },
+      name: "EL CLOSET",
+      sub: "Shop",
+      kind: { en: "Clothing", es: "Ropa y accesorios" },
+      line: {
+        en: "Ladies modern, fresh and elegant clothing and accessories. Limited items for men.",
+        es: "Ropa para damas y accesorios. Algunas piezas para caballeros.",
+      },
+      handle: "@elcloset226",
+      href: "https://www.instagram.com/elcloset226/",
+      markUrl: "/card/mabel/elcloset-mark.png",
+      markAlt: { en: "EL CLOSET Shop", es: "EL CLOSET Shop" },
+      looksTitle: { en: "From the shop", es: "De la tienda" },
+      /* Imagenes del propio perfil de la tienda; autorizacion del proveedor
+         confirmada por el cliente. Techo del grid publico: 640 px. */
+      looks: [
+        { src: "/card/mabel/looks/look-1.jpg", alt: { en: "Blue and white striped kaftan", es: "Kaft\u00e1n de rayas azul y blanco" } },
+        { src: "/card/mabel/looks/look-2.jpg", alt: { en: "Blue print matching set", es: "Conjunto estampado en azul" } },
+        { src: "/card/mabel/looks/look-3.jpg", alt: { en: "Black crochet dress", es: "Vestido negro de crochet" } },
+        { src: "/card/mabel/looks/look-4.jpg", alt: { en: "Green off-shoulder set", es: "Conjunto verde de hombros descubiertos" } },
+        { src: "/card/mabel/looks/look-5.jpg", alt: { en: "Floral off-shoulder set", es: "Conjunto floral de hombros descubiertos" } },
+        { src: "/card/mabel/looks/look-6.jpg", alt: { en: "Printed shirt and linen trousers for men", es: "Camisa estampada y pantal\u00f3n de lino para caballero" } },
+      ],
+    },
+    productionsEyebrow: { en: "Selected productions", es: "Producciones seleccionadas" },
+    productions: [
+      {
+        title: "Far\u00e1ndula, la pel\u00edcula",
+        meta: { en: "2023 \u00b7 Feature film \u00b7 Dir. Jazz Vil\u00e1", es: "2023 \u00b7 Largometraje \u00b7 Dir. Jazz Vil\u00e1" },
+        role: { en: "Executive Producer \u2014 ALIN Entertainment", es: "Productora ejecutiva \u2014 ALIN Entertainment" },
+      },
+      {
+        title: "M\u00edrame As\u00ed",
+        meta: { en: "Comedy \u00b7 Dir. H\u00e9ctor M\u00e1rquez \u00b7 Filmed in Miami", es: "Comedia \u00b7 Dir. H\u00e9ctor M\u00e1rquez \u00b7 Filmada en Miami" },
+        role: { en: "Executive Production", es: "Producci\u00f3n ejecutiva" },
+      },
+    ],
+    pillars: { en: "Vision \u00b7 Production \u00b7 Partnerships", es: "Visi\u00f3n \u00b7 Producci\u00f3n \u00b7 Alianzas" },
+    noteEyebrow: { en: "A brief note", es: "Una nota breve" },
+    note: {
+      en: "I work where film, media and business meet \u2014 recognizing potential early, producing it with discipline, and building the partnerships that carry a project further. Recent credits include Far\u00e1ndula, la pel\u00edcula and M\u00edrame As\u00ed.",
+      es: "Trabajo donde se encuentran el cine, los medios y los negocios: reconozco el potencial a tiempo, lo produzco con disciplina y construyo las alianzas que llevan cada proyecto m\u00e1s lejos. Mis cr\u00e9ditos recientes incluyen Far\u00e1ndula, la pel\u00edcula y M\u00edrame As\u00ed.",
+    },
+    shareUrl: SITE_URL + "/card/mabel-toledo",
+  },
+  nfc: {
+    slug: "mabel-toledo",
+    canonicalPath: "/card/mabel-toledo",
+    status: "draft",
+    // Publicada para revisión de Mabel; sin su aprobación no se indexa.
+    noindex: true,
+    attribution: {
+      business: "Mabel Toledo",
+      owner: "Mabel Toledo",
+      cardId: "",
+      context: "",
+    },
+  },
+};
+
 /** Registro de perfiles publicables. Futuros perfiles se agregan aquí. */
 export const CARD_PROFILES: Record<string, CardProfile> = {
   [CARD_305.id]: CARD_305,
   [CARD_CNBRANDINGS.id]: CARD_CNBRANDINGS,
+  [CARD_MABEL.id]: CARD_MABEL,
 };
 
 /* ---------------- copy de la tarjeta (EN/ES, brief §25–26) ---------------- */

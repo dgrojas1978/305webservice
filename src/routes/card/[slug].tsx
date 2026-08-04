@@ -1,8 +1,10 @@
+import { Meta } from "@solidjs/meta";
 import { useParams } from "@solidjs/router";
 import { Show } from "solid-js";
 import Seo from "~/components/Seo";
 import DigitalCard from "~/components/card/DigitalCard";
 import ClientCard from "~/components/card/ClientCard";
+import PersonCard from "~/components/card/PersonCard";
 import NotFoundPage from "~/components/pages/NotFoundPage";
 import { CARD_PROFILES } from "~/data/card";
 
@@ -10,8 +12,9 @@ import { CARD_PROFILES } from "~/data/card";
  * Perfil canónico de la tarjeta digital (destino de /nfc/<slug> y del QR).
  *
  * El renderer se elige por el perfil: los tenants de cliente con marca propia
- * (`profile.client`, p. ej. CN Brandings) usan `ClientCard`; 305 sigue con su
- * concierge `DigitalCard`, sin cambios.
+ * (`profile.client`, p. ej. CN Brandings) usan `ClientCard`; las tarjetas
+ * personales (`profile.personCard`, p. ej. Mabel Toledo) usan `PersonCard`;
+ * 305 sigue con su concierge `DigitalCard`, sin cambios.
  */
 export default function CardRoute() {
   const params = useParams();
@@ -27,8 +30,15 @@ export default function CardRoute() {
             path={p().nfc.canonicalPath}
             locale="en"
           />
-          <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
-            <ClientCard profile={p()} />
+          <Show when={p().nfc.noindex}>
+            <Meta name="robots" content="noindex,nofollow" />
+          </Show>
+          <Show when={p().personCard} fallback={
+            <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
+              <ClientCard profile={p()} />
+            </Show>
+          }>
+            <PersonCard profile={p()} />
           </Show>
         </>
       )}

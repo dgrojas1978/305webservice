@@ -8,6 +8,8 @@
 /* Serif editorial — SOLO frases de impacto y cifras de la tarjeta digital.
    Autoalojada; el woff2 solo se descarga donde .font-editorial se usa. */
 @import "@fontsource/fraunces/latin-600.css";
+/* Serif contemporanea de alto contraste — SOLO la tarjeta personal. */
+@import "@fontsource/instrument-serif/latin-400.css";
 
 @tailwind base;
 @tailwind components;
