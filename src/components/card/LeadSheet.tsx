@@ -235,7 +235,7 @@ export default function LeadSheet(props: Props) {
                       <label for="ls-service" class={lbl}>{t().need} <span class="text-blue" aria-hidden="true">*</span></label>
                       <select id="ls-service" name="service" required class={field}>
                         <option value="">{t().selectNeed}</option>
-                        <For each={props.profile.conversion.services}>
+                        <For each={props.profile.conversion?.services ?? []}>
                           {(s) => (
                             <option value={s.formService} selected={props.preselect === s.formService}>
                               {s.label[props.lang]}

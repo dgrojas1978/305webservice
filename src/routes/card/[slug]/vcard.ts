@@ -90,8 +90,9 @@ export async function GET({ params, request }: APIEvent) {
     `FN:${esc(fn)}`,
     `ORG:${esc(co.name)}`,
     ...(isPerson ? [`TITLE:${esc(profile.person!.role.en)}`] : []),
-    `TEL;TYPE=WORK,VOICE:${co.phoneTel}`,
-    `EMAIL;TYPE=INTERNET:${co.email}`,
+    // Teléfono y correo solo si el tenant los publica; no se inventan.
+    ...(co.phoneTel ? [`TEL;TYPE=WORK,VOICE:${co.phoneTel}`] : []),
+    ...(co.email ? [`EMAIL;TYPE=INTERNET:${co.email}`] : []),
     `URL:${co.website}`,
   ];
 
@@ -101,12 +102,22 @@ export async function GET({ params, request }: APIEvent) {
   const physical = loc?.showExactAddress ? loc.locations?.find((l) => l.address) : undefined;
   if (physical?.address) {
     lines.push(`ADR;TYPE=WORK:;;${esc(physical.address)};;;;`);
+  } else if (profile.client) {
+    // Tenant de cliente: su localidad declarada (CN = South Florida), no Miami.
+    lines.push(`ADR;TYPE=WORK:;;;${esc(co.location.en)};;;United States`);
   } else {
     lines.push("ADR;TYPE=WORK:;;;Miami;FL;;United States");
   }
 
   lines.push(`NOTE:${esc(co.descriptor.en)}`);
-  lines.push(`URL;TYPE=Digital Card:${co.website}${profile.nfc.canonicalPath}`);
+  // La tarjeta digital vive en 305, no en el sitio del cliente: para un tenant
+  // se usa su URL canónica compartible (short link), no company.website.
+  const digitalCardUrl = profile.client?.shareUrl ?? `${co.website}${profile.nfc.canonicalPath}`;
+  lines.push(`URL;TYPE=Digital Card:${digitalCardUrl}`);
+  // Instagram cuando es el canal directo del tenant (p. ej. CN Brandings).
+  if (profile.client?.instagram) {
+    lines.push(`X-SOCIALPROFILE;TYPE=instagram:${profile.client.instagram}`);
+  }
 
   // Imagen embebida (base64). Organización → PHOTO + LOGO.
   if (media?.embedImage) {

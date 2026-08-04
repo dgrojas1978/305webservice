@@ -65,10 +65,15 @@ export interface CardCompany {
   location: Record<CardLocale, string>;
   website: string;
   websiteDisplay: string;
-  phoneTel: string;
-  phoneDisplay: string;
-  whatsappNumber: string;
-  email: string;
+  /**
+   * Contacto directo OPCIONAL. Un tenant que no publica teléfono/correo (p. ej.
+   * CN Brandings) no los lleva, y aquí no se inventan: el vCard y las acciones
+   * solo los muestran cuando existen.
+   */
+  phoneTel?: string;
+  phoneDisplay?: string;
+  whatsappNumber?: string;
+  email?: string;
 }
 
 export interface CardServiceOption {
@@ -146,6 +151,37 @@ export interface CardNfc {
   };
 }
 
+/**
+ * Configuración de una tarjeta de CLIENTE (tenant con marca propia).
+ *
+ * El componente `DigitalCard` (concierge de 305: navy/turquesa, proyectos, panel
+ * de conversión) es de 305. Un cliente con otra marca —CN Brandings es rojo,
+ * tienda primero, sin concierge— se renderiza con `ClientCard` a partir de esto.
+ * La ruta elige el renderer según exista `client`. Todo aquí es dato verificado
+ * del cliente; sin datos reales, un campo no se pinta.
+ */
+export interface ClientCardConfig {
+  /** Logo raster real del cliente en `public/`. */
+  logoUrl: string;
+  logoAlt: Record<CardLocale, string>;
+  /** Acento de marca del cliente (CN Brandings: rojo). */
+  accent: string;
+  accentDeep: string;
+  availability: Record<CardLocale, string>;
+  taglineA: Record<CardLocale, string>;
+  taglineB: Record<CardLocale, string>;
+  sub: Record<CardLocale, string>;
+  /** Acción dominante (para CN, su tienda). */
+  primaryLabel: Record<CardLocale, string>;
+  primaryHref: string;
+  services: { title: Record<CardLocale, string>; body: Record<CardLocale, string> }[];
+  proof: Record<CardLocale, string>;
+  proofWho: string;
+  instagram?: string;
+  /** URL canónica para el QR y "copiar enlace". */
+  shareUrl: string;
+}
+
 export interface CardProfile {
   id: string;
   kind: "company" | "person";
@@ -160,7 +196,10 @@ export interface CardProfile {
   brand: CardBrand;
   company: CardCompany;
   person?: CardPerson;
-  conversion: CardConversion;
+  /** Solo tarjetas concierge de 305 (proyectos + necesidades). Los clientes no lo usan. */
+  conversion?: CardConversion;
+  /** Presente solo en tarjetas de cliente: activa el renderer `ClientCard`. */
+  client?: ClientCardConfig;
   nfc: CardNfc;
 }
 
@@ -475,9 +514,111 @@ export const CARD_305: CardProfile = {
   },
 };
 
+/* ---------------- tenant de cliente: CN Brandings ---------------- */
+
+/**
+ * CN Brandings (Custom Nation LLC) — tienda de ropa personalizada y branding en
+ * el sur de Florida. Tenant con marca PROPIA (rojo), se renderiza con
+ * `ClientCard`, no con el concierge de 305.
+ *
+ * TODO lo de aquí está verificado en cnbrandings.com (jul 2026): nombre legal,
+ * tagline, servicios (About), región, logo (asset del sitio) e Instagram. El
+ * sitio NO publica teléfono, correo ni dirección postal → no se inventan: la
+ * acción dominante es su tienda y el canal directo es Instagram. Sin proyectos
+ * ni concierge ni cobros: CN no los tiene en nuestro sistema.
+ */
+export const CARD_CNBRANDINGS: CardProfile = {
+  id: "cnbrandings",
+  kind: "company",
+  mode: "business",
+  brand: {
+    wordmarkAccent: "CN",
+    wordmarkRest: "BRANDINGS",
+    logoUrl: "/card/cn-brandings-logo.png",
+  },
+  company: {
+    name: "CN Brandings",
+    descriptor: {
+      en: "Custom Nation · Brand Solutions",
+      es: "Custom Nation · Soluciones de marca",
+    },
+    positioning: {
+      en: "Custom apparel, embroidery and printing for South Florida.",
+      es: "Ropa personalizada, bordado y estampado en el sur de Florida.",
+    },
+    location: { en: "South Florida", es: "Sur de Florida" },
+    website: "https://cnbrandings.com",
+    websiteDisplay: "cnbrandings.com",
+    // Sin teléfono, correo ni WhatsApp: el sitio no los publica.
+  },
+  client: {
+    logoUrl: "/card/cn-brandings-logo.png",
+    logoAlt: {
+      en: "CN Brandings — Custom Nation, Brand Solutions",
+      es: "CN Brandings — Custom Nation, Soluciones de marca",
+    },
+    accent: "#c12026",
+    accentDeep: "#a81b21",
+    availability: {
+      en: "South Florida · Apparel & Brand Solutions",
+      es: "Sur de Florida · Ropa y soluciones de marca",
+    },
+    taglineA: { en: "Choose your style,", es: "Elige tu estilo," },
+    taglineB: { en: "take your brand further.", es: "lleva tu marca más lejos." },
+    sub: {
+      en: "Custom apparel, embroidery and printing for businesses, schools, teams and entrepreneurs — from 10 pieces to 1,000.",
+      es: "Ropa personalizada, bordado y estampado para negocios, escuelas, equipos y emprendedores — de 10 piezas a 1,000.",
+    },
+    primaryLabel: { en: "Shop apparel", es: "Ver la tienda" },
+    primaryHref: "https://cnbrandings.com/",
+    services: [
+      {
+        title: { en: "Custom apparel & uniforms", es: "Ropa y uniformes a medida" },
+        body: {
+          en: "Shirts, polos, sweatshirts, headwear and uniforms for teams, staff and events.",
+          es: "Camisas, polos, sudaderas, gorras y uniformes para equipos, personal y eventos.",
+        },
+      },
+      {
+        title: { en: "Decoration", es: "Decoración" },
+        body: {
+          en: "Embroidery, screen printing and DTF transfers — clean, sharp and built to last.",
+          es: "Bordado, serigrafía y transferencias DTF — limpio, nítido y duradero.",
+        },
+      },
+      {
+        title: { en: "Promotional products", es: "Productos promocionales" },
+        body: {
+          en: "Branded accessories and promotional items to put your brand in more hands.",
+          es: "Accesorios y artículos promocionales para poner tu marca en más manos.",
+        },
+      },
+    ],
+    proof: {
+      en: "A full production shop combining modern equipment, skilled craftsmanship and quick turnaround — every order handled with care, precision and attention to detail.",
+      es: "Un taller de producción completo que combina equipo moderno, mano de obra experta y entregas rápidas — cada pedido con cuidado, precisión y atención al detalle.",
+    },
+    proofWho: "Custom Nation LLC · South Florida",
+    instagram: "https://www.instagram.com/cnbrandings/",
+    shareUrl: "https://www.305webservice.com/c/cnbrandings",
+  },
+  nfc: {
+    slug: "cnbrandings",
+    canonicalPath: "/card/cnbrandings",
+    status: "draft",
+    attribution: {
+      business: "CN Brandings",
+      owner: "CN Brandings",
+      cardId: "",
+      context: "",
+    },
+  },
+};
+
 /** Registro de perfiles publicables. Futuros perfiles se agregan aquí. */
 export const CARD_PROFILES: Record<string, CardProfile> = {
   [CARD_305.id]: CARD_305,
+  [CARD_CNBRANDINGS.id]: CARD_CNBRANDINGS,
 };
 
 /* ---------------- copy de la tarjeta (EN/ES, brief §25–26) ---------------- */

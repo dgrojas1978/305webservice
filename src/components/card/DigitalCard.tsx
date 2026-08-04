@@ -43,7 +43,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
   // Tres caminos, uno por grupo de capacidad de la identidad:
   // experiencias digitales / sistemas a medida / soluciones conectadas.
   const CARD_NEEDS = ["win-customers", "custom-software", "nfc-experience"];
-  const needs = () => p().conversion.needs.filter((n) => CARD_NEEDS.includes(n.id));
+  const needs = () => (p().conversion?.needs ?? []).filter((n) => CARD_NEEDS.includes(n.id));
 
   const cardUrl = () => `${co().website}${p().nfc.canonicalPath}`;
 
@@ -187,7 +187,7 @@ export default function DigitalCard(props: { profile: CardProfile }) {
                 rejilla enseña el rango completo sin pedir nada. */}
             <div class="order-2 mt-6">
               <ul class="grid grid-cols-2 gap-2.5">
-                <For each={p().conversion.projects}>
+                <For each={p().conversion?.projects ?? []}>
                   {(w) => (
                     <li>
                       <a href={w.url} target="_blank" rel="noopener noreferrer"
