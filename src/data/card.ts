@@ -176,6 +176,8 @@ export interface ClientCardConfig {
   primaryHref: string;
   /** Imagen dominante del hero: producto real del cliente, nunca stock. */
   heroImg: { src: string; alt: Record<CardLocale, string> };
+  /** Crops macro del MISMO trabajo real (puntadas, impresión) para el hero. */
+  heroCrops?: { src: string; alt: Record<CardLocale, string> }[];
   /** Trabajo real: producto + técnica. Sin clientes ni cifras inventados. */
   work: {
     src: string;
@@ -585,33 +587,53 @@ export const CARD_CNBRANDINGS: CardProfile = {
       en: "South Florida · Custom Apparel & Brand Solutions",
       es: "Sur de Florida · Ropa personalizada y soluciones de marca",
     },
-    taglineA: { en: "Your brand,", es: "Tu marca," },
-    taglineB: { en: "made wearable.", es: "lista para vestir." },
+    taglineA: { en: "Make your brand", es: "Haga que su marca" },
+    taglineB: { en: "impossible to miss.", es: "sea imposible de ignorar." },
     sub: {
-      en: "Custom apparel, embroidery and printing for businesses, schools, teams and growing brands.",
-      es: "Ropa personalizada, bordado y estampado para negocios, escuelas, equipos y marcas en crecimiento.",
+      en: "Custom apparel and branded products created for businesses, schools, teams and growing organizations.",
+      es: "Prendas y productos personalizados para empresas, escuelas, equipos y organizaciones en crecimiento.",
     },
-    // /products verificado con HTTP 200. No existe una ruta real de pedido a
-    // medida (la página de contacto del sitio es un placeholder), así que la
-    // acción dominante es el catálogo, no un "Start a custom order" roto.
-    primaryLabel: { en: "Explore apparel", es: "Explora el catálogo" },
+    /**
+     * Acción de CATÁLOGO (secundaria desde ago 2026): /products verificado 200.
+     * La acción primaria es «Request a quote», que abre el formulario propio de
+     * cotización — con backend real en 305 (colección leads), no un enlace roto
+     * al placeholder de contacto del sitio de CN.
+     */
+    primaryLabel: { en: "Explore apparel", es: "Explorar prendas" },
     primaryHref: "https://cnbrandings.com/products",
-    /** Sombreros con ala interior impresa — producción real de CN. */
+    /** Emblema bordándose en el bastidor — el bordado es la especialidad de CN. */
     heroImg: {
       src: "/card/cn/hero.jpg",
       alt: {
-        en: "Custom straw hats by CN Brandings with printed under-brim and embroidered patch",
-        es: "Sombreros personalizados de CN Brandings con ala interior impresa y parche bordado",
+        en: "A Sheriff's Office emblem being embroidered in the hoop at CN Brandings",
+        es: "Un emblema del Sheriff bordándose en el bastidor en CN Brandings",
       },
     },
+    /** Macros del mismo bordado real: puntadas de cerca. */
+    heroCrops: [
+      {
+        src: "/card/cn/hero-detail-stitch.jpg",
+        alt: {
+          en: "Close-up of embroidery stitching on an agency emblem",
+          es: "Primer plano de las puntadas de un emblema bordado",
+        },
+      },
+      {
+        src: "/card/cn/hero-detail-brim.jpg",
+        alt: {
+          en: "Close-up of an embroidered police badge in the hoop",
+          es: "Primer plano de una placa policial bordada en el bastidor",
+        },
+      },
+    ],
     /* Trabajo real del carrusel público «What Our Clients Have Done» de
        cnbrandings.com. Etiquetado por producto y técnica; los nombres visibles
        en las fotos los publicó CN en su propio portafolio. */
     work: [
       {
         src: "/card/cn/work-emblem.jpg",
-        type: { en: "Embroidered emblem", es: "Emblema bordado" },
-        method: { en: "Precision in-hoop embroidery", es: "Bordado de precisión en bastidor" },
+        type: { en: "Embroidered emblems", es: "Emblemas bordados" },
+        method: { en: "In-hoop embroidery", es: "Bordado en bastidor" },
         alt: {
           en: "Agency emblem being embroidered in the hoop at CN Brandings",
           es: "Emblema institucional bordándose en bastidor en CN Brandings",
@@ -619,8 +641,8 @@ export const CARD_CNBRANDINGS: CardProfile = {
       },
       {
         src: "/card/cn/work-event.jpg",
-        type: { en: "Event apparel", es: "Ropa de evento" },
-        method: { en: "Multi-color shirt printing", es: "Estampado multicolor" },
+        type: { en: "Event t-shirts", es: "Camisetas de evento" },
+        method: { en: "Multi-color printing", es: "Estampado multicolor" },
         alt: {
           en: "Centennial event t-shirt with multi-color front print",
           es: "Camiseta conmemorativa con estampado frontal multicolor",
@@ -628,7 +650,7 @@ export const CARD_CNBRANDINGS: CardProfile = {
       },
       {
         src: "/card/cn/work-tee.jpg",
-        type: { en: "Printed tee", es: "Camiseta estampada" },
+        type: { en: "Printed tees", es: "Camisetas estampadas" },
         method: { en: "Chest logo print", es: "Estampado de logo al pecho" },
         alt: {
           en: "Heather t-shirt with printed circular chest logo",
@@ -637,8 +659,8 @@ export const CARD_CNBRANDINGS: CardProfile = {
       },
       {
         src: "/card/cn/work-polo.jpg",
-        type: { en: "Uniform polo", es: "Polo de uniforme" },
-        method: { en: "Embroidered seal & lettering", es: "Escudo y texto bordados" },
+        type: { en: "Staff polos", es: "Polos de uniforme" },
+        method: { en: "Embroidery", es: "Bordado" },
         alt: {
           en: "Navy uniform polo with embroidered county seal and lettering",
           es: "Polo de uniforme azul marino con escudo y texto bordados",
@@ -649,8 +671,8 @@ export const CARD_CNBRANDINGS: CardProfile = {
       {
         title: { en: "Custom apparel", es: "Ropa personalizada" },
         body: {
-          en: "T-shirts, polos, woven shirts, fleece, headwear and uniforms selected around the team, event or brand.",
-          es: "Camisetas, polos, camisas, abrigo, gorras y uniformes elegidos según el equipo, el evento o la marca.",
+          en: "T-shirts, polos, woven shirts, fleece, headwear and uniforms selected around the people, event and brand.",
+          es: "Camisetas, polos, camisas, abrigo, gorras y uniformes elegidos según las personas, el evento y la marca.",
         },
         src: "/card/cn/cap-apparel.jpg",
         alt: {
@@ -684,29 +706,29 @@ export const CARD_CNBRANDINGS: CardProfile = {
       {
         title: { en: "Choose", es: "Elige" },
         body: {
-          en: "Select the apparel or product that fits your team, audience and budget.",
-          es: "Selecciona la prenda o el producto que encaja con tu equipo, tu público y tu presupuesto.",
+          en: "Select the apparel or product.",
+          es: "Seleccione la prenda o el producto.",
         },
       },
       {
         title: { en: "Customize", es: "Personaliza" },
         body: {
-          en: "Provide the logo, artwork, colors and production requirements.",
-          es: "Entrega el logo, el arte, los colores y los requisitos de producción.",
+          en: "Provide the artwork, colors and requirements.",
+          es: "Entregue el arte, los colores y los requisitos.",
         },
       },
       {
         title: { en: "Approve", es: "Aprueba" },
         body: {
-          en: "Review the design placement and production proof before manufacturing.",
-          es: "Revisa la ubicación del diseño y la prueba de producción antes de fabricar.",
+          en: "Review placement and the production proof.",
+          es: "Revise la ubicación y la prueba de producción.",
         },
       },
       {
         title: { en: "Produce", es: "Produce" },
         body: {
-          en: "CN Brandings prepares the approved order for delivery or pickup according to the confirmed scope.",
-          es: "CN Brandings prepara el pedido aprobado para entrega o recogida según el alcance confirmado.",
+          en: "The approved order moves into production.",
+          es: "El pedido aprobado entra en producción.",
         },
       },
     ],
@@ -721,8 +743,8 @@ export const CARD_CNBRANDINGS: CardProfile = {
     ],
     credibility: {
       body: {
-        en: "Every approved order is handled with attention to placement, color, consistency and final presentation. Orders from 10 pieces to 1,000.",
-        es: "Cada pedido aprobado se trabaja cuidando la ubicación, el color, la consistencia y la presentación final. Pedidos de 10 piezas a 1,000.",
+        en: "Every approved order is handled with attention to placement, color, consistency and final presentation.",
+        es: "Cada pedido aprobado se trabaja cuidando la ubicación, el color, la consistencia y la presentación final.",
       },
       src: "/card/cn/shop.jpg",
       alt: {
