@@ -171,12 +171,34 @@ export interface ClientCardConfig {
   taglineA: Record<CardLocale, string>;
   taglineB: Record<CardLocale, string>;
   sub: Record<CardLocale, string>;
-  /** Acción dominante (para CN, su tienda). */
+  /** Acción dominante. Debe apuntar a una ruta REAL verificada. */
   primaryLabel: Record<CardLocale, string>;
   primaryHref: string;
-  services: { title: Record<CardLocale, string>; body: Record<CardLocale, string> }[];
-  proof: Record<CardLocale, string>;
-  proofWho: string;
+  /** Imagen dominante del hero: producto real del cliente, nunca stock. */
+  heroImg: { src: string; alt: Record<CardLocale, string> };
+  /** Trabajo real: producto + técnica. Sin clientes ni cifras inventados. */
+  work: {
+    src: string;
+    type: Record<CardLocale, string>;
+    method: Record<CardLocale, string>;
+    alt: Record<CardLocale, string>;
+  }[];
+  /** Capacidades con foto real de detalle cuando existe; sin foto, sin inventar. */
+  capabilities: {
+    title: Record<CardLocale, string>;
+    body: Record<CardLocale, string>;
+    src?: string;
+    alt?: Record<CardLocale, string>;
+  }[];
+  /** Proceso de pedido, sin promesas de plazo no verificadas. */
+  steps: { title: Record<CardLocale, string>; body: Record<CardLocale, string> }[];
+  /** Categorías del catálogo real: cada href verificado con HTTP 200. */
+  categories: { label: Record<CardLocale, string>; href: string }[];
+  credibility: {
+    body: Record<CardLocale, string>;
+    src?: string;
+    alt?: Record<CardLocale, string>;
+  };
   instagram?: string;
   /** URL canónica para el QR y "copiar enlace". */
   shareUrl: string;
@@ -560,45 +582,154 @@ export const CARD_CNBRANDINGS: CardProfile = {
     accent: "#c12026",
     accentDeep: "#a81b21",
     availability: {
-      en: "South Florida · Apparel & Brand Solutions",
-      es: "Sur de Florida · Ropa y soluciones de marca",
+      en: "South Florida · Custom Apparel & Brand Solutions",
+      es: "Sur de Florida · Ropa personalizada y soluciones de marca",
     },
-    taglineA: { en: "Choose your style,", es: "Elige tu estilo," },
-    taglineB: { en: "take your brand further.", es: "lleva tu marca más lejos." },
+    taglineA: { en: "Your brand,", es: "Tu marca," },
+    taglineB: { en: "made wearable.", es: "lista para vestir." },
     sub: {
-      en: "Custom apparel, embroidery and printing for businesses, schools, teams and entrepreneurs — from 10 pieces to 1,000.",
-      es: "Ropa personalizada, bordado y estampado para negocios, escuelas, equipos y emprendedores — de 10 piezas a 1,000.",
+      en: "Custom apparel, embroidery and printing for businesses, schools, teams and growing brands.",
+      es: "Ropa personalizada, bordado y estampado para negocios, escuelas, equipos y marcas en crecimiento.",
     },
-    primaryLabel: { en: "Shop apparel", es: "Ver la tienda" },
-    primaryHref: "https://cnbrandings.com/",
-    services: [
+    // /products verificado con HTTP 200. No existe una ruta real de pedido a
+    // medida (la página de contacto del sitio es un placeholder), así que la
+    // acción dominante es el catálogo, no un "Start a custom order" roto.
+    primaryLabel: { en: "Explore apparel", es: "Explora el catálogo" },
+    primaryHref: "https://cnbrandings.com/products",
+    /** Sombreros con ala interior impresa — producción real de CN. */
+    heroImg: {
+      src: "/card/cn/hero.jpg",
+      alt: {
+        en: "Custom straw hats by CN Brandings with printed under-brim and embroidered patch",
+        es: "Sombreros personalizados de CN Brandings con ala interior impresa y parche bordado",
+      },
+    },
+    /* Trabajo real del carrusel público «What Our Clients Have Done» de
+       cnbrandings.com. Etiquetado por producto y técnica; los nombres visibles
+       en las fotos los publicó CN en su propio portafolio. */
+    work: [
       {
-        title: { en: "Custom apparel & uniforms", es: "Ropa y uniformes a medida" },
-        body: {
-          en: "Shirts, polos, sweatshirts, headwear and uniforms for teams, staff and events.",
-          es: "Camisas, polos, sudaderas, gorras y uniformes para equipos, personal y eventos.",
+        src: "/card/cn/work-emblem.jpg",
+        type: { en: "Embroidered emblem", es: "Emblema bordado" },
+        method: { en: "Precision in-hoop embroidery", es: "Bordado de precisión en bastidor" },
+        alt: {
+          en: "Agency emblem being embroidered in the hoop at CN Brandings",
+          es: "Emblema institucional bordándose en bastidor en CN Brandings",
         },
       },
       {
-        title: { en: "Decoration", es: "Decoración" },
-        body: {
-          en: "Embroidery, screen printing and DTF transfers — clean, sharp and built to last.",
-          es: "Bordado, serigrafía y transferencias DTF — limpio, nítido y duradero.",
+        src: "/card/cn/work-event.jpg",
+        type: { en: "Event apparel", es: "Ropa de evento" },
+        method: { en: "Multi-color shirt printing", es: "Estampado multicolor" },
+        alt: {
+          en: "Centennial event t-shirt with multi-color front print",
+          es: "Camiseta conmemorativa con estampado frontal multicolor",
         },
       },
       {
-        title: { en: "Promotional products", es: "Productos promocionales" },
-        body: {
-          en: "Branded accessories and promotional items to put your brand in more hands.",
-          es: "Accesorios y artículos promocionales para poner tu marca en más manos.",
+        src: "/card/cn/work-tee.jpg",
+        type: { en: "Printed tee", es: "Camiseta estampada" },
+        method: { en: "Chest logo print", es: "Estampado de logo al pecho" },
+        alt: {
+          en: "Heather t-shirt with printed circular chest logo",
+          es: "Camiseta jaspeada con logo circular estampado al pecho",
+        },
+      },
+      {
+        src: "/card/cn/work-polo.jpg",
+        type: { en: "Uniform polo", es: "Polo de uniforme" },
+        method: { en: "Embroidered seal & lettering", es: "Escudo y texto bordados" },
+        alt: {
+          en: "Navy uniform polo with embroidered county seal and lettering",
+          es: "Polo de uniforme azul marino con escudo y texto bordados",
         },
       },
     ],
-    proof: {
-      en: "A full production shop combining modern equipment, skilled craftsmanship and quick turnaround — every order handled with care, precision and attention to detail.",
-      es: "Un taller de producción completo que combina equipo moderno, mano de obra experta y entregas rápidas — cada pedido con cuidado, precisión y atención al detalle.",
+    capabilities: [
+      {
+        title: { en: "Custom apparel", es: "Ropa personalizada" },
+        body: {
+          en: "T-shirts, polos, woven shirts, fleece, headwear and uniforms selected around the team, event or brand.",
+          es: "Camisetas, polos, camisas, abrigo, gorras y uniformes elegidos según el equipo, el evento o la marca.",
+        },
+        src: "/card/cn/cap-apparel.jpg",
+        alt: {
+          en: "Black tactical polo with embroidered support-team patch",
+          es: "Polo táctico negro con parche de equipo bordado",
+        },
+      },
+      {
+        title: { en: "Embroidery & printing", es: "Bordado y estampado" },
+        body: {
+          en: "Embroidery, screen printing and DTF production developed for clear, consistent brand reproduction.",
+          es: "Bordado, serigrafía y producción DTF para una reproducción de marca clara y consistente.",
+        },
+        src: "/card/cn/cap-embroidery.jpg",
+        alt: {
+          en: "Multi-color police badge embroidery in the hoop",
+          es: "Bordado multicolor de placa policial en bastidor",
+        },
+      },
+      {
+        // Sin foto: no hay imagen verificada de productos promocionales y no se
+        // presenta stock como trabajo de CN.
+        title: { en: "Promotional products", es: "Productos promocionales" },
+        body: {
+          en: "Branded accessories and practical promotional items designed to extend the identity beyond apparel.",
+          es: "Accesorios de marca y artículos promocionales prácticos que llevan la identidad más allá de la ropa.",
+        },
+      },
+    ],
+    steps: [
+      {
+        title: { en: "Choose", es: "Elige" },
+        body: {
+          en: "Select the apparel or product that fits your team, audience and budget.",
+          es: "Selecciona la prenda o el producto que encaja con tu equipo, tu público y tu presupuesto.",
+        },
+      },
+      {
+        title: { en: "Customize", es: "Personaliza" },
+        body: {
+          en: "Provide the logo, artwork, colors and production requirements.",
+          es: "Entrega el logo, el arte, los colores y los requisitos de producción.",
+        },
+      },
+      {
+        title: { en: "Approve", es: "Aprueba" },
+        body: {
+          en: "Review the design placement and production proof before manufacturing.",
+          es: "Revisa la ubicación del diseño y la prueba de producción antes de fabricar.",
+        },
+      },
+      {
+        title: { en: "Produce", es: "Produce" },
+        body: {
+          en: "CN Brandings prepares the approved order for delivery or pickup according to the confirmed scope.",
+          es: "CN Brandings prepara el pedido aprobado para entrega o recogida según el alcance confirmado.",
+        },
+      },
+    ],
+    /* Categorías reales del sitio; cada href respondió HTTP 200 (ago 2026). */
+    categories: [
+      { label: { en: "T-Shirts", es: "Camisetas" }, href: "https://cnbrandings.com/category/t-shirts" },
+      { label: { en: "Polos & Knits", es: "Polos y tejidos" }, href: "https://cnbrandings.com/category/polos-knits" },
+      { label: { en: "Woven / Dress Shirts", es: "Camisas" }, href: "https://cnbrandings.com/category/woven-dress-shirts" },
+      { label: { en: "Sweatshirts & Fleece", es: "Sudaderas y abrigo" }, href: "https://cnbrandings.com/category/sweatshirts-fleece" },
+      { label: { en: "Headwear", es: "Gorras" }, href: "https://cnbrandings.com/category/headwears" },
+      { label: { en: "Accessories", es: "Accesorios" }, href: "https://cnbrandings.com/category/accessories" },
+    ],
+    credibility: {
+      body: {
+        en: "Every approved order is handled with attention to placement, color, consistency and final presentation. Orders from 10 pieces to 1,000.",
+        es: "Cada pedido aprobado se trabaja cuidando la ubicación, el color, la consistencia y la presentación final. Pedidos de 10 piezas a 1,000.",
+      },
+      src: "/card/cn/shop.jpg",
+      alt: {
+        en: "Embroidered cap on the embroidery machine at the CN Brandings shop, thread cones behind",
+        es: "Gorra bordada sobre la máquina de bordar en el taller de CN Brandings, con conos de hilo detrás",
+      },
     },
-    proofWho: "Custom Nation LLC · South Florida",
     instagram: "https://www.instagram.com/cnbrandings/",
     shareUrl: "https://www.305webservice.com/c/cnbrandings",
   },
