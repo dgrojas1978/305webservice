@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>305 OBJECT — NFC back (CR80)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  /* 305 OBJECT — reverso. Un destino: el QR.
+     Contenido exacto: QR · SCAN · 305WEBSERVICE.COM. Nada más.
+     Fuera: tagline, «SCAN TO CONNECT» completo, repetición del wordmark, serial,
+     marcos y líneas alrededor del QR. */
+  @page { size: 91.6mm 59.98mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 91.6mm; height: 59.98mm;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  body {
+    font-family: "Inter", Arial, sans-serif;
+    background: #071426;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card { position: relative; width: 91.6mm; height: 59.98mm; overflow: hidden; }
+
+  /* Retícula estricta: el bloque de texto y el QR comparten LÍNEA BASE ÓPTICA
+     (mismo centro vertical) y los mismos márgenes de composición a cada lado. */
+  .row {
+    position: absolute;
+    left: 8.5mm; right: 8.5mm;
+    top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6mm;
+  }
+
+  .block { display: flex; flex-direction: column; }
+  .scan {
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.14em;   /* una instrucción, no una palabra descompuesta */
+    color: #F5F3EE;           /* blanco cálido */
+  }
+  .domain {
+    margin-top: 2.2mm;
+    font-size: 8pt;           /* mínimo permitido por el encargo */
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #9FB0C4;           /* secundario, sin competir con SCAN */
+  }
+
+  /* El área clara mide SOLO lo que el código necesita: 24 mm = patrón + quiet zone
+     de 4 módulos (37 módulos → 0.649 mm por módulo). Sin placa desproporcionada,
+     sin marco, sin sombra. K100 sobre blanco sólido. */
+  .qr {
+    width: 24mm; height: 24mm;
+    background: #FFFFFF;
+    flex: none;
+  }
+  .qr img { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="row">
+      <div class="block">
+        <div class="scan">SCAN</div>
+        <div class="domain">305WEBSERVICE.COM</div>
+      </div>
+      <div class="qr"><img src="assets/qr-nfc-305.svg" alt=""></div>
+    </div>
+  </div>
+</body>
+</html>

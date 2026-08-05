@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mabel Toledo — NFC front (CR80)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap">
+<style>
+  /* VISION IN MOTION — anverso.
+     CR80 85.60 × 53.98 mm + 3 mm de sangrado -> lienzo 91.60 × 59.98 mm.
+     Safe area 3 mm desde el corte; márgenes de composición 5.5 mm.
+     Jerarquía obligatoria: nombre -> descriptor -> frase -> tap. Nada más. */
+  @page { size: 91.6mm 59.98mm; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 91.6mm; height: 59.98mm;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  body {
+    /* Carbón profundo con matiz ciruela apenas perceptible. Plano. */
+    background: #17151C;
+    font-family: "Inter", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card { position: relative; width: 91.6mm; height: 59.98mm; overflow: hidden; }
+
+  /* --- retrato: 33 mm = 38.6% del ancho de corte, a la derecha, a sangre ------
+     449 dpi efectivos al tamaño usado. Se integra al carbón con un degradado
+     lateral: no es un recorte pegado ni lleva máscara con halo. */
+  .portrait {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 36mm;                       /* 33 mm dentro del corte (38.6%) + 3 mm de sangrado */
+    background-image: url("assets/mabel/card-portrait.jpg");
+    background-size: cover;
+    background-position: 50% 12%;
+  }
+  /* Transición suave hacia el carbón — el ancho del velo es lo que evita el
+     efecto sticker. Solo oscurece; no recorta la silueta. */
+  .portrait::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(to right,
+      #17151C 0%, rgba(23,21,28,0.92) 18%, rgba(23,21,28,0.42) 45%, rgba(23,21,28,0.10) 78%, rgba(23,21,28,0.16) 100%);
+  }
+
+  .content { position: absolute; inset: 0; z-index: 1; }
+
+  /* 1 · nombre — tercio superior izquierdo */
+  .name {
+    position: absolute; left: 8.5mm; top: 10.5mm;
+    font-size: 16pt; font-weight: 500;  /* mínimo del rango 16-21; el tracking se cierra
+                                            para que el bloque no invada el retrato */
+    letter-spacing: 0.03em; line-height: 1;
+    color: #F4EFE6;                    /* marfil cálido */
+    white-space: nowrap;
+  }
+  /* 2 · descriptor — inmediatamente debajo, secundario y legible.
+     Cada línea es nowrap: el «·» pertenece a la primera y nunca queda huérfano. */
+  .role {
+    position: absolute; left: 8.5mm; top: 17.6mm;
+    font-size: 8.5pt; font-weight: 500;
+    letter-spacing: 0.08em; line-height: 1.55;
+    color: #D4AF37;                    /* acento único, el del sistema digital aprobado */
+  }
+  .role span { display: block; white-space: nowrap; }
+  /* 3 · frase — ancla visual en el tercio inferior izquierdo */
+  .line {
+    position: absolute; left: 8.5mm; top: 33mm;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 13pt; font-weight: 400;
+    letter-spacing: 0.005em; line-height: 1.22;
+    color: #F4EFE6;
+    max-width: 46mm;
+  }
+  /* 4 · tap — una sola instrucción, junto al área de lectura */
+  .tap {
+    position: absolute; left: 8.5mm; bottom: 8.2mm;
+    display: flex; align-items: center; gap: 2.2mm;
+  }
+  .tap svg { display: block; width: 5.4mm; height: 5.4mm; }
+  .tap .label {
+    font-size: 9pt; font-weight: 500;
+    letter-spacing: 0.16em; color: #C9C2B6;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="portrait"></div>
+
+    <div class="content">
+      <div class="name">MABEL TOLEDO</div>
+      <div class="role"><span>PRODUCER · ENTREPRENEUR</span></div>
+      <div class="line">Stories brought<br>to life.</div>
+
+      <div class="tap">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9.5 6.5c2.6 2.1 2.6 8.9 0 11" stroke="#C9C2B6" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M14 4c4 3.2 4 12.8 0 16" stroke="#C9C2B6" stroke-width="1.7" stroke-linecap="round"/>
+          <path d="M18.5 1.5c5.4 4.3 5.4 17.7 0 21" stroke="#D4AF37" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <span class="label">TAP</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
