@@ -20,9 +20,11 @@ W, H = round(PAGE_W_MM * PX_MM), round(PAGE_H_MM * PX_MM)
 OX = round(BLEED_MM * PX_MM)
 OY = OX
 
-NAVY = (5, 13, 26)
+NAVY = (7, 20, 38)
 WHITE = (246, 247, 251)
-MUTED = (151, 164, 184)
+MUTED = (154, 169, 187)
+BLUE = (20, 108, 255)
+AQUA = (32, 215, 197)
 QR_SVG = BRAND / "out" / "305-portal" / "_qr.svg"
 
 
@@ -49,7 +51,7 @@ def base():
 
 def wordmark(draw, x, y, scale=1.0, monochrome=True):
     f = font(11.8 * scale, True)
-    draw.text((x, y), "305", font=f, fill=WHITE if monochrome else MUTED)
+    draw.text((x, y), "305", font=f, fill=WHITE if monochrome else BLUE)
     offset = draw.textlength("305", font=f) + px(1.1 * scale)
     draw.text((x + offset, y), "WEB SERVICE", font=f, fill=WHITE)
 
@@ -137,8 +139,8 @@ def save_readme():
 - Production color: CMYK TIFF, front and back
 - Vendor PDF: two pages, front then back, both with bleed
 - Minimum type: 9 pt
-- Typography: Manrope 700 for the wordmark; DM Sans 700/400 for reverse copy
-- Brand colors: #050d1a background, #2f78ff for 305, #f7f9fc wordmark
+- Typography: Inter 700 for the wordmark and instruction; Inter 400 for URL
+- Brand colors: #071426 background, #146cff logo blue, #20d7c5 interaction accent
 - QR fallback: 24 mm, four-module quiet zone, no embedded logo
 - QR destination: `/c/305`, which resolves to the 305 digital card
 - NFC destination: use the same canonical card route with NFC campaign attribution
@@ -156,7 +158,7 @@ locking the NTAG.
 
 if __name__ == "__main__":
     # Prefer the exact browser renders from brand/src/305-minimal-print.html.
-    # They use the same Google Font files as the virtual card (Manrope + DM Sans).
+    # They use the same self-hosted Inter files and tokens as the website and virtual card.
     front_render = OUT / "305-minimal-front-bleed-300dpi.png"
     back_render = OUT / "305-minimal-back-bleed-300dpi.png"
     if front_render.exists() and back_render.exists():
