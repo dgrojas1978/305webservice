@@ -855,7 +855,7 @@ export const CARD_MABEL: CardProfile = {
     name: "Mabel Toledo",
     role: { en: "Executive Producer \u00b7 Entrepreneur", es: "Productora ejecutiva \u00b7 Empresaria" },
     portraitUrl: "/card/mabel/portrait.jpg",
-    statement: { en: "Vision, brought to life.", es: "Visi\u00f3n que cobra vida." },
+    statement: { en: "Stories brought to life.", es: "Historias que cobran vida." },
   },
   company: {
     name: "Mabel Toledo",
@@ -876,8 +876,8 @@ export const CARD_MABEL: CardProfile = {
       src: "/card/mabel/portrait.jpg",
       alt: { en: "Portrait of Mabel Toledo", es: "Retrato de Mabel Toledo" },
     },
-    hookA: { en: "Vision,", es: "Visi\u00f3n que" },
-    hookB: { en: "brought to life.", es: "cobra vida." },
+    hookA: { en: "Stories", es: "Historias que" },
+    hookB: { en: "brought to life.", es: "cobran vida." },
     support: {
       en: "Turning vision into productions, partnerships and opportunity.",
       es: "Convirtiendo visi\u00f3n en producciones, alianzas y oportunidades.",
@@ -892,8 +892,8 @@ export const CARD_MABEL: CardProfile = {
       sub: "Shop",
       kind: { en: "Clothing", es: "Ropa y accesorios" },
       line: {
-        en: "Ladies modern, fresh and elegant clothing and accessories. Limited items for men.",
-        es: "Ropa para damas y accesorios. Algunas piezas para caballeros.",
+        en: "A thoughtfully curated collection of accessories and apparel for men and women, inspired by sunny days and tropical escapes, blending style with effortless island comfort.",
+        es: "Una colección cuidadosamente seleccionada de accesorios y ropa para hombre y mujer, inspirada en los días de sol y los escapes tropicales, que combina estilo con la comodidad relajada de la isla.",
       },
       handle: "@elcloset226",
       href: "https://www.instagram.com/elcloset226/",
