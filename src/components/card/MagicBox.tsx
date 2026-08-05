@@ -39,9 +39,12 @@ export default function MagicBox(props: {
   lang: CardLocale;
   onClose: () => void;
   onChange: (index: number) => void;
+  /** Brand accent used for focus, navigation and the active thumbnail. */
+  accent?: string;
   /** Elemento que abrió el visor: el foco vuelve aquí al cerrar. */
   returnFocus?: HTMLElement | null;
 }) {
+  const accent = () => props.accent ?? "#c12026";
   const open = () => props.activeIndex !== null;
   const t = () => UI[props.lang];
   const active = createMemo(() => (props.activeIndex === null ? null : props.items[props.activeIndex] ?? null));
@@ -132,23 +135,23 @@ export default function MagicBox(props: {
           .mbx-counter{font-size:13px;font-weight:700;letter-spacing:.06em;color:#cfc7ba;font-variant-numeric:tabular-nums}
           .mbx-close{width:44px;height:44px;display:grid;place-items:center;background:transparent;
             border:2px solid rgba(244,240,232,.4);color:#F4F0E8;cursor:pointer;border-radius:2px}
-          .mbx-close:hover{border-color:#c12026}
+          .mbx-close:hover{border-color:${accent()}}
           .mbx-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:12px;position:relative}
           .mbx .mbx-img{max-width:88vw;max-height:82vh;width:auto;height:auto;object-fit:contain;display:block}
           .mbx-nav{width:52px;height:52px;flex:none;display:grid;place-items:center;background:rgba(21,21,19,.6);
             border:2px solid rgba(244,240,232,.4);color:#F4F0E8;cursor:pointer;border-radius:50%;font-size:22px;line-height:1}
-          .mbx-nav:hover{border-color:#c12026}
+          .mbx-nav:hover{border-color:${accent()}}
           .mbx-nav.edge{position:absolute;top:50%;transform:translateY(-50%)}
           .mbx-nav.prev{left:2px}.mbx-nav.next{right:2px}
-          .mbx *:focus-visible{outline:3px solid #c12026;outline-offset:2px}
+          .mbx *:focus-visible{outline:3px solid ${accent()};outline-offset:2px}
           .mbx-info{flex:none;text-align:center;padding:12px 8px 4px}
-          .mbx-info .cat{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#c12026;margin:0}
+          .mbx-info .cat{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:${accent()};margin:0}
           .mbx-info h3{margin:4px 0 0;font-size:17px;font-weight:800;letter-spacing:-.01em}
           .mbx-info p{margin:3px 0 0;font-size:13px;color:#cfc7ba}
           .mbx-thumbs{flex:none;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 0 2px}
           .mbx-thumb{width:56px;height:56px;padding:0;border:2px solid transparent;background:none;cursor:pointer;border-radius:2px;overflow:hidden}
           .mbx-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-          .mbx-thumb[aria-current="true"]{border-color:#c12026}
+          .mbx-thumb[aria-current="true"]{border-color:${accent()}}
           @media (max-width:560px){
             .mbx .mbx-img{max-width:96vw;max-height:74vh}
             .mbx-nav.edge{display:none}

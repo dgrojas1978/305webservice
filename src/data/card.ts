@@ -948,10 +948,45 @@ export const CARD_MABEL: CardProfile = {
 };
 
 /** Registro de perfiles publicables. Futuros perfiles se agregan aquí. */
+/** Infinite Windows — verified public business profile, custom renderer. */
+export const CARD_INFINITE_WINDOWS: CardProfile = {
+  id: "infinite-windows",
+  kind: "company",
+  mode: "business",
+  reviews: { enabled: false, provider: "google", displayReviews: false, maxDisplayedReviews: 1, sortDisclosure: "Most relevant" },
+  location: {
+    mode: "physical", showExactAddress: true,
+    locations: [{
+      id: "doral-studio", label: "The studio", publicName: "Infinite Windows",
+      address: "1612 NW 84th Ave, Doral, FL 33126",
+      googleMapsUrl: "https://maps.google.com/?q=1612+NW+84th+Ave+Doral+FL+33126",
+      phone: "+17865183725",
+    }],
+  },
+  vcardMedia: { kind: "organization", logoUrl: "/card/infinite-windows/vcard-logo.png", embedImage: true },
+  brand: { wordmarkAccent: "Infinite", wordmarkRest: "Windows", logoUrl: "/card/infinite-windows/logo-white.png" },
+  company: {
+    name: "Infinite Windows",
+    descriptor: {
+      en: "Impact glazing · Architectural fabrication · Florida · Since 2005",
+      es: "Impact glazing · Architectural fabrication · Florida · Since 2005",
+    },
+    positioning: { en: "The windows of the houses you remember.", es: "The windows of the houses you remember." },
+    location: { en: "Doral, Florida", es: "Doral, Florida" },
+    website: "https://infinitewindows.com/", websiteDisplay: "infinitewindows.com",
+    phoneTel: "+17865183725", phoneDisplay: "786 · 518 · 3725", email: "laura@infinitewindows.email",
+  },
+  nfc: {
+    slug: "infinite-windows", canonicalPath: "/card/infinite-windows", status: "testing",
+    attribution: { business: "Infinite Windows", owner: "Infinite Windows", cardId: "", context: "" },
+  },
+};
+
 export const CARD_PROFILES: Record<string, CardProfile> = {
   [CARD_305.id]: CARD_305,
   [CARD_CNBRANDINGS.id]: CARD_CNBRANDINGS,
   [CARD_MABEL.id]: CARD_MABEL,
+  [CARD_INFINITE_WINDOWS.id]: CARD_INFINITE_WINDOWS,
 };
 
 /* ---------------- copy de la tarjeta (EN/ES, brief §25–26) ---------------- */

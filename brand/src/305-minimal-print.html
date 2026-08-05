@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>305 Minimal NFC Card</title>
+  <style>
+    @font-face{font-family:Inter;src:url('../../public/card/305-experience/fonts/inter-latin-400-normal.woff2') format('woff2');font-weight:400}
+    @font-face{font-family:Inter;src:url('../../public/card/305-experience/fonts/inter-latin-700-normal.woff2') format('woff2');font-weight:700}
+    *{box-sizing:border-box}html,body{margin:0;width:1082px;height:708px;overflow:hidden;background:#071426}
+    body{color:#f7f9fc}.card{position:relative;width:1082px;height:708px;background:#071426}
+    .front,.back{display:none;position:absolute;inset:0}.front.active,.back.active{display:block}
+    .wordmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:17px;
+      font:700 71px/1 Inter,sans-serif;letter-spacing:-.035em;text-transform:uppercase}
+    .wordmark b{color:#146cff}.wordmark span{color:#f7f9fc}
+    .eyebrow{position:absolute;left:118px;top:192px;font:700 24px/1 Inter,sans-serif;
+      letter-spacing:.22em;color:#20d7c5}
+    .back-copy{position:absolute;left:118px;top:246px;font:700 42px/1 Inter,sans-serif;
+      letter-spacing:.18em;color:#f7f9fc}
+    .url{position:absolute;left:118px;top:455px;font:400 37px/1 Inter,sans-serif;
+      letter-spacing:-.015em;color:#96a2b2}
+    .qr{position:absolute;right:118px;top:212px;width:283px;height:283px;background:#fff}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section class="front"><div class="wordmark"><b>305</b><span>Web Service</span></div></section>
+    <section class="back"><div class="eyebrow">305 DIGITAL CARD</div><div class="back-copy">SCAN TO EXPLORE</div><div class="url">305webservice.com</div><img class="qr" src="../out/305-portal/_qr.svg" alt=""></section>
+  </main>
+  <script>document.querySelector(location.search.includes('back')?'.back':'.front').classList.add('active')</script>
+</body>
+</html>
