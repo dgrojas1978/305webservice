@@ -4,6 +4,7 @@ import Seo from "~/components/Seo";
 import DigitalCard from "~/components/card/DigitalCard";
 import ClientCard from "~/components/card/ClientCard";
 import InfiniteWindowsCard from "~/components/card/InfiniteWindowsCard";
+import ThreeOhFiveCard from "~/components/card/ThreeOhFiveCard";
 import NotFoundPage from "~/components/pages/NotFoundPage";
 import { CARD_PROFILES } from "~/data/card";
 
@@ -11,8 +12,8 @@ import { CARD_PROFILES } from "~/data/card";
  * Perfil canónico de la tarjeta digital (destino de /nfc/<slug> y del QR).
  *
  * El renderer se elige por el perfil: los tenants de cliente con marca propia
- * (`profile.client`, p. ej. CN Brandings) usan `ClientCard`; 305 sigue con su
- * concierge `DigitalCard`, sin cambios.
+ * (`profile.client`, p. ej. CN Brandings) usan `ClientCard`; 305 e Infinite
+ * Windows usan experiencias de marca aisladas para evitar estilos cruzados.
  */
 export default function CardRoute() {
   const params = useParams();
@@ -29,8 +30,12 @@ export default function CardRoute() {
             locale="en"
           />
           <Show when={p().id === "infinite-windows"} fallback={
-            <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
-              <ClientCard profile={p()} />
+            <Show when={p().id === "305"} fallback={
+              <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
+                <ClientCard profile={p()} />
+              </Show>
+            }>
+              <ThreeOhFiveCard profile={p()} />
             </Show>
           }>
             <InfiniteWindowsCard profile={p()} />
