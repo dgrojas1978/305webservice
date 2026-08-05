@@ -23,8 +23,6 @@ OY = OX
 NAVY = (5, 13, 26)
 WHITE = (246, 247, 251)
 MUTED = (151, 164, 184)
-BLUE = (76, 113, 255)
-AQUA = (116, 221, 207)
 QR_SVG = BRAND / "out" / "305-portal" / "_qr.svg"
 
 
@@ -49,34 +47,24 @@ def base():
     return Image.new("RGB", (W, H), NAVY)
 
 
-def wordmark(draw, x, y, scale=1.0):
+def wordmark(draw, x, y, scale=1.0, monochrome=True):
     f = font(11.8 * scale, True)
-    draw.text((x, y), "305", font=f, fill=BLUE)
+    draw.text((x, y), "305", font=f, fill=WHITE if monochrome else MUTED)
     offset = draw.textlength("305", font=f) + px(1.1 * scale)
     draw.text((x + offset, y), "WEB SERVICE", font=f, fill=WHITE)
-
-
-def nfc_mark(draw, cx, cy):
-    width = max(2, px(0.22))
-    for radius in (2.0, 3.3, 4.6):
-        r = px(radius)
-        draw.arc((cx-r, cy-r, cx+r, cy+r), -58, 58, fill=AQUA, width=width)
-    draw.ellipse((cx-px(.6), cy-px(.6), cx+px(.6), cy+px(.6)), fill=BLUE)
 
 
 def front():
     image = base()
     draw = ImageDraw.Draw(image)
-    left = OX + px(6.2)
-    wordmark(draw, left, OY + px(6.3))
-
-    # The physical card uses the same approved central promise as the virtual card.
-    draw.text((left, OY + px(20.2)), "TECHNOLOGY THAT", font=font(12.2, True), fill=WHITE)
-    draw.text((left, OY + px(27.8)), "MOVES YOU FORWARD.", font=font(12.2, True), fill=BLUE)
-
-    nfc_x, nfc_y = OX + px(70.0), OY + px(43.5)
-    nfc_mark(draw, nfc_x, nfc_y)
-    letterspaced(draw, (OX + px(55.6), OY + px(45.1)), "TAP TO EXPLORE", font(9, True), WHITE, .26)
+    face = font(14.2, True)
+    text = "305 WEB SERVICE"
+    bbox = draw.textbbox((0, 0), text, font=face)
+    text_w = bbox[2] - bbox[0]
+    text_h = bbox[3] - bbox[1]
+    trim_x = OX + px(TRIM_W_MM) // 2
+    trim_y = OY + px(TRIM_H_MM) // 2
+    draw.text((trim_x - text_w // 2, trim_y - text_h // 2 - bbox[1]), text, font=face, fill=WHITE)
     return image
 
 
@@ -85,12 +73,9 @@ def back():
         raise FileNotFoundError(f"Missing QR source: {QR_SVG}")
     image = base()
     draw = ImageDraw.Draw(image)
-    left = OX + px(6.2)
-    wordmark(draw, left, OY + px(7.0), .72)
-
-    draw.text((left, OY + px(23.0)), "SCAN TO", font=font(11.0, True), fill=WHITE)
-    draw.text((left, OY + px(29.4)), "EXPLORE", font=font(11.0, True), fill=BLUE)
-    letterspaced(draw, (left, OY + px(41.2)), "305WEBSERVICE.COM", font(9), MUTED, .18)
+    left = OX + px(7.0)
+    letterspaced(draw, (left, OY + px(18.2)), "SCAN TO EXPLORE", font(10.2, True), WHITE, .36)
+    draw.text((left, OY + px(36.2)), "305webservice.com", font=font(9), fill=MUTED)
 
     qr_size = px(24.0)
     # The approved QR is a 57-module SVG made of one-module path rectangles.
@@ -101,7 +86,7 @@ def back():
     for x, y in re.findall(r"M(\d+),(\d+)H\d+V\d+H\d+z", svg):
         qr_draw.point((int(x), int(y)), fill="black")
     qr = qr.resize((qr_size, qr_size), Image.Resampling.NEAREST)
-    qr_x = OX + px(TRIM_W_MM - 6.2) - qr_size
+    qr_x = OX + px(TRIM_W_MM - 7.0) - qr_size
     qr_y = OY + (px(TRIM_H_MM) - qr_size) // 2
     image.paste(qr, (qr_x, qr_y))
     return image
@@ -156,8 +141,9 @@ def save_readme():
 - QR destination: `/c/305`, which resolves to the 305 digital card
 - NFC destination: use the same canonical card route with NFC campaign attribution
 
-The front has one action: tap. The back has one action: scan. No phone, email,
-price, service catalog or social icons are printed. Confirm the vendor's exact
+The front carries only the centered wordmark; the NFC remains intentionally
+unlabelled. The back has one instruction: scan. No phone, email, price, service
+catalog, social icons or marketing claim are printed. Confirm the vendor's exact
 bleed, safe area and antenna/inlay position before the production run. Print one
 physical sample and test NFC plus QR on current iPhone and Android devices before
 locking the NTAG.

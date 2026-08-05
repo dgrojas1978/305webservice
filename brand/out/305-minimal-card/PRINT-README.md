@@ -10,8 +10,9 @@
 - QR destination: `/c/305`, which resolves to the 305 digital card
 - NFC destination: use the same canonical card route with NFC campaign attribution
 
-The front has one action: tap. The back has one action: scan. No phone, email,
-price, service catalog or social icons are printed. Confirm the vendor's exact
+The front carries only the centered wordmark; the NFC remains intentionally
+unlabelled. The back has one instruction: scan. No phone, email, price, service
+catalog, social icons or marketing claim are printed. Confirm the vendor's exact
 bleed, safe area and antenna/inlay position before the production run. Print one
 physical sample and test NFC plus QR on current iPhone and Android devices before
 locking the NTAG.
