@@ -112,7 +112,10 @@ export async function GET({ params, request }: APIEvent) {
   lines.push(`NOTE:${esc(co.descriptor.en)}`);
   // La tarjeta digital vive en 305, no en el sitio del cliente: para un tenant
   // se usa su URL canónica compartible (short link), no company.website.
-  const digitalCardUrl = profile.client?.shareUrl ?? `${co.website}${profile.nfc.canonicalPath}`;
+  const digitalCardUrl = profile.client?.shareUrl
+    ?? (profile.id === "305"
+      ? `${co.website}${profile.nfc.canonicalPath}`
+      : new URL(profile.nfc.canonicalPath, request.url).toString());
   lines.push(`URL;TYPE=Digital Card:${digitalCardUrl}`);
   // Instagram cuando es el canal directo del tenant (p. ej. CN Brandings).
   if (profile.client?.instagram) {

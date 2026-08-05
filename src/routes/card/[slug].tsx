@@ -3,6 +3,7 @@ import { Show } from "solid-js";
 import Seo from "~/components/Seo";
 import DigitalCard from "~/components/card/DigitalCard";
 import ClientCard from "~/components/card/ClientCard";
+import InfiniteWindowsCard from "~/components/card/InfiniteWindowsCard";
 import NotFoundPage from "~/components/pages/NotFoundPage";
 import { CARD_PROFILES } from "~/data/card";
 
@@ -27,8 +28,12 @@ export default function CardRoute() {
             path={p().nfc.canonicalPath}
             locale="en"
           />
-          <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
-            <ClientCard profile={p()} />
+          <Show when={p().id === "infinite-windows"} fallback={
+            <Show when={p().client} fallback={<DigitalCard profile={p()} />}>
+              <ClientCard profile={p()} />
+            </Show>
+          }>
+            <InfiniteWindowsCard profile={p()} />
           </Show>
         </>
       )}
