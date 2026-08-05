@@ -137,6 +137,8 @@ def save_readme():
 - Production color: CMYK TIFF, front and back
 - Vendor PDF: two pages, front then back, both with bleed
 - Minimum type: 9 pt
+- Typography: Manrope 700 for the wordmark; DM Sans 700/400 for reverse copy
+- Brand colors: #050d1a background, #2f78ff for 305, #f7f9fc wordmark
 - QR fallback: 24 mm, four-module quiet zone, no embedded logo
 - QR destination: `/c/305`, which resolves to the 305 digital card
 - NFC destination: use the same canonical card route with NFC campaign attribution
@@ -153,8 +155,16 @@ locking the NTAG.
 
 
 if __name__ == "__main__":
-    front_image = front()
-    back_image = back()
+    # Prefer the exact browser renders from brand/src/305-minimal-print.html.
+    # They use the same Google Font files as the virtual card (Manrope + DM Sans).
+    front_render = OUT / "305-minimal-front-bleed-300dpi.png"
+    back_render = OUT / "305-minimal-back-bleed-300dpi.png"
+    if front_render.exists() and back_render.exists():
+        front_image = Image.open(front_render).convert("RGB")
+        back_image = Image.open(back_render).convert("RGB")
+    else:
+        front_image = front()
+        back_image = back()
     save_side(front_image, "305-minimal-front")
     save_side(back_image, "305-minimal-back")
     save_pdf(front_image, back_image)
