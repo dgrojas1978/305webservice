@@ -125,11 +125,6 @@ document.querySelectorAll('[data-open="atlas"]').forEach(button => button.addEve
   track('atlas_open', prompt ? { prompt } : {});
 }));
 
-document.querySelector('[data-open="share"]').addEventListener('click', () => {
-  shareSheet.showModal();
-  track('share_open');
-});
-
 function closeOnBackdrop(dialog) {
   dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 }
@@ -153,7 +148,8 @@ async function shareCard() {
   } catch (error) {
     if (error.name === 'AbortError') return;
   }
-  await copyCardLink();
+  shareSheet.showModal();
+  track('share_fallback_open');
 }
 
 async function copyCardLink() {
@@ -167,7 +163,7 @@ async function copyCardLink() {
   }
 }
 
-document.querySelector('[data-action="native-share"]').addEventListener('click', shareCard);
+document.querySelectorAll('[data-action="native-share"]').forEach(button => button.addEventListener('click', shareCard));
 document.querySelector('[data-action="copy"]').addEventListener('click', copyCardLink);
 
 document.querySelectorAll('[data-track]').forEach(element => element.addEventListener('click', () => track(element.dataset.track)));
@@ -191,6 +187,7 @@ const ES = new Map(Object.entries({
   'Studio assistant · online': 'Asistente del estudio · disponible',
   'Explore the work': 'Explorar proyectos',
   'Save': 'Guardar', 'Call': 'Llamar', 'Directions': 'Cómo llegar', 'Share': 'Compartir',
+  'Already a client?': '¿Ya eres cliente?', 'Open the client portal': 'Abrir el portal del cliente',
   'Two practices, one studio': 'Dos especialidades, un estudio',
   'Two fronts of the same work —': 'Dos facetas del mismo trabajo —',
   'the house on the water, and the tower on the skyline.': 'la casa frente al agua y la torre en el horizonte.',
@@ -218,8 +215,11 @@ const ES = new Map(Object.entries({
   'View NFC card proof →': 'Ver prueba de tarjeta NFC →',
   'Demo concept · Information sourced from Infinite Windows public pages · August 2026': 'Concepto de demostración · Información obtenida de las páginas públicas de Infinite Windows · Agosto de 2026',
   'Additional social profiles will appear only after ownership is verified.': 'Se añadirán otros perfiles sociales cuando se verifique su titularidad.',
+  'Citadel mobile app': 'Aplicación móvil Citadel', 'Download on the App Store ↗': 'Descargar en App Store ↗',
   'Digital card by': 'Tarjeta digital por', 'Close': 'Cerrar', 'Previous image': 'Imagen anterior', 'Next image': 'Imagen siguiente',
-  'Continue with Atlas': 'Continuar con Atlas', 'Share this card': 'Compartir esta tarjeta',
+  'Continue with Atlas': 'Continuar con Atlas', 'Share this studio card': 'Compartir esta tarjeta del estudio',
+  'Copy the card link.': 'Copia el enlace de la tarjeta.',
+  'Your device does not offer the mobile share menu here. Copy the direct link instead.': 'Tu dispositivo no ofrece aquí el menú de compartir. Copia el enlace directo.',
   'Copy link': 'Copiar enlace', 'Share…': 'Compartir…'
 }));
 

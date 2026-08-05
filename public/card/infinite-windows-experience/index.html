@@ -48,8 +48,13 @@
       <button type="button" data-action="save"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 20h14"/></svg><span>Save</span></button>
       <a href="tel:+17865183725" data-track="call"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 3h3l1.5 4-2 1.5a15 15 0 0 0 6 6l1.5-2 4 1.5v3c0 2-2 4-4 4C9.3 20 4 14.7 3 7c0-2 2-4 4-4Z"/></svg><span>Call</span></a>
       <a href="https://maps.google.com/?q=1612+NW+84th+Ave+Doral+FL+33126" target="_blank" rel="noopener noreferrer" data-track="directions"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg><span>Directions</span></a>
-      <button type="button" data-open="share"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.3 10.8 7.4-4.4M8.3 13.2l7.4 4.4"/></svg><span>Share</span></button>
+      <button type="button" data-action="native-share"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.3 10.8 7.4-4.4M8.3 13.2l7.4 4.4"/></svg><span>Share</span></button>
     </nav>
+
+    <a class="portal-action" href="https://infinitewindows.ai/" target="_blank" rel="noopener noreferrer" data-track="client_portal">
+      <span><small>Already a client?</small><strong>Open the client portal</strong></span>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+    </a>
 
     <section class="practice-section section-pad" aria-labelledby="practice-title">
       <div class="section-kicker"><span>01</span><p>Two practices, one studio</p></div>
@@ -112,9 +117,11 @@
         <div><dt>Credentials</dt><dd>Infinite Builders · CGC1514304<small>NOA Miami-Dade Approved</small></dd></div>
       </dl>
       <div class="socials" aria-label="Verified social profiles">
-        <a href="https://www.linkedin.com/company/infinite-windows-llc" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a href="https://www.instagram.com/infinitewindowsusa/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="fill"/></svg><span>Instagram</span></a>
+        <a href="https://www.linkedin.com/company/infinite-windows-llc/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9v10M6 5.5v.1M10.5 19v-6c0-2 1.2-3.5 3.3-3.5 2.2 0 3.2 1.4 3.2 3.5v6M10.5 10v9"/></svg><span>LinkedIn</span></a>
+        <a href="https://www.facebook.com/infinitewindows/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-3H14V8.5c0-1 .4-1.5 1.7-1.5H18V4.2c-.7-.1-1.6-.2-2.8-.2-2.8 0-4.7 1.7-4.7 4.8V10H8v3h2.5v8"/></svg><span>Facebook</span></a>
       </div>
-      <p class="social-note">Additional social profiles will appear only after ownership is verified.</p>
+      <a class="app-link" href="https://apps.apple.com/us/app/infinite-windows-citadel/id6761875225" target="_blank" rel="noopener noreferrer"><small>Citadel mobile app</small><span>Download on the App Store ↗</span></a>
     </section>
 
     <footer>
@@ -155,12 +162,9 @@
   <dialog id="share-sheet" class="sheet" aria-labelledby="share-title">
     <form method="dialog"><button class="modal-close" value="cancel" aria-label="Close share panel">×</button></form>
     <p class="eyebrow">Share this studio card</p>
-    <h2 id="share-title">Pass the view along.</h2>
-    <div class="qr-frame"><img src="assets/qr-infinitewindows.png" alt="QR code opening Infinite Windows" width="512" height="512"></div>
-    <div class="share-buttons">
-      <button type="button" data-action="native-share">Share</button>
-      <button type="button" data-action="copy">Copy link</button>
-    </div>
+    <h2 id="share-title">Copy the card link.</h2>
+    <p>Your device does not offer the mobile share menu here. Copy the direct link instead.</p>
+    <div class="share-buttons"><button type="button" data-action="copy">Copy link</button></div>
     <p id="share-status" role="status" aria-live="polite"></p>
   </dialog>
 
