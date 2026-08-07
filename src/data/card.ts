@@ -836,11 +836,10 @@ export const CARD_CNBRANDINGS: CardProfile = {
  * Productora ejecutiva y empresaria (Miami). La tarjeta tiene dos caras:
  * ella y EL CLOSET, su tienda de ropa.
  *
- * Verificado: creditos de Farandula (2023) y Mirame Asi; LinkedIn publico;
+ * Verificado: creditos de Farandula (2023) y Mirame Asi; telefono directo;
  * Instagram @elcloset226 con su categoria y su biografia literal.
  * NO se afirma antiguedad, volumen, envios, ubicacion fisica ni catalogo de la
- * tienda -tiene 12 publicaciones-; tampoco telefono ni correo, porque no hay
- * canal directo confirmado: «Message» va a su LinkedIn.
+ * tienda -tiene 12 publicaciones-; tampoco se publica correo.
  */
 export const CARD_MABEL: CardProfile = {
   id: "mabel-toledo",
@@ -867,6 +866,8 @@ export const CARD_MABEL: CardProfile = {
     location: { en: "Miami, Florida", es: "Miami, Florida" },
     website: SITE_URL + "/card/mabel-toledo",
     websiteDisplay: "305webservice.com/card/mabel-toledo",
+    phoneTel: "+13055101073",
+    phoneDisplay: "(305) 510-1073",
   },
   vcardMedia: { kind: "person", logoUrl: "/card/mabel/portrait.jpg", embedImage: true },
   personCard: {
@@ -884,8 +885,8 @@ export const CARD_MABEL: CardProfile = {
     },
     primaryLabel: { en: "Shop EL CLOSET", es: "Ver EL CLOSET" },
     primaryHref: "https://www.instagram.com/elcloset226/",
-    secondaryLabel: { en: "Discuss an opportunity", es: "Conversemos sobre una oportunidad" },
-    secondaryHref: "https://www.linkedin.com/in/mabel-toledo-43080a16",
+    secondaryLabel: { en: "Call Mabel", es: "Llamar a Mabel" },
+    secondaryHref: "tel:+13055101073",
     shop: {
       eyebrow: { en: "The shop", es: "La tienda" },
       name: "EL CLOSET",

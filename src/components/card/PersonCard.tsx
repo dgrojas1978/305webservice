@@ -13,8 +13,7 @@ import { type CardLocale, type CardProfile } from "~/data/card";
  * con `#D4AF37` un solo tono pasa AA como texto sobre carbón (8.69:1) Y como
  * relleno con texto carbón encima, así que no hace falta rampa de dos tonos.
  *
- * Sin teléfono ni correo: no hay canal directo confirmado, y aquí no se
- * inventa ninguno. «Message» abre su LinkedIn público.
+ * El teléfono directo de Mabel está confirmado; no se publica correo.
  */
 
 const LANG_KEY = "305_card_lang";
@@ -64,8 +63,8 @@ export default function PersonCard(props: { profile: CardProfile }) {
   });
 
   const T = {
-    en: { save: "Save Contact", message: "Message", share: "Share", copied: "Link copied", visit: "See the collection on Instagram" },
-    es: { save: "Guardar contacto", message: "Mensaje", share: "Compartir", copied: "Enlace copiado", visit: "Ver la colección en Instagram" },
+    en: { save: "Save Contact", call: "Call", share: "Share", copied: "Link copied", visit: "See the collection on Instagram" },
+    es: { save: "Guardar contacto", call: "Llamar", share: "Compartir", copied: "Enlace copiado", visit: "Ver la colección en Instagram" },
   } as const;
   const t = () => T[lang()];
 
@@ -89,8 +88,8 @@ export default function PersonCard(props: { profile: CardProfile }) {
     window.open(c().primaryHref, "_blank", "noopener");
   };
   const goTalk = () => {
-    trackEvent("card_secondary_cta_click", { card: p().id, dest: "linkedin" });
-    window.open(c().secondaryHref, "_blank", "noopener");
+    trackEvent("card_secondary_cta_click", { card: p().id, dest: "call" });
+    window.location.href = c().secondaryHref;
   };
 
   return (
@@ -225,8 +224,8 @@ export default function PersonCard(props: { profile: CardProfile }) {
           {c().primaryLabel[lang()]}
         </button>
         <div class="mtc-utils mtc-rise" style={{ "animation-delay": ".2s" }}>
-          <a href={`/card/${p().id}/vcard`}>{t().save}</a>
-          <a href={c().secondaryHref} target="_blank" rel="noopener noreferrer">{t().message}</a>
+          <a href={`/card/${p().id}/mabel-toledo.vcf`} download="mabel-toledo.vcf">{t().save}</a>
+          <a href={c().secondaryHref}>{t().call}</a>
           <button type="button" onClick={shareCard}>{t().share}</button>
         </div>
         <p class="mtc-status" role="status" aria-live="polite">{copied() ? t().copied : ""}</p>
@@ -289,7 +288,7 @@ export default function PersonCard(props: { profile: CardProfile }) {
         <div class="mtc-final">
           <button class="mtc-cta ghost" type="button" onClick={goTalk}>{c().secondaryLabel[lang()]}</button>
           <p class="mtc-foot">
-            <a href={c().secondaryHref} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href={c().secondaryHref}>{p().company.phoneDisplay}</a>
             <span>·</span>
             <span>{p().company.location[lang()]}</span>
           </p>
