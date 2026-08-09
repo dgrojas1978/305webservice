@@ -14,6 +14,10 @@ export default function ChaterioWidget() {
   let host!: HTMLDivElement;
   onMount(async () => {
     try {
+      // Un botón de chat que no puede chatear es una mentira: si el API todavía no autoriza
+      // este origen (CORS), no montamos nada. Cuando el origen se autorice, el widget aparece
+      // solo en la próxima carga de página — sin redeploy del sitio.
+      await fetch(new URL("/version", API_BASE_URL), { method: "GET" });
       const manifestUrl = new URL("/dist-bundle/build-manifest.json", WEBCHAT_ORIGIN);
       const manifest = await fetch(manifestUrl, { cache: "no-store" }).then((r) => r.json());
       const bundleUrl = new URL(manifest.bundle, manifestUrl);
