@@ -5,3 +5,7 @@ const nodes=[];const walker=document.createTreeWalker(document.body,NodeFilter.S
 let locale='en';document.querySelector('.lang').addEventListener('click',e=>{locale=locale==='en'?'es':'en';document.documentElement.lang=locale;e.currentTarget.setAttribute('aria-pressed',String(locale==='es'));nodes.forEach(({node,en})=>{const v=en.trim(),tr=ES.get(v);node.nodeValue=locale==='es'&&tr?en.replace(v,tr):en;});});
 const toast=document.querySelector('.toast');function notify(text){toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)}
 document.querySelector('[data-share]').addEventListener('click',async()=>{const data={title:'305 Web Service',text:locale==='es'?'Tecnología que impulsa tu negocio.':'Technology that moves your business forward.',url:CARD_URL};try{if(navigator.share){await navigator.share(data);return;}await navigator.clipboard.writeText(CARD_URL);notify(locale==='es'?'Enlace copiado':'Link copied');}catch(e){if(e.name!=='AbortError')notify(CARD_URL);}});
+
+ES.set('Save contact','Guardar contacto');
+ES.set('Website','Sitio web');
+ES.set('Services','Servicios');
