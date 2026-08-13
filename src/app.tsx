@@ -1,14 +1,20 @@
 import { MetaProvider, Title, Meta, Link } from "@solidjs/meta";
-import { Router } from "@solidjs/router";
+import { Router, useLocation } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
-import { Suspense } from "solid-js";
+import { Show, Suspense } from "solid-js";
 import ChaterioWidget from "./components/ChaterioWidget";
 import "./app.css";
 
 export default function App() {
   return (
     <Router
-      root={(props) => (
+      root={(props) => {
+        // El asistente flota en todo el sitio MENOS en las tarjetas digitales
+        // (/card/*): ahí quedaría flotando sobre una experiencia de pantalla
+        // completa que pertenece a otro contexto.
+        const location = useLocation();
+        const showChat = () => !location.pathname.startsWith("/card/");
+        return (
         <MetaProvider>
           {/* fallbacks globales — cada página los sobreescribe vía <Seo> */}
           <Title>305 Web Service | Web Design & Digital Solutions in Miami</Title>
@@ -28,9 +34,12 @@ export default function App() {
           <Link rel="manifest" href="/site.webmanifest" />
           <Meta name="theme-color" content="#071426" />
           <Suspense>{props.children}</Suspense>
-          <ChaterioWidget />
+          <Show when={showChat()}>
+            <ChaterioWidget />
+          </Show>
         </MetaProvider>
-      )}
+        );
+      }}
     >
       <FileRoutes />
     </Router>
