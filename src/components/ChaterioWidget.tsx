@@ -33,5 +33,21 @@ export default function ChaterioWidget() {
       // Sin red, o el origen aún no está autorizado en el API: la página vive igual, sin chat.
     }
   });
-  return <div ref={host} />;
+  // El widget (bundle Chaterío) NO se auto-posiciona: su `.cc-launcher` es
+  // `position:relative; margin-left:auto` y su `:host{all:initial}` deja el
+  // host en `static`. El loader oficial monta en un `#chat-host` que la página
+  // ancla fijo; aquí hay que anclar el host a mano, o el widget cae al final
+  // del flujo (se veía como un bloque debajo del footer). Inline gana sobre
+  // `:host{all:initial}`.
+  return (
+    <div
+      ref={host}
+      style={{
+        position: "fixed",
+        right: "20px",
+        bottom: "20px",
+        "z-index": "2147483000",
+      }}
+    />
+  );
 }
