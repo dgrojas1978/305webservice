@@ -1,10 +1,10 @@
 import type { APIEvent } from "@solidjs/start/server";
-import { cardRedirect } from "~/lib/cardRedirect";
+import { aLaTarjeta } from "~/lib/cardsHome";
 
 /**
- * URL corta CANÓNICA para tarjetas físicas: https://www.305webservice.com/c/305
- * Es la única que debe grabarse en un chip NFC o imprimirse en un QR final.
+ * URL corta grabada en los chips NFC y en las piezas impresas antiguas.
+ * Las tarjetas viven en card.celerati.com; esto solo reenvía.
  */
-export async function GET({ params, request }: APIEvent) {
-  return cardRedirect(params.slug, request.url, request.headers);
+export function GET({ params, request }: APIEvent) {
+  return aLaTarjeta(params.slug, request.url);
 }

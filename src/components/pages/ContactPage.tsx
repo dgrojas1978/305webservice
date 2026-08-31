@@ -4,7 +4,6 @@ import Seo from "~/components/Seo";
 import Layout from "~/components/layout/Layout";
 import Container from "~/components/ui/Container";
 import { ButtonLink, WhatsAppIcon } from "~/components/ui/Button";
-import { saveLead } from "~/lib/db";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
 import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, waLink } from "~/lib/site";
@@ -46,8 +45,29 @@ const submitQuote = action(async (formData: FormData) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) return { error: t.contact.errors.email };
   if (!lead.consent) return { error: t.contact.errors.consent };
 
+  // El lead se manda a celerati-cards y no a una base propia.
+  //
+  // Antes se guardaba en un MongoDB de este repositorio y NO SE AVISABA A
+  // NADIE: el lead se quedaba ahí hasta que alguien se acordara de abrir la
+  // colección. Y el filtro de publicidad vivía en las tarjetas y no aquí,
+  // porque eran dos códigos distintos haciendo lo mismo peor.
+  //
+  // Va de servidor a servidor (esto es una server-action): no interviene CORS
+  // y para el visitante no cambia nada, ni siquiera si lleva JavaScript
+  // apagado.
+  const destino = process.env.LEAD_API_URL || "https://card.celerati.com/api/lead";
   try {
-    await saveLead(lead);
+    const r = await fetch(destino, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...lead, createdAt: undefined }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    const cuerpo = await r.json().catch(() => ({})) as { error?: string };
+    // Nunca se finge que se guardó: si el destino falla, el formulario enseña
+    // el error y sus alternativas (WhatsApp, correo). Un "gracias" falso es la
+    // peor de las respuestas posibles: el lead se pierde y nadie se entera.
+    if (!r.ok) return { error: cuerpo.error || t.contact.errors.server };
   } catch (err) {
     console.error("[305WS] Failed to save lead:", err);
     return { error: t.contact.errors.server };
