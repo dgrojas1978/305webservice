@@ -32,6 +32,16 @@ export default function HomePage(props: { locale: Locale }) {
         class="relative flex min-h-[100svh] items-center overflow-hidden bg-navy pb-20 pt-28 md:pb-28 md:pt-36">
         <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <span aria-hidden="true" class="monument absolute -right-[0.12em] top-[0.1em] text-[clamp(11rem,26vw,24rem)]" style={{ color: "rgba(20,108,255,0.16)" }}>305</span>
+          {/* Composición de los 4 servicios (web/chat/NFC/marketing); bordes en
+              fade a transparente para fundirse con el navy. Solo ≥xl: en móvil
+              y tablet los CTAs mandan y la imagen empujaría el fold. */}
+          <img
+            src="/hero/hero-devices.webp"
+            alt=""
+            width="598"
+            height="620"
+            class="absolute right-[3vw] top-1/2 hidden w-[min(40vw,600px)] -translate-y-1/2 xl:block"
+          />
         </div>
         <Container class="relative z-10">
           <div class="max-w-3xl">
