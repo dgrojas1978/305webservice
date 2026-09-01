@@ -25,6 +25,7 @@ interface Dict {
   approach: {
     heading: string;
     steps: { name: string; text: string }[];
+    cta: string;
   };
   problems: { heading: string; items: string[]; cta: string };
   selector: { eyebrow: string; heading: string; sub: string; bestForLabel: string; includesLabel: string };
@@ -63,6 +64,8 @@ interface Dict {
   privacy: { title: string; updated: string; sections: { h: string; p: string }[] };
   langSwitch: { toOther: string };
   nfcCompliance: { heading: string; items: string[] };
+  /** La tarjeta 305 real, mostrada en la página NFC como prueba tangible. */
+  nfcShowcase: { eyebrow: string; heading: string; text: string; frontLabel: string; backLabel: string };
 }
 
 const en: Dict = {
@@ -74,7 +77,7 @@ const en: Dict = {
     services: { title: "Services | 305 Web Service", description: "Websites, online stores, custom software, automation, IT infrastructure and NFC business solutions — packaged around clear business outcomes." },
     websitePackages: { title: "Website Packages from $499 | 305 Web Service", description: "Professional websites for Miami small businesses. Website Starter from $499, Business Website and Online Store — mobile-first and built to convert." },
     customSoftware: { title: "Custom Software Development in Miami | 305 Web Service", description: "Custom web apps, portals, dashboards and internal tools built around your workflow. Replace spreadsheets and disconnected tools with software that fits." },
-    automation: { title: "Business Automation & Integrations in Miami | 305 Web Service", description: "Automate repetitive work and connect the tools you already use — CRM, forms, email, WhatsApp and reporting. Fewer manual steps, faster responses." },
+    automation: { title: "Digital Marketing & Automation in Miami | 305 Web Service", description: "Campaign landing pages, Meta & Google ads, review funnels, WhatsApp and email workflows — more leads with less manual work, for Miami businesses." },
     itInfrastructure: { title: "IT Support & Infrastructure for Small Business Miami | 305 Web Service", description: "Business networks, Wi-Fi, cloud, servers, backups, security and support for Miami businesses. Reliable technology with someone to call." },
     nfc: { title: "NFC Business Cards & Contactless Solutions Miami | 305 Web Service", description: "NFC digital business cards, team cards, tap-to-review kits and contactless menus for Miami businesses — with QR fallback and honest compatibility." },
     industries: { title: "Solutions by Industry | 305 Web Service", description: "Practical websites, software, automation, IT and NFC solutions for contractors, professional services, healthcare, restaurants, retail and local businesses." },
@@ -96,7 +99,7 @@ const en: Dict = {
     priceLine: "",
     ctaPrimary: "Get a Free Quote",
     ctaSecondary: "View our work",
-    trust: ["Real projects", "English & Spanish", "Direct collaboration"],
+    trust: ["Real projects", "English & Spanish", "You own your site & domain"],
   },
   capabilities: {
     heading: "What we do.",
@@ -124,6 +127,7 @@ const en: Dict = {
       { name: "Build", text: "Develop, integrate and test the solution." },
       { name: "Evolve", text: "Support improvements as the business changes." },
     ],
+    cta: "Get a Free Quote",
   },
   problems: {
     heading: "Technology should remove friction — not create more of it.",
@@ -255,7 +259,7 @@ const en: Dict = {
     { value: "business-website", label: "Business Website" },
     { value: "online-store", label: "Online Store" },
     { value: "custom-software", label: "Custom Business Software" },
-    { value: "automation", label: "Automation & Integrations" },
+    { value: "automation", label: "Digital Marketing & Automation" },
     { value: "it-infrastructure", label: "IT Infrastructure & Support" },
     { value: "nfc", label: "NFC Business Solutions" },
     { value: "other", label: "Other / Not sure yet" },
@@ -284,6 +288,13 @@ const en: Dict = {
     ],
   },
   langSwitch: { toOther: "Ver en español" },
+  nfcShowcase: {
+    eyebrow: "Our own card",
+    heading: "This is a real card — ours.",
+    text: "The exact NFC card we hand out in Miami. Tap it or scan the QR and it opens our site. Yours works the same way — your brand, your destination, updatable without reprinting when the setup supports it.",
+    frontLabel: "Front",
+    backLabel: "Back",
+  },
   nfcCompliance: {
     heading: "Honest by design",
     items: [
@@ -305,7 +316,7 @@ const es: Dict = {
     services: { title: "Servicios | 305 Web Service", description: "Webs, tiendas en línea, software a medida, automatización, infraestructura IT y soluciones NFC — empaquetadas alrededor de resultados de negocio claros." },
     websitePackages: { title: "Paquetes web desde $499 | 305 Web Service", description: "Webs profesionales para pequeños negocios de Miami. Web Starter desde $499, Web Empresarial y Tienda en Línea — mobile-first y hechas para convertir." },
     customSoftware: { title: "Software a medida en Miami | 305 Web Service", description: "Apps web, portales, paneles y herramientas internas a medida, construidas alrededor de tu flujo de trabajo. Reemplaza hojas de cálculo y herramientas desconectadas." },
-    automation: { title: "Automatización e integraciones en Miami | 305 Web Service", description: "Automatiza el trabajo repetitivo y conecta las herramientas que ya usas — CRM, formularios, correo, WhatsApp y reportes. Menos pasos manuales, respuestas más rápidas." },
+    automation: { title: "Marketing digital y automatización en Miami | 305 Web Service", description: "Landing pages de campaña, Meta y Google Ads, rutas de reseñas, flujos de WhatsApp y correo — más clientes con menos trabajo manual, para negocios de Miami." },
     itInfrastructure: { title: "Soporte e infraestructura IT para pymes en Miami | 305 Web Service", description: "Redes, Wi-Fi, nube, servidores, respaldos, seguridad y soporte para negocios de Miami. Tecnología confiable con alguien a quién llamar." },
     nfc: { title: "Tarjetas NFC y soluciones sin contacto en Miami | 305 Web Service", description: "Tarjetas NFC digitales, tarjetas de equipo, kits tap-to-reseña y menús sin contacto para negocios de Miami — con respaldo QR y compatibilidad honesta." },
     industries: { title: "Soluciones por industria | 305 Web Service", description: "Webs, software, automatización, IT y NFC prácticos para contratistas, servicios profesionales, salud, restaurantes, retail y negocios locales." },
@@ -327,7 +338,7 @@ const es: Dict = {
     priceLine: "",
     ctaPrimary: "Cotización gratis",
     ctaSecondary: "Ver nuestro trabajo",
-    trust: ["Proyectos reales", "Español e inglés", "Colaboración directa"],
+    trust: ["Proyectos reales", "Español e inglés", "Eres dueño de tu sitio y dominio"],
   },
   capabilities: {
     heading: "Lo que hacemos.",
@@ -355,6 +366,7 @@ const es: Dict = {
       { name: "Construir", text: "Desarrollar, integrar y probar la solución." },
       { name: "Evolucionar", text: "Acompañar mejoras a medida que el negocio cambia." },
     ],
+    cta: "Cotización gratis",
   },
   problems: {
     heading: "La tecnología debería quitar fricción — no crear más.",
@@ -486,7 +498,7 @@ const es: Dict = {
     { value: "business-website", label: "Web Empresarial" },
     { value: "online-store", label: "Tienda en Línea" },
     { value: "custom-software", label: "Software a Medida" },
-    { value: "automation", label: "Automatización e Integraciones" },
+    { value: "automation", label: "Marketing Digital y Automatización" },
     { value: "it-infrastructure", label: "Infraestructura IT y Soporte" },
     { value: "nfc", label: "Soluciones NFC" },
     { value: "other", label: "Otro / Aún no lo sé" },
@@ -515,6 +527,13 @@ const es: Dict = {
     ],
   },
   langSwitch: { toOther: "View in English" },
+  nfcShowcase: {
+    eyebrow: "Nuestra propia tarjeta",
+    heading: "Esta es una tarjeta real — la nuestra.",
+    text: "La misma tarjeta NFC que entregamos en Miami. Al tocarla o escanear el QR se abre nuestro sitio. La tuya funciona igual — tu marca, tu destino, y actualizable sin reimprimir cuando la configuración lo permite.",
+    frontLabel: "Frente",
+    backLabel: "Reverso",
+  },
   nfcCompliance: {
     heading: "Honesto por diseño",
     items: [

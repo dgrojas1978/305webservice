@@ -105,6 +105,43 @@ function OfferBlock(props: { locale: Locale; offer: Offer; index: number }) {
   );
 }
 
+/** La tarjeta 305 real (frente y reverso) — prueba tangible, solo en la página NFC. */
+function NfcShowcase(props: { locale: Locale }) {
+  const t = () => C[props.locale].nfcShowcase;
+  const card = (img: string, label: string) => (
+    <figure>
+      <div class="overflow-hidden rounded-2xl border border-hairline shadow-sm">
+        <img
+          src={img}
+          alt={`305 Web Service NFC card — ${label}`}
+          width="1011"
+          height="639"
+          loading="lazy"
+          class="w-full"
+        />
+      </div>
+      <figcaption class="mt-3 micro-caps text-body">{label}</figcaption>
+    </figure>
+  );
+  return (
+    <section class="bg-paper py-section">
+      <Container>
+        <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <p class="micro-caps text-blue-ink">{t().eyebrow}</p>
+            <h2 class="mt-4 text-[clamp(1.6rem,3vw,2.6rem)] font-extrabold leading-tight tracking-tight text-navy">{t().heading}</h2>
+            <p class="mt-5 max-w-prose leading-relaxed text-body">{t().text}</p>
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+            {card("/nfc/305-card-front.png", t().frontLabel)}
+            {card("/nfc/305-card-back.png", t().backLabel)}
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 /** Bloque de honestidad NFC — solo en la página NFC. */
 function NfcCompliance(props: { locale: Locale }) {
   const t = () => C[props.locale].nfcCompliance;
@@ -160,6 +197,8 @@ export default function ServicePage(props: Props) {
       </PageHero>
 
       <Show when={props.showWork}><SelectedWork locale={props.locale} /></Show>
+
+      <Show when={isNfc()}><NfcShowcase locale={props.locale} /></Show>
 
       <For each={offers()}>{(o, i) => <OfferBlock locale={props.locale} offer={o} index={i()} />}</For>
 

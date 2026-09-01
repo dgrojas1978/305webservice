@@ -56,7 +56,7 @@ export default function Header(props: Props) {
   const servicesMenu = (): { key: PageKey; label: string }[] => [
     { key: "websitePackages", label: t().nav.websitePackages },
     { key: "customSoftware", label: t().nav.customSoftware },
-    { key: "automation", label: props.locale === "es" ? "Automatización" : "Automation & Integrations" },
+    { key: "automation", label: props.locale === "es" ? "Marketing y Automatización" : "Marketing & Automation" },
     { key: "itInfrastructure", label: props.locale === "es" ? "Infraestructura IT" : "IT Infrastructure" },
     { key: "nfc", label: t().nav.nfc },
   ];

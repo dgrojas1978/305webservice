@@ -1,8 +1,10 @@
 import { For } from "solid-js";
 import Container from "~/components/ui/Container";
 import SectionHeading from "~/components/ui/SectionHeading";
+import { ButtonLink } from "~/components/ui/Button";
 import { C } from "~/data/content";
 import type { Locale } from "~/lib/i18n";
+import { quoteLink } from "~/lib/links";
 
 /**
  * Secciones de posicionamiento aprobado.
@@ -62,6 +64,9 @@ export function Approach(props: { locale: Locale }) {
             )}
           </For>
         </ol>
+        <div class="mt-14">
+          <ButtonLink href={quoteLink(props.locale)} track="approach_cta_click">{t().cta}</ButtonLink>
+        </div>
       </Container>
     </section>
   );

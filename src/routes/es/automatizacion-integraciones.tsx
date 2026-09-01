@@ -3,8 +3,8 @@ export default function P() {
   return (
     <ServicePage locale="es" page="automation" metaKey="automation"
       offerIds={["automation"]}
-      heroTitle="Automatización e Integraciones"
-      heroIntro="Elimina el trabajo repetitivo. Conecta las herramientas que ya usas para que leads, datos y seguimientos se muevan solos."
+      heroTitle="Marketing Digital y Automatización"
+      heroIntro="Más clientes, menos trabajo manual. Campañas, rutas de reseñas y seguimientos que corren solos — conectados a las herramientas que ya usas."
       heroService="automation" />
   );
 }
