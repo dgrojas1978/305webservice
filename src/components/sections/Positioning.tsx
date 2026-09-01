@@ -12,7 +12,7 @@ import type { Locale } from "~/lib/i18n";
  * digital citen exactamente las mismas frases.
  */
 
-/** «What we build.» — tres grupos, nunca una lista de servicios. */
+/** «What we do.» — los 4 servicios que vendemos, cada uno con enlace a su página. */
 export function Capabilities(props: { locale: Locale }) {
   const t = () => C[props.locale].capabilities;
   // pb-section sin pt: viene despues de Selected Work, que ya es bg-paper y
@@ -21,16 +21,19 @@ export function Capabilities(props: { locale: Locale }) {
     <section id="capabilities" class="bg-paper pb-section">
       <Container>
         <SectionHeading title={t().heading} />
-        <div class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+        <div class="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
           <For each={t().groups}>
             {(g) => (
-              <div>
-                <span class="block h-px w-10 bg-turquoise" aria-hidden="true" />
+              <a href={g.href} class="group block">
+                <span class="block h-px w-10 bg-turquoise transition-all duration-300 group-hover:w-16" aria-hidden="true" />
                 <h3 class="mt-5 text-sm font-extrabold uppercase tracking-[0.14em] text-navy">
                   {g.name}
                 </h3>
                 <p class="mt-3 leading-relaxed text-body">{g.text}</p>
-              </div>
+                <span class="mt-4 inline-block text-sm font-semibold text-turquoise">
+                  {t().linkLabel} →
+                </span>
+              </a>
             )}
           </For>
         </div>

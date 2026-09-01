@@ -15,10 +15,11 @@ interface Dict {
     eyebrow: string; h1: string; sub: string; priceLine: string;
     ctaPrimary: string; ctaSecondary: string; trust: string[];
   };
-  /** Posicionamiento aprobado: STRATEGY / DESIGN / ENGINEERING. Tres grupos, no un catalogo. */
+  /** Los 4 servicios que vendemos, con nombre concreto y enlace a su página. */
   capabilities: {
     heading: string;
-    groups: { name: string; text: string }[];
+    linkLabel: string;
+    groups: { name: string; text: string; href: string }[];
   };
   /** Cuatro pasos. Sustituye al proceso de cinco. */
   approach: {
@@ -67,8 +68,8 @@ interface Dict {
 const en: Dict = {
   meta: {
     home: {
-      title: "305 Web Service | Web Design, Custom Software & IT Solutions in Miami",
-      description: "Professional websites starting at $499, custom software, automation and IT solutions for small businesses in Miami and across the United States.",
+      title: "305 Web Service | Websites, NFC Cards & Digital Marketing in Miami",
+      description: "Websites from $499, NFC business cards, digital marketing and custom software for small businesses in Miami and across the U.S. — in English and Spanish.",
     },
     services: { title: "Services | 305 Web Service", description: "Websites, online stores, custom software, automation, IT infrastructure and NFC business solutions — packaged around clear business outcomes." },
     websitePackages: { title: "Website Packages from $499 | 305 Web Service", description: "Professional websites for Miami small businesses. Website Starter from $499, Business Website and Online Store — mobile-first and built to convert." },
@@ -89,23 +90,30 @@ const en: Dict = {
     cta: "Request a Quote", menuOpen: "Open menu", menuClose: "Close menu", skip: "Skip to content", whatsapp: "Chat on WhatsApp",
   },
   hero: {
-    eyebrow: "Strategy · Design · Engineering",
-    h1: "Technology that moves you forward.",
-    sub: "We create high-performing websites, custom software and connected digital experiences that help businesses operate clearly, serve customers better and move forward with confidence.",
+    eyebrow: "Websites · NFC Cards · Marketing · Custom Software",
+    h1: "Websites and marketing that bring you customers.",
+    sub: "Professional websites from $499, NFC business cards, digital marketing and custom software — for businesses in Miami and across the U.S.",
     priceLine: "",
-    ctaPrimary: "Start a project",
+    ctaPrimary: "Get a Free Quote",
     ctaSecondary: "View our work",
     trust: ["Real projects", "English & Spanish", "Direct collaboration"],
   },
   capabilities: {
-    heading: "What we build.",
+    heading: "What we do.",
+    linkLabel: "See details",
     groups: [
-      { name: "Digital experiences",
-        text: "Websites, online stores and customer-facing platforms designed for clarity, credibility and conversion." },
-      { name: "Custom systems",
-        text: "Software and internal tools shaped around real workflows, information and operational needs." },
-      { name: "Connected business solutions",
-        text: "NFC experiences, digital cards, review journeys, lead capture and practical business automation." },
+      { name: "Websites",
+        text: "Professional sites and online stores from $499 — mobile-first, bilingual and built to turn visitors into calls.",
+        href: "/website-packages" },
+      { name: "Digital marketing",
+        text: "SEO-ready pages, review funnels, WhatsApp lead capture and campaigns that make your phone ring.",
+        href: "/automation-integrations" },
+      { name: "NFC business cards",
+        text: "Tap-to-share cards, team cards and review kits — one tap and your client has your contact.",
+        href: "/nfc-business-solutions" },
+      { name: "Custom solutions",
+        text: "Software, automation and integrations shaped around how your business actually works.",
+        href: "/custom-software" },
     ],
   },
   approach: {
@@ -291,8 +299,8 @@ const en: Dict = {
 const es: Dict = {
   meta: {
     home: {
-      title: "305 Web Service | Diseño web, software a medida y soluciones IT en Miami",
-      description: "Webs profesionales desde $499, software a medida, automatización y soluciones IT para pequeños negocios en Miami y en todo Estados Unidos.",
+      title: "305 Web Service | Páginas web, tarjetas NFC y marketing digital en Miami",
+      description: "Webs desde $499, tarjetas NFC, marketing digital y software a medida para pequeños negocios en Miami y todo EE. UU. — en español e inglés.",
     },
     services: { title: "Servicios | 305 Web Service", description: "Webs, tiendas en línea, software a medida, automatización, infraestructura IT y soluciones NFC — empaquetadas alrededor de resultados de negocio claros." },
     websitePackages: { title: "Paquetes web desde $499 | 305 Web Service", description: "Webs profesionales para pequeños negocios de Miami. Web Starter desde $499, Web Empresarial y Tienda en Línea — mobile-first y hechas para convertir." },
@@ -313,23 +321,30 @@ const es: Dict = {
     cta: "Solicitar cotización", menuOpen: "Abrir menú", menuClose: "Cerrar menú", skip: "Saltar al contenido", whatsapp: "Chatear por WhatsApp",
   },
   hero: {
-    eyebrow: "Estrategia · Diseño · Ingeniería",
-    h1: "Tecnología que te impulsa.",
-    sub: "Creamos sitios web de alto rendimiento, software a medida y experiencias digitales conectadas que ayudan a las empresas a operar con claridad, atender mejor a sus clientes y avanzar con confianza.",
+    eyebrow: "Páginas Web · Tarjetas NFC · Marketing · Software a Medida",
+    h1: "Páginas web y marketing que te traen clientes.",
+    sub: "Webs profesionales desde $499, tarjetas NFC, marketing digital y software a medida — para negocios en Miami y todo Estados Unidos.",
     priceLine: "",
-    ctaPrimary: "Empezar un proyecto",
+    ctaPrimary: "Cotización gratis",
     ctaSecondary: "Ver nuestro trabajo",
     trust: ["Proyectos reales", "Español e inglés", "Colaboración directa"],
   },
   capabilities: {
-    heading: "Lo que construimos.",
+    heading: "Lo que hacemos.",
+    linkLabel: "Ver detalles",
     groups: [
-      { name: "Experiencias digitales",
-        text: "Sitios web, tiendas en línea y plataformas de cara al cliente, diseñadas para dar claridad, credibilidad y conversión." },
-      { name: "Sistemas a medida",
-        text: "Software y herramientas internas construidas alrededor de flujos de trabajo, información y necesidades operativas reales." },
-      { name: "Soluciones de negocio conectadas",
-        text: "Experiencias NFC, tarjetas digitales, rutas de reseñas, captación de prospectos y automatización práctica." },
+      { name: "Páginas web",
+        text: "Sitios profesionales y tiendas en línea desde $499 — mobile-first, bilingües y hechos para convertir visitas en llamadas.",
+        href: "/es/paquetes-web" },
+      { name: "Marketing digital",
+        text: "Páginas listas para Google, rutas de reseñas, captación por WhatsApp y campañas que hacen sonar el teléfono.",
+        href: "/es/automatizacion-integraciones" },
+      { name: "Tarjetas NFC",
+        text: "Tarjetas tap-to-share, tarjetas de equipo y kits de reseñas — un toque y tu cliente tiene tu contacto.",
+        href: "/es/soluciones-nfc" },
+      { name: "Soluciones a medida",
+        text: "Software, automatización e integraciones construidas alrededor de cómo trabaja realmente tu negocio.",
+        href: "/es/software-a-medida" },
     ],
   },
   approach: {
