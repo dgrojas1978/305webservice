@@ -94,7 +94,7 @@ const en: Dict = {
   },
   hero: {
     eyebrow: "Websites · NFC Cards · Marketing · Custom Software",
-    h1: "Websites and marketing that bring you customers.",
+    h1: "Websites that bring you customers.",
     sub: "Professional websites from $499, NFC business cards, digital marketing and custom software — for businesses in Miami and across the U.S.",
     priceLine: "",
     ctaPrimary: "Get a Free Quote",
@@ -333,7 +333,7 @@ const es: Dict = {
   },
   hero: {
     eyebrow: "Páginas Web · Tarjetas NFC · Marketing · Software a Medida",
-    h1: "Páginas web y marketing que te traen clientes.",
+    h1: "Webs que te traen clientes.",
     sub: "Webs profesionales desde $499, tarjetas NFC, marketing digital y software a medida — para negocios en Miami y todo Estados Unidos.",
     priceLine: "",
     ctaPrimary: "Cotización gratis",
