@@ -18,7 +18,7 @@ interface Props {
 /** Cabecera navy de páginas interiores — el header transparente vive sobre ella. */
 export default function PageHero(props: Props) {
   return (
-    <section data-surface="navy" class="bg-navy pb-16 pt-32 md:pb-20 md:pt-40">
+    <section data-surface="navy" class="bg-navy pb-12 pt-28 md:pb-16 md:pt-32">
       <Container>
         {props.eyebrow && <p class="micro-caps text-turquoise">{props.eyebrow}</p>}
         <h1 class="mt-6 max-w-4xl text-[clamp(2rem,4.6vw,3.8rem)] font-black leading-[1.05] tracking-tight text-paper">

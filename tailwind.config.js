@@ -34,7 +34,8 @@ export default {
         site: "1440px",
       },
       spacing: {
-        section: "clamp(96px, 12vw, 190px)",
+        // Antes clamp(96px,12vw,190px): hasta ~380px de aire entre secciones.
+        section: "clamp(56px, 7vw, 104px)",
         gutter: "clamp(24px, 5vw, 88px)",
       },
       transitionTimingFunction: {

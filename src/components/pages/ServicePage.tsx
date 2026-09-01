@@ -31,7 +31,7 @@ function OfferBlock(props: { locale: Locale; offer: Offer; index: number }) {
   const o = () => props.offer;
   const alt = () => props.index % 2 === 1;
   return (
-    <article id={o().id} class={`scroll-mt-24 py-16 md:py-20 ${alt() ? "bg-white" : "bg-paper"}`}>
+    <article id={o().id} class={`scroll-mt-24 py-12 md:py-16 ${alt() ? "bg-white" : "bg-paper"}`}>
       <Container>
         <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-hairline pb-6">
           <h2 class="text-[clamp(1.6rem,3vw,2.6rem)] font-extrabold tracking-tight text-navy">{o().name}</h2>

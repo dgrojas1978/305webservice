@@ -28,8 +28,9 @@ export default function HomePage(props: { locale: Locale }) {
       <JsonLd data={faqSchema(t().faq.items)} />
 
       {/* ================= HERO ================= */}
+      {/* min-h 84svh (antes 100): el trabajo asoma bajo el fold como invitación a bajar. */}
       <section data-surface="navy"
-        class="relative flex min-h-[100svh] items-center overflow-hidden bg-navy pb-20 pt-28 md:pb-28 md:pt-36">
+        class="relative flex min-h-[84svh] items-center overflow-hidden bg-navy pb-16 pt-28 md:pb-20 md:pt-32">
         <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <span aria-hidden="true" class="monument absolute -right-[0.12em] top-[0.1em] text-[clamp(11rem,26vw,24rem)]" style={{ color: "rgba(20,108,255,0.16)" }}>305</span>
           {/* Composición de los 4 servicios (web/chat/NFC/marketing); bordes en
