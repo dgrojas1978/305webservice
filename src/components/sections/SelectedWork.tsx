@@ -33,16 +33,16 @@ const WORK = [
 
 const COPY = {
   en: {
-    eyebrow: "Selected work",
-    heading: "Selected digital work.",
-    intro: "Websites and platforms designed around distinct business goals.",
+    eyebrow: "Our work",
+    heading: "Real sites, live right now.",
+    intro: "Every project below is a real client website — visit them.",
     visit: "Visit site",
     note: "Selected custom projects. Features and pricing vary by scope.",
   },
   es: {
-    eyebrow: "Trabajo seleccionado",
-    heading: "Trabajo digital seleccionado.",
-    intro: "Sitios y plataformas diseñados alrededor de objetivos de negocio distintos.",
+    eyebrow: "Nuestro trabajo",
+    heading: "Sitios reales, en línea ahora mismo.",
+    intro: "Cada proyecto es un sitio real de un cliente — entra y compruébalo.",
     visit: "Ver sitio",
     note: "Proyectos personalizados seleccionados. Las funciones y el precio varían según el alcance.",
   },
@@ -54,41 +54,40 @@ export default function SelectedWork(props: { locale: Locale }) {
     <section id="selected-work" class="bg-paper py-section">
       <Container>
         <SectionHeading eyebrow={t().eyebrow} title={t().heading} intro={t().intro} />
-        <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="mt-12 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2">
           <For each={WORK}>
             {(w) => (
               <a
                 href={w.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="card group flex flex-col overflow-hidden !p-0 transition-shadow hover:shadow-lg"
+                class="group block"
                 data-track="work_project_click"
                 data-track-project={w.key}
               >
-                <div class="flex items-center gap-1.5 border-b border-hairline bg-[#e9edf3] px-3 py-2">
-                  <span class="h-2 w-2 rounded-full bg-[#c3ccd8]" aria-hidden="true" />
-                  <span class="h-2 w-2 rounded-full bg-[#c3ccd8]" aria-hidden="true" />
-                  <span class="h-2 w-2 rounded-full bg-[#c3ccd8]" aria-hidden="true" />
-                  <span class="ml-2 truncate text-[0.7rem] font-semibold tracking-wide text-[#8a97a6]">{w.domain}</span>
+                <div class="overflow-hidden rounded-2xl border border-hairline bg-white shadow-sm transition-shadow duration-300 group-hover:shadow-xl">
+                  <img
+                    src={w.img}
+                    alt={`${w.domain} — website built by 305 Web Service`}
+                    width="1000"
+                    height="625"
+                    loading="lazy"
+                    class="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  />
                 </div>
-                <img
-                  src={w.img}
-                  alt={`${w.domain} — website built by 305 Web Service`}
-                  width="1000"
-                  height="625"
-                  loading="lazy"
-                  class="aspect-[16/10] w-full object-cover object-top"
-                />
-                <div class="flex flex-1 flex-col p-5">
-                  <h3 class="text-sm font-extrabold uppercase tracking-tight text-navy">{w.industry[props.locale]}</h3>
-                  <p class="mt-2 text-[0.85rem] leading-relaxed text-body">{w.outcome[props.locale]}</p>
-                  <span class="mt-auto pt-4 text-[0.8rem] font-bold text-blue-ink group-hover:underline">{t().visit} &rarr;</span>
+                <div class="mt-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h3 class="text-lg font-extrabold tracking-tight text-navy">{w.domain}</h3>
+                  <span class="micro-caps text-body">{w.industry[props.locale]}</span>
                 </div>
+                <p class="mt-1.5 leading-relaxed text-body">{w.outcome[props.locale]}</p>
+                <span class="mt-3 inline-block text-sm font-bold text-blue-ink transition-transform duration-300 group-hover:translate-x-1">
+                  {t().visit} &rarr;
+                </span>
               </a>
             )}
           </For>
         </div>
-        <p class="mt-8 max-w-3xl text-[0.85rem] italic leading-relaxed text-body">{t().note}</p>
+        <p class="mt-10 max-w-3xl text-[0.85rem] italic leading-relaxed text-body">{t().note}</p>
       </Container>
     </section>
   );
