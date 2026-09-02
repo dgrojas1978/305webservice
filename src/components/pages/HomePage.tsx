@@ -1,6 +1,7 @@
 import { Show } from "solid-js";
 import Seo from "~/components/Seo";
 import SelectedWork from "~/components/sections/SelectedWork";
+import GoogleReviews from "~/components/sections/GoogleReviews";
 import JsonLd from "~/components/JsonLd";
 import Layout from "~/components/layout/Layout";
 import Container from "~/components/ui/Container";
@@ -74,6 +75,9 @@ export default function HomePage(props: { locale: Locale }) {
 
       {/* 2 · SELECTED WORK */}
       <SelectedWork locale={props.locale} />
+
+      {/* 2.5 · RESEÑAS REALES DE GOOGLE — prueba social verificable */}
+      <GoogleReviews locale={props.locale} />
 
       {/* 3 · CAPABILITIES — tres grupos, no un catalogo */}
       <Capabilities locale={props.locale} />
