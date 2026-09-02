@@ -59,7 +59,16 @@ const submitQuote = action(async (formData: FormData) => {
   try {
     const r = await fetch(destino, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        // Nos identifica como servidor nuestro. Este POST sale de un servidor,
+        // no de un navegador: no lleva User-Agent de Chrome, ni idioma, ni
+        // cookie. Para el detector de bots del otro lado es indistinguible de
+        // un programa —y lo es, solo que uno de casa—. Sin esta cabecera, el
+        // dia que alla se exija el token, el formulario dejaria de guardar
+        // nada y nadie se enteraria.
+        ...(process.env.LEAD_API_TOKEN ? { "x-celerati-token": process.env.LEAD_API_TOKEN } : {}),
+      },
       body: JSON.stringify({ ...lead, createdAt: undefined }),
       signal: AbortSignal.timeout(10_000),
     });
