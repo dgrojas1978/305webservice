@@ -95,7 +95,7 @@ const en: Dict = {
   hero: {
     eyebrow: "Websites · NFC Cards · Marketing · Custom Software",
     h1: "Websites that bring you customers.",
-    sub: "Professional websites from $499, NFC business cards, digital marketing and custom software — for businesses in Miami and across the U.S.",
+    sub: "Professional websites, NFC business cards, digital marketing and custom software — for businesses in Miami and across the U.S.",
     priceLine: "",
     ctaPrimary: "Get a Free Quote",
     ctaSecondary: "View our work",
@@ -106,7 +106,7 @@ const en: Dict = {
     linkLabel: "See details",
     groups: [
       { name: "Websites",
-        text: "Professional sites and online stores from $499 — mobile-first, bilingual and built to turn visitors into calls.",
+        text: "Professional sites and online stores — mobile-first, bilingual and built to turn visitors into calls.",
         href: "/website-packages" },
       { name: "Digital marketing",
         text: "SEO-ready pages, review funnels, WhatsApp lead capture and campaigns that make your phone ring.",
@@ -334,7 +334,7 @@ const es: Dict = {
   hero: {
     eyebrow: "Páginas Web · Tarjetas NFC · Marketing · Software a Medida",
     h1: "Webs que te traen clientes.",
-    sub: "Webs profesionales desde $499, tarjetas NFC, marketing digital y software a medida — para negocios en Miami y todo Estados Unidos.",
+    sub: "Webs profesionales, tarjetas NFC, marketing digital y software a medida — para negocios en Miami y todo Estados Unidos.",
     priceLine: "",
     ctaPrimary: "Cotización gratis",
     ctaSecondary: "Ver nuestro trabajo",
@@ -345,7 +345,7 @@ const es: Dict = {
     linkLabel: "Ver detalles",
     groups: [
       { name: "Páginas web",
-        text: "Sitios profesionales y tiendas en línea desde $499 — mobile-first, bilingües y hechos para convertir visitas en llamadas.",
+        text: "Sitios profesionales y tiendas en línea — mobile-first, bilingües y hechos para convertir visitas en llamadas.",
         href: "/es/paquetes-web" },
       { name: "Marketing digital",
         text: "Páginas listas para Google, rutas de reseñas, captación por WhatsApp y campañas que hacen sonar el teléfono.",
