@@ -21,7 +21,8 @@ export default function ProcessPage(props: { locale: Locale }) {
 
       <PageHero eyebrow={t().process.eyebrow} intro={intro()}>{t().process.heading}</PageHero>
 
-      <ProcessSteps locale={props.locale} />
+      {/* heading={false}: el PageHero ya anuncia el mismo eyebrow y título. */}
+      <ProcessSteps locale={props.locale} heading={false} />
       <Faq locale={props.locale} />
       <FinalCta locale={props.locale} />
     </Layout>

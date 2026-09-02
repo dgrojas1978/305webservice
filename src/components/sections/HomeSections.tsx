@@ -112,13 +112,15 @@ export function Industries(props: { locale: Locale; heading?: boolean }) {
 }
 
 /* ---------------- Process ---------------- */
-export function ProcessSteps(props: { locale: Locale }) {
+export function ProcessSteps(props: { locale: Locale; heading?: boolean }) {
   const t = () => C[props.locale].process;
   return (
     <section id="process" class="bg-navy py-section" data-surface="navy">
       <Container>
-        <SectionHeading eyebrow={t().eyebrow} title={t().heading} onDark />
-        <div class="mt-14">
+        <Show when={props.heading !== false}>
+          <SectionHeading eyebrow={t().eyebrow} title={t().heading} onDark />
+        </Show>
+        <div class={props.heading !== false ? "mt-14" : ""}>
           <For each={t().steps}>
             {(s) => (
               <div class="reveal grid grid-cols-1 gap-4 border-t border-[rgba(247,249,252,0.14)] py-8 md:grid-cols-12 md:py-9">
