@@ -6,7 +6,8 @@ import Container from "~/components/ui/Container";
 import { ButtonLink, WhatsAppIcon } from "~/components/ui/Button";
 import { C } from "~/data/content";
 import { PATHS, altPath, type Locale } from "~/lib/i18n";
-import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL, waLink } from "~/lib/site";
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL } from "~/lib/site";
+import { waQuote } from "~/lib/links";
 import { captureAttribution, trackEvent } from "~/lib/analytics";
 
 const submitQuote = action(async (formData: FormData) => {
@@ -120,7 +121,7 @@ export default function ContactPage(props: { locale: Locale }) {
                 <h2 class="micro-caps text-on-navy-faint">{t().contact.channelsTitle}</h2>
                 <ul class="mt-5 space-y-4 text-base font-medium">
                   <li>
-                    <a href={waLink()} target="_blank" rel="noopener noreferrer" class="link-underline inline-flex items-center gap-2 font-bold text-paper">
+                    <a href={waQuote(props.locale)} target="_blank" rel="noopener noreferrer" class="link-underline inline-flex items-center gap-2 font-bold text-paper">
                       <WhatsAppIcon class="h-5 w-5 text-turquoise" /> {t().contact.whatsappLabel}
                     </a>
                     <span class="mt-1 block text-sm text-on-navy-faint">{t().contact.whatsappSub}</span>
@@ -145,7 +146,7 @@ export default function ContactPage(props: { locale: Locale }) {
                     <p class="mx-auto mt-3 max-w-md text-center text-body">{t().contact.success.text}</p>
                     <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                       <ButtonLink href={PATHS.home[props.locale]} variant="outline">{t().contact.success.back}</ButtonLink>
-                      <ButtonLink href={waLink()} external><WhatsAppIcon class="h-4 w-4" />{t().contact.success.whatsapp}</ButtonLink>
+                      <ButtonLink href={waQuote(props.locale)} external><WhatsAppIcon class="h-4 w-4" />{t().contact.success.whatsapp}</ButtonLink>
                     </div>
                   </div>
                 }
